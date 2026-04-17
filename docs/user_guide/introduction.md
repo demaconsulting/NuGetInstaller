@@ -105,8 +105,8 @@ Example validation report:
 | DotNet Runtime      | .NET 10.0.0                                        |
 | Time Stamp          | 2024-01-15 10:30:00 UTC                            |
 
-✓ TemplateTool_VersionDisplay - Passed
-✓ TemplateTool_HelpDisplay - Passed
+✓ NuGetInstaller_VersionDisplay - Passed
+✓ NuGetInstaller_HelpDisplay - Passed
 
 Total Tests: 2
 Passed: 2
@@ -117,8 +117,8 @@ Failed: 0
 
 Each test proves specific functionality works correctly:
 
-- **`TemplateTool_VersionDisplay`** - `--version` outputs a valid version string.
-- **`TemplateTool_HelpDisplay`** - `--help` outputs usage and options information.
+- **`NuGetInstaller_VersionDisplay`** - `--version` outputs a valid version string.
+- **`NuGetInstaller_HelpDisplay`** - `--help` outputs usage and options information.
 
 ## Silent Mode
 

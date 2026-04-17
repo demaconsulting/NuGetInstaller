@@ -104,7 +104,7 @@ internal static class Validation
     private static void RunVersionTest(Context context, DemaConsulting.TestResults.TestResults testResults)
     {
         var startTime = DateTime.UtcNow;
-        var test = CreateTestResult("TemplateTool_VersionDisplay");
+        var test = CreateTestResult("NuGetInstaller_VersionDisplay");
 
         try
         {
@@ -138,27 +138,27 @@ internal static class Validation
                     logContent.Split('.').Length >= 3)
                 {
                     test.Outcome = DemaConsulting.TestResults.TestOutcome.Passed;
-                    context.WriteLine($"✓ TemplateTool_VersionDisplay - Passed");
+                    context.WriteLine($"✓ NuGetInstaller_VersionDisplay - Passed");
                 }
                 else
                 {
                     test.Outcome = DemaConsulting.TestResults.TestOutcome.Failed;
                     test.ErrorMessage = "Version string not found in log";
-                    context.WriteError($"✗ TemplateTool_VersionDisplay - Failed: Version string not found in log");
+                    context.WriteError($"✗ NuGetInstaller_VersionDisplay - Failed: Version string not found in log");
                 }
             }
             else
             {
                 test.Outcome = DemaConsulting.TestResults.TestOutcome.Failed;
                 test.ErrorMessage = $"Program exited with code {exitCode}";
-                context.WriteError($"✗ TemplateTool_VersionDisplay - Failed: Exit code {exitCode}");
+                context.WriteError($"✗ NuGetInstaller_VersionDisplay - Failed: Exit code {exitCode}");
             }
         }
         // Generic catch is justified here as this is a test framework - any exception should be
         // recorded as a test failure to ensure robust test execution and reporting.
         catch (Exception ex)
         {
-            HandleTestException(test, context, "TemplateTool_VersionDisplay", ex);
+            HandleTestException(test, context, "NuGetInstaller_VersionDisplay", ex);
         }
 
         FinalizeTestResult(test, startTime, testResults);
@@ -172,7 +172,7 @@ internal static class Validation
     private static void RunHelpTest(Context context, DemaConsulting.TestResults.TestResults testResults)
     {
         var startTime = DateTime.UtcNow;
-        var test = CreateTestResult("TemplateTool_HelpDisplay");
+        var test = CreateTestResult("NuGetInstaller_HelpDisplay");
 
         try
         {
@@ -205,27 +205,27 @@ internal static class Validation
                 if (logContent.Contains("Usage:") && logContent.Contains("Options:"))
                 {
                     test.Outcome = DemaConsulting.TestResults.TestOutcome.Passed;
-                    context.WriteLine($"✓ TemplateTool_HelpDisplay - Passed");
+                    context.WriteLine($"✓ NuGetInstaller_HelpDisplay - Passed");
                 }
                 else
                 {
                     test.Outcome = DemaConsulting.TestResults.TestOutcome.Failed;
                     test.ErrorMessage = "Help text not found in log";
-                    context.WriteError($"✗ TemplateTool_HelpDisplay - Failed: Help text not found in log");
+                    context.WriteError($"✗ NuGetInstaller_HelpDisplay - Failed: Help text not found in log");
                 }
             }
             else
             {
                 test.Outcome = DemaConsulting.TestResults.TestOutcome.Failed;
                 test.ErrorMessage = $"Program exited with code {exitCode}";
-                context.WriteError($"✗ TemplateTool_HelpDisplay - Failed: Exit code {exitCode}");
+                context.WriteError($"✗ NuGetInstaller_HelpDisplay - Failed: Exit code {exitCode}");
             }
         }
         // Generic catch is justified here as this is a test framework - any exception should be
         // recorded as a test failure to ensure robust test execution and reporting.
         catch (Exception ex)
         {
-            HandleTestException(test, context, "TemplateTool_HelpDisplay", ex);
+            HandleTestException(test, context, "NuGetInstaller_HelpDisplay", ex);
         }
 
         FinalizeTestResult(test, startTime, testResults);

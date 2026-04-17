@@ -87,8 +87,8 @@ Running self-validation produces a report containing the following information:
 | DotNet Runtime      | <dotnet-runtime-version>                           |
 | Time Stamp          | <timestamp> UTC                                    |
 
-✓ TemplateTool_VersionDisplay - Passed
-✓ TemplateTool_HelpDisplay - Passed
+✓ NuGetInstaller_VersionDisplay - Passed
+✓ NuGetInstaller_HelpDisplay - Passed
 
 Total Tests: 2
 Passed: 2
@@ -97,8 +97,8 @@ Failed: 0
 
 Each test in the report proves:
 
-- **`TemplateTool_VersionDisplay`** - `--version` outputs a valid version string.
-- **`TemplateTool_HelpDisplay`** - `--help` outputs usage and options information.
+- **`NuGetInstaller_VersionDisplay`** - `--version` outputs a valid version string.
+- **`NuGetInstaller_HelpDisplay`** - `--help` outputs usage and options information.
 
 Use `--depth <#>` to control the heading level of the validation output (default: `1`).
 This is useful when embedding validation output into a larger markdown document:
