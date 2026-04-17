@@ -1,15 +1,15 @@
 ---
 # Root requirements file - includes all system, unit, platform, and OTS requirements
 includes:
-  - docs/reqstream/template-dot-net-tool/template-dot-net-tool.yaml
-  - docs/reqstream/template-dot-net-tool/program.yaml
-  - docs/reqstream/template-dot-net-tool/cli/cli.yaml
-  - docs/reqstream/template-dot-net-tool/cli/context.yaml
-  - docs/reqstream/template-dot-net-tool/self-test/self-test.yaml
-  - docs/reqstream/template-dot-net-tool/self-test/validation.yaml
-  - docs/reqstream/template-dot-net-tool/utilities/utilities.yaml
-  - docs/reqstream/template-dot-net-tool/utilities/path-helpers.yaml
-  - docs/reqstream/template-dot-net-tool/platform-requirements.yaml
+  - docs/reqstream/nuget-installer/nuget-installer.yaml
+  - docs/reqstream/nuget-installer/program.yaml
+  - docs/reqstream/nuget-installer/cli/cli.yaml
+  - docs/reqstream/nuget-installer/cli/context.yaml
+  - docs/reqstream/nuget-installer/self-test/self-test.yaml
+  - docs/reqstream/nuget-installer/self-test/validation.yaml
+  - docs/reqstream/nuget-installer/utilities/utilities.yaml
+  - docs/reqstream/nuget-installer/utilities/path-helpers.yaml
+  - docs/reqstream/nuget-installer/platform-requirements.yaml
   - docs/reqstream/ots/mstest.yaml
   - docs/reqstream/ots/reqstream.yaml
   - docs/reqstream/ots/buildmark.yaml
