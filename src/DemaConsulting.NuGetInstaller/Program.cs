@@ -136,7 +136,7 @@ internal static class Program
     /// <param name="context">The context for output.</param>
     private static void PrintHelp(Context context)
     {
-        context.WriteLine("Usage: nuget-installer [options] [packages.config]");
+        context.WriteLine("Usage: nuget-installer [packages.config] [options]");
         context.WriteLine("");
         context.WriteLine("Options:");
         context.WriteLine("  [packages.config]            Path to packages.config (default: packages.config)");

@@ -71,8 +71,8 @@ nuget-installer --silent --log output.log
 | Option                          | Description                                                  |
 | ------------------------------- | ------------------------------------------------------------ |
 | `[packages.config]`             | Path to packages.config (default: packages.config)           |
-| `-x`, `-ExcludeVersion`        | Name output folder {Id}/ instead of {Id}.{Version}/          |
-| `-o`, `-OutputDirectory <dir>` | Output directory (default: current directory)                |
+| `-x`, `-ExcludeVersion`         | Name output folder {Id}/ instead of {Id}.{Version}/          |
+| `-o`, `-OutputDirectory <dir>`  | Output directory (default: current directory)                |
 | `-v`, `--version`               | Display version information                                  |
 | `-?`, `-h`, `--help`            | Display help message                                         |
 | `--silent`                      | Suppress console output                                      |
