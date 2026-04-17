@@ -249,5 +249,54 @@ public class IntegrationTests
         Assert.AreNotEqual(0, exitCode);
         Assert.Contains("Error", output);
     }
+
+    /// <summary>
+    ///     Test that the tool installs NuGet packages from a packages.config file into the output directory.
+    /// </summary>
+    [TestMethod]
+    public void IntegrationTest_InstallPackages_ExtractsPackageToOutputDirectory()
+    {
+        // Arrange: create a temporary directory with a packages.config file
+        var tempDir = Path.Combine(Path.GetTempPath(), $"integration_install_test_{Guid.NewGuid()}");
+
+        try
+        {
+            Directory.CreateDirectory(tempDir);
+            var configPath = Path.Combine(tempDir, "packages.config");
+            File.WriteAllText(configPath,
+                """
+                <?xml version="1.0" encoding="utf-8"?>
+                <packages>
+                  <package id="DemaConsulting.NuGet.Caching" version="1.0.0" />
+                </packages>
+                """);
+
+            // Act: run the tool to install packages into the temp directory
+            var exitCode = Runner.Run(
+                out var output,
+                "dotnet",
+                _dllPath,
+                configPath,
+                "-o",
+                tempDir);
+
+            // Assert: verify the tool exits successfully and the package is extracted
+            Assert.AreEqual(0, exitCode, $"Tool should succeed. Output: {output}");
+            Assert.Contains("Installed", output, "Output should confirm package installation");
+
+            var expectedFolder = Path.Combine(tempDir, "DemaConsulting.NuGet.Caching.1.0.0");
+            Assert.IsTrue(Directory.Exists(expectedFolder),
+                $"Package folder should exist at {expectedFolder}");
+            Assert.IsTrue(Directory.GetFileSystemEntries(expectedFolder).Length > 0,
+                "Package folder should contain extracted files");
+        }
+        finally
+        {
+            if (Directory.Exists(tempDir))
+            {
+                Directory.Delete(tempDir, true);
+            }
+        }
+    }
 }
 
