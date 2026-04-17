@@ -168,7 +168,7 @@ jobs:
         run: >
           dotnet dotnet-sonarscanner
           begin
-          /k:"demaconsulting_TemplateDotNetTool"
+          /k:"demaconsulting_NuGetInstaller"
           /o:"demaconsulting"
           /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
           /d:sonar.host.url="https://sonarcloud.io"
@@ -222,8 +222,8 @@ jobs:
         with:
           name: packages-${{ matrix.os }}
           path: |
-            src/DemaConsulting.TemplateDotNetTool/bin/Release/*.nupkg
-            src/DemaConsulting.TemplateDotNetTool/bin/Release/*.snupkg
+            src/DemaConsulting.NuGetInstaller/bin/Release/*.nupkg
+            src/DemaConsulting.NuGetInstaller/bin/Release/*.snupkg
 
   # Runs CodeQL security and quality analysis, gathering results to include
   # in the code quality report.
@@ -347,7 +347,7 @@ jobs:
           dotnet tool install --global \
             --add-source packages \
             --version ${{ inputs.version }} \
-            DemaConsulting.TemplateDotNetTool
+            DemaConsulting.NuGetInstaller
 
       # === CAPTURE TOOL VERSIONS ===
       # This section captures the versions of all tools used in the integration tests.
@@ -374,22 +374,22 @@ jobs:
       - name: Test version display
         shell: bash
         run: |
-          echo "Testing templatetool --version..."
-          templatetool --version || { echo "✗ Version command failed"; exit 1; }
+          echo "Testing nuget-installer --version..."
+          nuget-installer --version || { echo "✗ Version command failed"; exit 1; }
           echo "✓ Version command succeeded"
 
       - name: Test help display
         shell: bash
         run: |
-          echo "Testing templatetool --help..."
-          templatetool --help || { echo "✗ Help command failed"; exit 1; }
+          echo "Testing nuget-installer --help..."
+          nuget-installer --help || { echo "✗ Help command failed"; exit 1; }
           echo "✓ Help command succeeded"
 
       - name: Run self-validation
         shell: bash
         run: |
           echo "Running self-validation..."
-          templatetool --validate \
+          nuget-installer --validate \
             --results artifacts/validation-${{ matrix.os }}-dotnet${{ matrix.dotnet-version }}.trx \
             || { echo "✗ Self-validation failed"; exit 1; }
           echo "✓ Self-validation succeeded"
@@ -523,7 +523,7 @@ jobs:
           dotnet sarifmark
           --sarif artifacts/csharp.sarif
           --report docs/code_quality/codeql-quality.md
-          --heading "Template DotNet Tool CodeQL Analysis"
+          --heading "NuGet Installer CodeQL Analysis"
           --report-depth 1
 
       - name: Display CodeQL Quality Report
@@ -539,7 +539,7 @@ jobs:
         run: >
           dotnet sonarmark
           --server https://sonarcloud.io
-          --project-key demaconsulting_TemplateDotNetTool
+          --project-key demaconsulting_NuGetInstaller
           --branch ${{ github.ref_name }}
           --token "$SONAR_TOKEN"
           --report docs/code_quality/sonar-quality.md
@@ -696,56 +696,56 @@ jobs:
           dotnet weasyprint
           --pdf-variant pdf/a-3u
           docs/build_notes/build_notes.html
-          "docs/TemplateDotNetTool Build Notes.pdf"
+          "docs/NuGetInstaller Build Notes.pdf"
 
       - name: Generate User Guide PDF with Weasyprint
         run: >
           dotnet weasyprint
           --pdf-variant pdf/a-3u
           docs/user_guide/user_guide.html
-          "docs/TemplateDotNetTool User Guide.pdf"
+          "docs/NuGetInstaller User Guide.pdf"
 
       - name: Generate Design PDF with Weasyprint
         run: >
           dotnet weasyprint
           --pdf-variant pdf/a-3u
           docs/design/design.html
-          "docs/TemplateDotNetTool Software Design.pdf"
+          "docs/NuGetInstaller Software Design.pdf"
 
       - name: Generate Code Quality PDF with Weasyprint
         run: >
           dotnet weasyprint
           --pdf-variant pdf/a-3u
           docs/code_quality/quality.html
-          "docs/TemplateDotNetTool Code Quality.pdf"
+          "docs/NuGetInstaller Code Quality.pdf"
 
       - name: Generate Requirements PDF with Weasyprint
         run: >
           dotnet weasyprint
           --pdf-variant pdf/a-3u
           docs/requirements_doc/requirements.html
-          "docs/TemplateDotNetTool Requirements.pdf"
+          "docs/NuGetInstaller Requirements.pdf"
 
       - name: Generate Trace Matrix PDF with Weasyprint
         run: >
           dotnet weasyprint
           --pdf-variant pdf/a-3u
           docs/requirements_report/trace_matrix.html
-          "docs/TemplateDotNetTool Trace Matrix.pdf"
+          "docs/NuGetInstaller Trace Matrix.pdf"
 
       - name: Generate Review Plan PDF with Weasyprint
         run: >
           dotnet weasyprint
           --pdf-variant pdf/a-3u
           docs/code_review_plan/plan.html
-          "docs/TemplateDotNetTool Review Plan.pdf"
+          "docs/NuGetInstaller Review Plan.pdf"
 
       - name: Generate Review Report PDF with Weasyprint
         run: >
           dotnet weasyprint
           --pdf-variant pdf/a-3u
           docs/code_review_report/report.html
-          "docs/TemplateDotNetTool Review Report.pdf"
+          "docs/NuGetInstaller Review Report.pdf"
 
       # === UPLOAD ARTIFACTS ===
       # This section uploads all generated documentation artifacts.

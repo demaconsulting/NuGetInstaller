@@ -1,4 +1,4 @@
-# Template DotNet Tool
+# NuGet Installer
 
 [![GitHub forks][badge-forks]][link-forks]
 [![GitHub stars][badge-stars]][link-stars]
@@ -35,29 +35,29 @@ This template demonstrates:
 Install the tool globally using the .NET CLI:
 
 ```bash
-dotnet tool install -g DemaConsulting.TemplateDotNetTool
+dotnet tool install -g DemaConsulting.NuGetInstaller
 ```
 
 ## Usage
 
 ```bash
 # Display version
-templatetool --version
+nuget-installer --version
 
 # Display help
-templatetool --help
+nuget-installer --help
 
 # Run self-validation
-templatetool --validate
+nuget-installer --validate
 
 # Save validation results
-templatetool --validate --results results.trx
+nuget-installer --validate --results results.trx
 
 # Set heading depth for embedded validation output
-templatetool --validate --depth 2
+nuget-installer --validate --depth 2
 
 # Silent mode with logging
-templatetool --silent --log output.log
+nuget-installer --silent --log output.log
 ```
 
 ## Command-Line Options
@@ -77,7 +77,7 @@ templatetool --silent --log output.log
 Running self-validation produces a report containing the following information:
 
 ```text
-# DEMA Consulting Template DotNet Tool
+# DEMA Consulting NuGet Installer
 
 | Information         | Value                                              |
 | :------------------ | :------------------------------------------------- |
@@ -105,7 +105,7 @@ This is useful when embedding validation output into a larger markdown document:
 
 ```bash
 # Embed validation at heading level 2
-templatetool --validate --depth 2
+nuget-installer --validate --depth 2
 ```
 
 See the [User Guide][link-guide] for more details on the self-validation tests.
@@ -130,23 +130,23 @@ Copyright (c) DEMA Consulting. Licensed under the MIT License. See [LICENSE][lin
 By contributing to this project, you agree that your contributions will be licensed under the MIT License.
 
 <!-- Badge References -->
-[badge-forks]: https://img.shields.io/github/forks/demaconsulting/TemplateDotNetTool?style=plastic
-[badge-stars]: https://img.shields.io/github/stars/demaconsulting/TemplateDotNetTool?style=plastic
-[badge-contributors]: https://img.shields.io/github/contributors/demaconsulting/TemplateDotNetTool?style=plastic
-[badge-license]: https://img.shields.io/github/license/demaconsulting/TemplateDotNetTool?style=plastic
-[badge-build]: https://img.shields.io/github/actions/workflow/status/demaconsulting/TemplateDotNetTool/build_on_push.yaml?style=plastic
-[badge-quality]: https://sonarcloud.io/api/project_badges/measure?project=demaconsulting_TemplateDotNetTool&metric=alert_status
-[badge-security]: https://sonarcloud.io/api/project_badges/measure?project=demaconsulting_TemplateDotNetTool&metric=security_rating
-[badge-nuget]: https://img.shields.io/nuget/v/DemaConsulting.TemplateDotNetTool?style=plastic
+[badge-forks]: https://img.shields.io/github/forks/demaconsulting/NuGetInstaller?style=plastic
+[badge-stars]: https://img.shields.io/github/stars/demaconsulting/NuGetInstaller?style=plastic
+[badge-contributors]: https://img.shields.io/github/contributors/demaconsulting/NuGetInstaller?style=plastic
+[badge-license]: https://img.shields.io/github/license/demaconsulting/NuGetInstaller?style=plastic
+[badge-build]: https://img.shields.io/github/actions/workflow/status/demaconsulting/NuGetInstaller/build_on_push.yaml?style=plastic
+[badge-quality]: https://sonarcloud.io/api/project_badges/measure?project=demaconsulting_NuGetInstaller&metric=alert_status
+[badge-security]: https://sonarcloud.io/api/project_badges/measure?project=demaconsulting_NuGetInstaller&metric=security_rating
+[badge-nuget]: https://img.shields.io/nuget/v/DemaConsulting.NuGetInstaller?style=plastic
 
 <!-- Link References -->
-[link-forks]: https://github.com/demaconsulting/TemplateDotNetTool/network/members
-[link-stars]: https://github.com/demaconsulting/TemplateDotNetTool/stargazers
-[link-contributors]: https://github.com/demaconsulting/TemplateDotNetTool/graphs/contributors
-[link-license]: https://github.com/demaconsulting/TemplateDotNetTool/blob/main/LICENSE
-[link-build]: https://github.com/demaconsulting/TemplateDotNetTool/actions/workflows/build_on_push.yaml
-[link-quality]: https://sonarcloud.io/dashboard?id=demaconsulting_TemplateDotNetTool
-[link-security]: https://sonarcloud.io/dashboard?id=demaconsulting_TemplateDotNetTool
-[link-nuget]: https://www.nuget.org/packages/DemaConsulting.TemplateDotNetTool
-[link-guide]: https://github.com/demaconsulting/TemplateDotNetTool/blob/main/docs/user_guide/introduction.md
+[link-forks]: https://github.com/demaconsulting/NuGetInstaller/network/members
+[link-stars]: https://github.com/demaconsulting/NuGetInstaller/stargazers
+[link-contributors]: https://github.com/demaconsulting/NuGetInstaller/graphs/contributors
+[link-license]: https://github.com/demaconsulting/NuGetInstaller/blob/main/LICENSE
+[link-build]: https://github.com/demaconsulting/NuGetInstaller/actions/workflows/build_on_push.yaml
+[link-quality]: https://sonarcloud.io/dashboard?id=demaconsulting_NuGetInstaller
+[link-security]: https://sonarcloud.io/dashboard?id=demaconsulting_NuGetInstaller
+[link-nuget]: https://www.nuget.org/packages/DemaConsulting.NuGetInstaller
+[link-guide]: https://github.com/demaconsulting/NuGetInstaller/blob/main/docs/user_guide/introduction.md
 [link-continuous-compliance]: https://github.com/demaconsulting/ContinuousCompliance

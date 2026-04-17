@@ -21,7 +21,7 @@ needs-review:
 # and an index.json before enforcement (--enforce flag) can be enabled in the pipeline.
 evidence-source:
   type: url
-  location: https://raw.githubusercontent.com/demaconsulting/TemplateDotNetTool/reviews/index.json
+  location: https://raw.githubusercontent.com/demaconsulting/NuGetInstaller/reviews/index.json
 
 # Review sets following standardized patterns for hierarchical compliance coverage
 reviews:
@@ -31,92 +31,92 @@ reviews:
     paths:
       - "README.md"
       - "docs/user_guide/**/*.md"
-      - "docs/reqstream/template-dot-net-tool/template-dot-net-tool.yaml"
+      - "docs/reqstream/nuget-installer/nuget-installer.yaml"
       - "docs/design/introduction.md"
-      - "docs/design/template-dot-net-tool/template-dot-net-tool.md"
+      - "docs/design/nuget-installer/nuget-installer.md"
 
-  # TemplateTool-Architecture Review (one per system)
-  - id: TemplateTool-Architecture
-    title: Review of Template DotNet Tool system architecture and operational validation
+  # NuGetInstaller-Architecture Review (one per system)
+  - id: NuGetInstaller-Architecture
+    title: Review of NuGet Installer system architecture and operational validation
     paths:
-      - "docs/reqstream/template-dot-net-tool/template-dot-net-tool.yaml"
+      - "docs/reqstream/nuget-installer/nuget-installer.yaml"
       - "docs/design/introduction.md"
-      - "docs/design/template-dot-net-tool/template-dot-net-tool.md"
+      - "docs/design/nuget-installer/nuget-installer.md"
       - "test/**/IntegrationTests.cs"
 
-  # TemplateTool-Design Review (one per system)
-  - id: TemplateTool-Design
-    title: Review of Template DotNet Tool architectural and design consistency
+  # NuGetInstaller-Design Review (one per system)
+  - id: NuGetInstaller-Design
+    title: Review of NuGet Installer architectural and design consistency
     paths:
-      - "docs/reqstream/template-dot-net-tool/template-dot-net-tool.yaml"
-      - "docs/reqstream/template-dot-net-tool/platform-requirements.yaml"
+      - "docs/reqstream/nuget-installer/nuget-installer.yaml"
+      - "docs/reqstream/nuget-installer/platform-requirements.yaml"
       - "docs/design/introduction.md"
-      - "docs/design/template-dot-net-tool/**/*.md"
+      - "docs/design/nuget-installer/**/*.md"
 
-  # TemplateTool-AllRequirements Review (one per system)
-  - id: TemplateTool-AllRequirements
-    title: Review of Template DotNet Tool requirements quality and traceability
+  # NuGetInstaller-AllRequirements Review (one per system)
+  - id: NuGetInstaller-AllRequirements
+    title: Review of NuGet Installer requirements quality and traceability
     paths:
       - "requirements.yaml"
-      - "docs/reqstream/template-dot-net-tool/**/*.yaml"
+      - "docs/reqstream/nuget-installer/**/*.yaml"
       - "docs/reqstream/ots/**/*.yaml"
 
-  # TemplateTool-Cli Review (one per subsystem)
-  - id: TemplateTool-Cli
-    title: Review of Template DotNet Tool Cli subsystem architecture and interfaces
+  # NuGetInstaller-Cli Review (one per subsystem)
+  - id: NuGetInstaller-Cli
+    title: Review of NuGet Installer Cli subsystem architecture and interfaces
     paths:
-      - "docs/reqstream/template-dot-net-tool/cli/cli.yaml"
-      - "docs/design/template-dot-net-tool/cli/cli.md"
+      - "docs/reqstream/nuget-installer/cli/cli.yaml"
+      - "docs/design/nuget-installer/cli/cli.md"
       - "test/**/Cli/CliSubsystemTests.cs"
 
-  # TemplateTool-SelfTest Review (one per subsystem)
-  - id: TemplateTool-SelfTest
-    title: Review of Template DotNet Tool SelfTest subsystem architecture and interfaces
+  # NuGetInstaller-SelfTest Review (one per subsystem)
+  - id: NuGetInstaller-SelfTest
+    title: Review of NuGet Installer SelfTest subsystem architecture and interfaces
     paths:
-      - "docs/reqstream/template-dot-net-tool/self-test/self-test.yaml"
-      - "docs/design/template-dot-net-tool/self-test/self-test.md"
+      - "docs/reqstream/nuget-installer/self-test/self-test.yaml"
+      - "docs/design/nuget-installer/self-test/self-test.md"
       - "test/**/SelfTest/SelfTestSubsystemTests.cs"
 
-  # TemplateTool-Utilities Review (one per subsystem)
-  - id: TemplateTool-Utilities
-    title: Review of Template DotNet Tool Utilities subsystem architecture and interfaces
+  # NuGetInstaller-Utilities Review (one per subsystem)
+  - id: NuGetInstaller-Utilities
+    title: Review of NuGet Installer Utilities subsystem architecture and interfaces
     paths:
-      - "docs/reqstream/template-dot-net-tool/utilities/utilities.yaml"
-      - "docs/design/template-dot-net-tool/utilities/utilities.md"
+      - "docs/reqstream/nuget-installer/utilities/utilities.yaml"
+      - "docs/design/nuget-installer/utilities/utilities.md"
       - "test/**/Utilities/UtilitiesSubsystemTests.cs"
 
-  # TemplateTool-Cli-Context Review (one per unit)
-  - id: TemplateTool-Cli-Context
-    title: Review of Template DotNet Tool Context unit implementation
+  # NuGetInstaller-Cli-Context Review (one per unit)
+  - id: NuGetInstaller-Cli-Context
+    title: Review of NuGet Installer Context unit implementation
     paths:
-      - "docs/reqstream/template-dot-net-tool/cli/context.yaml"
-      - "docs/design/template-dot-net-tool/cli/context.md"
+      - "docs/reqstream/nuget-installer/cli/context.yaml"
+      - "docs/design/nuget-installer/cli/context.md"
       - "src/**/Cli/Context.cs"
       - "test/**/Cli/ContextTests.cs"
 
-  # TemplateTool-Program Review (one per unit)
-  - id: TemplateTool-Program
-    title: Review of Template DotNet Tool Program unit implementation
+  # NuGetInstaller-Program Review (one per unit)
+  - id: NuGetInstaller-Program
+    title: Review of NuGet Installer Program unit implementation
     paths:
-      - "docs/reqstream/template-dot-net-tool/program.yaml"
-      - "docs/design/template-dot-net-tool/program.md"
+      - "docs/reqstream/nuget-installer/program.yaml"
+      - "docs/design/nuget-installer/program.md"
       - "src/**/Program.cs"
       - "test/**/ProgramTests.cs"
 
-  # TemplateTool-SelfTest-Validation Review (one per unit)
-  - id: TemplateTool-SelfTest-Validation
-    title: Review of Template DotNet Tool Validation unit implementation
+  # NuGetInstaller-SelfTest-Validation Review (one per unit)
+  - id: NuGetInstaller-SelfTest-Validation
+    title: Review of NuGet Installer Validation unit implementation
     paths:
-      - "docs/reqstream/template-dot-net-tool/self-test/validation.yaml"
-      - "docs/design/template-dot-net-tool/self-test/validation.md"
+      - "docs/reqstream/nuget-installer/self-test/validation.yaml"
+      - "docs/design/nuget-installer/self-test/validation.md"
       - "src/**/SelfTest/Validation.cs"
       - "test/**/SelfTest/ValidationTests.cs"
 
-  # TemplateTool-Utilities-PathHelpers Review (one per unit)
-  - id: TemplateTool-Utilities-PathHelpers
-    title: Review of Template DotNet Tool PathHelpers unit implementation
+  # NuGetInstaller-Utilities-PathHelpers Review (one per unit)
+  - id: NuGetInstaller-Utilities-PathHelpers
+    title: Review of NuGet Installer PathHelpers unit implementation
     paths:
-      - "docs/reqstream/template-dot-net-tool/utilities/path-helpers.yaml"
-      - "docs/design/template-dot-net-tool/utilities/path-helpers.md"
+      - "docs/reqstream/nuget-installer/utilities/path-helpers.yaml"
+      - "docs/design/nuget-installer/utilities/path-helpers.md"
       - "src/**/Utilities/PathHelpers.cs"
       - "test/**/Utilities/PathHelpersTests.cs"

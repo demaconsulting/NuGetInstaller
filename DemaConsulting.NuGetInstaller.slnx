@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/DemaConsulting.NuGetInstaller/DemaConsulting.NuGetInstaller.csproj" />
+  </Folder>
+  <Folder Name="/test/">
+    <Project Path="test/DemaConsulting.NuGetInstaller.Tests/DemaConsulting.NuGetInstaller.Tests.csproj" />
+  </Folder>
+</Solution>

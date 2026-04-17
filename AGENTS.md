@@ -82,7 +82,7 @@ Delegate to specialized agents only for specific scenarios:
 - **quality** - Quality assurance agent that grades developer work against project
   standards and Continuous Compliance practices
 - **repo-consistency** - Ensures downstream repositories remain consistent with
-  the TemplateDotNetTool template patterns and best practices
+  the NuGetInstaller template patterns and best practices
 
 # Agent Reporting (Specialized Agents Must Follow)
 
