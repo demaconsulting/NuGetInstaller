@@ -20,6 +20,7 @@
 
 using System.Runtime.InteropServices;
 using DemaConsulting.NuGetInstaller.Cli;
+using DemaConsulting.NuGetInstaller.NuGet;
 using DemaConsulting.NuGetInstaller.Utilities;
 using DemaConsulting.TestResults.IO;
 
@@ -51,6 +52,7 @@ internal static class Validation
         // Run core functionality tests
         RunVersionTest(context, testResults);
         RunHelpTest(context, testResults);
+        RunInstallPackageTest(context, testResults);
 
         // Calculate totals
         var totalTests = testResults.Results.Count;
@@ -226,6 +228,62 @@ internal static class Validation
         catch (Exception ex)
         {
             HandleTestException(test, context, "NuGetInstaller_HelpDisplay", ex);
+        }
+
+        FinalizeTestResult(test, startTime, testResults);
+    }
+
+    /// <summary>
+    ///     Runs a test for package installation functionality.
+    /// </summary>
+    /// <param name="context">The context for output.</param>
+    /// <param name="testResults">The test results collection.</param>
+    private static void RunInstallPackageTest(Context context, DemaConsulting.TestResults.TestResults testResults)
+    {
+        var startTime = DateTime.UtcNow;
+        var test = CreateTestResult("NuGetInstaller_InstallPackage");
+
+        try
+        {
+            using var tempDir = new TemporaryDirectory();
+
+            // Write a packages.config with a known package
+            var packagesConfigPath = PathHelpers.SafePathCombine(tempDir.DirectoryPath, "packages.config");
+            File.WriteAllText(packagesConfigPath,
+                """
+                <?xml version="1.0" encoding="utf-8"?>
+                <packages>
+                  <package id="DemaConsulting.NuGet.Caching" version="1.0.0" />
+                </packages>
+                """);
+
+            // Run the install
+            var packages = PackagesConfigReader.Read(packagesConfigPath);
+            PackageInstaller.InstallAsync(context, packages, tempDir.DirectoryPath, excludeVersion: false)
+                .GetAwaiter().GetResult();
+
+            // Verify the package was extracted
+            var expectedFolder = PathHelpers.SafePathCombine(
+                tempDir.DirectoryPath, "DemaConsulting.NuGet.Caching.1.0.0");
+
+            if (Directory.Exists(expectedFolder) &&
+                Directory.GetFileSystemEntries(expectedFolder).Length > 0)
+            {
+                test.Outcome = DemaConsulting.TestResults.TestOutcome.Passed;
+                context.WriteLine($"✓ NuGetInstaller_InstallPackage - Passed");
+            }
+            else
+            {
+                test.Outcome = DemaConsulting.TestResults.TestOutcome.Failed;
+                test.ErrorMessage = "Package folder not found or empty";
+                context.WriteError($"✗ NuGetInstaller_InstallPackage - Failed: Package folder not found or empty");
+            }
+        }
+        // Generic catch is justified here as this is a test framework - any exception should be
+        // recorded as a test failure to ensure robust test execution and reporting.
+        catch (Exception ex)
+        {
+            HandleTestException(test, context, "NuGetInstaller_InstallPackage", ex);
         }
 
         FinalizeTestResult(test, startTime, testResults);

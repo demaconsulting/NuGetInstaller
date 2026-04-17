@@ -66,6 +66,21 @@ internal sealed class Context : IDisposable
     public int HeadingDepth { get; private init; } = 1;
 
     /// <summary>
+    ///     Gets the path to the packages.config file (default is "packages.config").
+    /// </summary>
+    public string PackagesConfigFile { get; private init; } = "packages.config";
+
+    /// <summary>
+    ///     Gets the output directory for package installation (null means current directory).
+    /// </summary>
+    public string? OutputDirectory { get; private init; }
+
+    /// <summary>
+    ///     Gets a value indicating whether to use {Id}/ folder naming instead of {Id}.{Version}/.
+    /// </summary>
+    public bool ExcludeVersion { get; private init; }
+
+    /// <summary>
     ///     Gets the proposed exit code for the application (0 for success, 1 for errors).
     /// </summary>
     public int ExitCode => _hasErrors ? 1 : 0;
@@ -98,7 +113,10 @@ internal sealed class Context : IDisposable
             Silent = parser.Silent,
             Validate = parser.Validate,
             ResultsFile = parser.ResultsFile,
-            HeadingDepth = parser.HeadingDepth
+            HeadingDepth = parser.HeadingDepth,
+            PackagesConfigFile = parser.PackagesConfigFile,
+            OutputDirectory = parser.OutputDirectory,
+            ExcludeVersion = parser.ExcludeVersion
         };
 
         // Open log file if specified
@@ -172,6 +190,21 @@ internal sealed class Context : IDisposable
         public int HeadingDepth { get; private set; } = 1;
 
         /// <summary>
+        ///     Gets the path to the packages.config file.
+        /// </summary>
+        public string PackagesConfigFile { get; private set; } = "packages.config";
+
+        /// <summary>
+        ///     Gets the output directory for package installation.
+        /// </summary>
+        public string? OutputDirectory { get; private set; }
+
+        /// <summary>
+        ///     Gets a value indicating whether to exclude version from folder names.
+        /// </summary>
+        public bool ExcludeVersion { get; private set; }
+
+        /// <summary>
         ///     Parses command-line arguments
         /// </summary>
         /// <param name="args">Command-line arguments.</param>
@@ -231,7 +264,24 @@ internal sealed class Context : IDisposable
                     HeadingDepth = GetRequiredIntArgument(arg, args, index, "a heading depth argument", 1, 6);
                     return index + 1;
 
+                case "-x":
+                case "-ExcludeVersion":
+                    ExcludeVersion = true;
+                    return index;
+
+                case "-o":
+                case "-OutputDirectory":
+                    OutputDirectory = GetRequiredStringArgument(arg, args, index, "a directory argument");
+                    return index + 1;
+
                 default:
+                    // Treat non-flag arguments as the packages.config file path
+                    if (!arg.StartsWith('-'))
+                    {
+                        PackagesConfigFile = arg;
+                        return index;
+                    }
+
                     throw new ArgumentException($"Unsupported argument '{arg}'", nameof(args));
             }
         }

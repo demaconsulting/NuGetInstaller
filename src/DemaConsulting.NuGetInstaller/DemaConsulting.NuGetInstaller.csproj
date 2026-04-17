@@ -48,7 +48,15 @@
 
   <!-- Runtime Dependencies -->
   <ItemGroup>
+    <PackageReference Include="DemaConsulting.NuGet.Caching" Version="1.0.0" />
     <PackageReference Include="DemaConsulting.TestResults" Version="1.7.0" />
+  </ItemGroup>
+
+  <!-- Transitive Dependency Overrides - resolve known vulnerability in NuGet.Packaging/Protocol 7.3.0
+       (GHSA-g4vj-cjjj-v7hg) pulled transitively by DemaConsulting.NuGet.Caching 1.0.0 -->
+  <ItemGroup>
+    <PackageReference Include="NuGet.Packaging" Version="7.3.1" />
+    <PackageReference Include="NuGet.Protocol" Version="7.3.1" />
   </ItemGroup>
 
   <!-- Build Tool Dependencies -->
