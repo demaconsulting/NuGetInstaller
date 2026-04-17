@@ -43,3 +43,12 @@ sections:
           programmatically via the process exit code.
         tests:
           - IntegrationTest_UnknownArgument_ReturnsError
+
+      - id: NuGetInstaller-Program-Install
+        title: The Program class shall install packages from packages.config when no special flags are provided.
+        justification: |
+          The default execution path reads the packages.config file and installs all
+          specified packages into the output directory. This is the core tool behavior
+          that end users invoke without special flags.
+        tests:
+          - Program_Run_NoArguments_DisplaysDefaultBehavior

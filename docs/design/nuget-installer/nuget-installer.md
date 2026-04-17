@@ -15,6 +15,9 @@ to provide a robust, testable, and maintainable command-line tool:
 
 - **CLI Subsystem** — Command-line argument parsing and user interface
   management, providing standardized input processing and output formatting
+- **NuGet Subsystem** — Package management functionality including reading
+  packages.config, resolving packages from the NuGet global cache, and
+  extracting them into the output directory
 - **SelfTest Subsystem** — Automated validation framework enabling the tool to
   verify its own functionality and report test results
 - **Utilities Subsystem** — Shared utility functions providing common
@@ -28,8 +31,8 @@ between subsystems:
 1. **Initialization Phase** — Program creates Context from CLI subsystem to
    parse command-line arguments and configure system behavior
 2. **Execution Phase** — Program delegates to appropriate subsystem based on
-   parsed arguments (help display, version query, self-validation, or main tool
-   logic)
+   parsed arguments (help display, version query, self-validation, or package
+   installation via NuGet subsystem)
 3. **Output Phase** — All subsystems use Context for consistent output
    formatting and logging
 
@@ -39,17 +42,23 @@ between subsystems:
 
 The system accepts command-line arguments following standard conventions:
 
+- **Positional Argument**: `[packages.config]` — Path to packages.config file (default: `packages.config`)
 - **Version Query**: `-v`, `--version` — Display version information
 - **Help Display**: `-?`, `-h`, `--help` — Show usage information
 - **Silent Mode**: `--silent` — Suppress console output
 - **Self-Validation**: `--validate` — Run internal test suite
 - **Results Output**: `--results <file>` — Write test results to TRX or XML file
 - **Logging**: `--log <file>` — Write all output to log file
+- **Output Directory**: `-o`, `-OutputDirectory <dir>` — Output directory for package installation
+- **Exclude Version**: `-x`, `-ExcludeVersion` — Use `{Id}/` folder naming instead of `{Id}.{Version}/`
 
 ### File System Interface
 
 The system interacts with the file system for:
 
+- **Package Configuration** — Reading packages.config XML files
+- **NuGet Package Cache** — Resolving and caching .nupkg files from NuGet feeds
+- **Package Extraction** — Extracting cached .nupkg contents to the output directory
 - **Log File Output** — Optional logging to user-specified file path
 - **Test Results Output** — Optional test results in TRX or JUnit XML format for CI/CD integration
 - **Path Operations** — Safe path combination and validation through Utilities subsystem
@@ -112,10 +121,13 @@ System-wide error handling follows consistent patterns:
 
 ### Thread Safety
 
-The system operates as a single-threaded console application:
+The system operates primarily as a single-threaded console application with
+parallel package installation:
 
-- **No shared state** — Units avoid static mutable state
+- **No shared mutable state** — Units avoid static mutable state
 - **Immutable design** — Configuration objects use init-only properties
+- **Parallel installation** — PackageInstaller uses `Task.WhenAll` for concurrent
+  package resolution; each task operates on independent data
 - **Resource cleanup** — IDisposable pattern for file handles and resources
 
 ## Integration Patterns

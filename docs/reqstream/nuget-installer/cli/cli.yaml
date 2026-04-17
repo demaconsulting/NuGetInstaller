@@ -104,3 +104,27 @@ sections:
           programmatically via the process exit code.
         tests:
           - CliSubsystem_InvalidArgs_ContextAndProgram_RejectsUnknownArgumentsAndExitsNonZero
+
+      - id: NuGetInstaller-Cli-PackagesConfig
+        title: The Cli subsystem shall accept a positional packages.config argument.
+        justification: |
+          Users need to specify the path to the packages.config file. A positional
+          argument provides a natural and concise syntax matching NuGet.exe conventions.
+        tests:
+          - CliSubsystem_PackagesConfigFlow_ContextAndProgram_AcceptsPositionalArgument
+
+      - id: NuGetInstaller-Cli-OutputDirectory
+        title: The Cli subsystem shall support -o and -OutputDirectory flags to set the output directory.
+        justification: |
+          Users need to control where packages are extracted. The output directory flag
+          allows specifying a custom path, defaulting to the current directory.
+        tests:
+          - CliSubsystem_OutputDirectoryFlow_ContextAndProgram_SetsOutputDirectory
+
+      - id: NuGetInstaller-Cli-ExcludeVersion
+        title: The Cli subsystem shall support -x and -ExcludeVersion flags to control folder naming.
+        justification: |
+          Users may prefer version-less folder naming for simpler path references.
+          The exclude version flag changes folder naming from {Id}.{Version}/ to {Id}/.
+        tests:
+          - CliSubsystem_ExcludeVersionFlow_ContextAndProgram_SetsExcludeVersion

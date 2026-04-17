@@ -1,0 +1,25 @@
+---
+# Software Unit Requirements for the PackageExtractor Class
+#
+# The PackageExtractor class extracts NuGet package (.nupkg) contents to a
+# destination folder, skipping extraction when the destination already exists.
+
+sections:
+  - title: PackageExtractor Unit Requirements
+    requirements:
+      - id: NuGetInstaller-PackageExtractor-Extract
+        title: The PackageExtractor class shall extract .nupkg file contents to the destination folder.
+        justification: |
+          NuGet packages are ZIP archives. Extracting them to a local folder makes
+          their contents (assemblies, content files) available for downstream
+          build processes that reference packages by directory path.
+        tests:
+          - PackageExtractor_Extract_NewDestination_ExtractsAndReturnsTrue
+
+      - id: NuGetInstaller-PackageExtractor-SkipExisting
+        title: The PackageExtractor class shall skip extraction when the destination folder already exists.
+        justification: |
+          Idempotent extraction prevents unnecessary I/O during incremental builds
+          and avoids overwriting user modifications in the output directory.
+        tests:
+          - PackageExtractor_Extract_DestinationExists_ReturnsFalse

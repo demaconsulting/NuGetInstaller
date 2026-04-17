@@ -413,4 +413,94 @@ public class CliSubsystemTests
             }
         }
     }
+
+    /// <summary>
+    ///     Test that Context and Program work together to accept a positional packages.config argument.
+    /// </summary>
+    [TestMethod]
+    public void CliSubsystem_PackagesConfigFlow_ContextAndProgram_AcceptsPositionalArgument()
+    {
+        // Arrange: command line with a positional argument and --version to avoid file lookup
+        var args = new[] { "custom.config", "--version" };
+        var originalOut = Console.Out;
+        using var capturedOut = new StringWriter();
+
+        try
+        {
+            Console.SetOut(capturedOut);
+
+            // Act: create context and run program logic
+            using var context = Context.Create(args);
+            Program.Run(context);
+
+            // Assert: positional argument is parsed as packages.config path
+            Assert.AreEqual("custom.config", context.PackagesConfigFile,
+                "Context should parse positional argument as packages.config path");
+            Assert.AreEqual(0, context.ExitCode, "Program should complete successfully");
+        }
+        finally
+        {
+            Console.SetOut(originalOut);
+        }
+    }
+
+    /// <summary>
+    ///     Test that Context and Program work together to handle -o output directory flag.
+    /// </summary>
+    [TestMethod]
+    public void CliSubsystem_OutputDirectoryFlow_ContextAndProgram_SetsOutputDirectory()
+    {
+        // Arrange: command line with -o flag and --version to avoid file lookup
+        var args = new[] { "-o", "./packages", "--version" };
+        var originalOut = Console.Out;
+        using var capturedOut = new StringWriter();
+
+        try
+        {
+            Console.SetOut(capturedOut);
+
+            // Act: create context and run program logic
+            using var context = Context.Create(args);
+            Program.Run(context);
+
+            // Assert: output directory is parsed from -o flag
+            Assert.AreEqual("./packages", context.OutputDirectory,
+                "Context should parse -o flag as output directory");
+            Assert.AreEqual(0, context.ExitCode, "Program should complete successfully");
+        }
+        finally
+        {
+            Console.SetOut(originalOut);
+        }
+    }
+
+    /// <summary>
+    ///     Test that Context and Program work together to handle -x exclude version flag.
+    /// </summary>
+    [TestMethod]
+    public void CliSubsystem_ExcludeVersionFlow_ContextAndProgram_SetsExcludeVersion()
+    {
+        // Arrange: command line with -x flag and --version to avoid file lookup
+        var args = new[] { "-x", "--version" };
+        var originalOut = Console.Out;
+        using var capturedOut = new StringWriter();
+
+        try
+        {
+            Console.SetOut(capturedOut);
+
+            // Act: create context and run program logic
+            using var context = Context.Create(args);
+            Program.Run(context);
+
+            // Assert: exclude version flag is parsed
+            Assert.IsTrue(context.ExcludeVersion,
+                "Context should parse -x flag as exclude version");
+            Assert.AreEqual(0, context.ExitCode, "Program should complete successfully");
+        }
+        finally
+        {
+            Console.SetOut(originalOut);
+        }
+    }
 }

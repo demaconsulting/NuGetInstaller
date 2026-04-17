@@ -66,3 +66,13 @@ sections:
           surface misconfiguration failures automatically.
         tests:
           - IntegrationTest_UnknownArgument_ReturnsError
+
+      - id: NuGetInstaller-System-Install
+        title: The tool shall install NuGet packages from a packages.config file into the output directory.
+        justification: |
+          The core purpose of the tool is to read a packages.config file and install
+          the specified NuGet packages into a local directory. This enables build
+          systems and CI/CD pipelines to restore NuGet dependencies without requiring
+          the full NuGet.exe or Visual Studio tooling.
+        tests:
+          - IntegrationTest_ValidateFlag_RunsValidation

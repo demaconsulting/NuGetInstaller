@@ -1,0 +1,27 @@
+---
+# Software Unit Requirements for the PackageInstaller Class
+#
+# The PackageInstaller class orchestrates the installation of NuGet packages
+# by caching them via NuGetCache and extracting to the output directory.
+
+sections:
+  - title: PackageInstaller Unit Requirements
+    requirements:
+      - id: NuGetInstaller-PackageInstaller-Install
+        title: The PackageInstaller class shall install packages by caching and extracting them.
+        justification: |
+          The installer must coordinate between the NuGet global package cache
+          and the local output directory, ensuring each package is resolved from
+          the cache before extraction. This two-step process leverages the shared
+          NuGet cache to avoid redundant downloads.
+        tests:
+          - NuGetSubsystem_ReadAndInstallWorkflow_ValidConfig_ReturnsAndInstallsPackages
+
+      - id: NuGetInstaller-PackageInstaller-FolderNaming
+        title: The PackageInstaller class shall support both versioned and version-less folder naming.
+        justification: |
+          Users may prefer {Id}/ naming (via -ExcludeVersion) for simpler path
+          references, or {Id}.{Version}/ naming (default) for side-by-side version
+          installation. Both conventions must be supported to match NuGet.exe behavior.
+        tests:
+          - NuGetSubsystem_ReadAndInstallWorkflow_ValidConfig_ReturnsAndInstallsPackages

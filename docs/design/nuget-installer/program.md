@@ -41,6 +41,16 @@ Inspects the flags on `context` and dispatches:
 - `Version` flag → prints `Version` string and returns.
 - `Help` flag → prints usage information and returns.
 - `Validate` flag → calls `Validation.Run(context)`.
+- Otherwise → calls `RunToolLogic(context)` to install packages.
+
+### RunToolLogic(Context context)
+
+Executes the package installation workflow:
+
+1. Verifies `context.PackagesConfigFile` exists; reports error if not found.
+2. Reads packages via `PackagesConfigReader.Read`.
+3. Resolves the output directory from `context.OutputDirectory` (defaults to cwd).
+4. Calls `PackageInstaller.InstallAsync` to install all packages.
 
 ### Version (property)
 
@@ -51,7 +61,9 @@ Reads `AssemblyInformationalVersionAttribute` from the executing assembly, falli
 
 <!-- TODO: Fill in for your project -->
 
-| Dependency   | Direction | Purpose                                             |
-|--------------|-----------|-----------------------------------------------------|
-| `Context`    | Uses      | Reads flags; calls `WriteLine`/`WriteError`         |
-| `Validation` | Uses      | Calls `Validation.Run` when validate flag is set    |
+| Dependency              | Direction | Purpose                                             |
+|-------------------------|-----------|-----------------------------------------------------|
+| `Context`               | Uses      | Reads flags; calls `WriteLine`/`WriteError`         |
+| `Validation`            | Uses      | Calls `Validation.Run` when validate flag is set    |
+| `PackagesConfigReader`  | Uses      | Reads packages.config in `RunToolLogic`             |
+| `PackageInstaller`      | Uses      | Installs packages in `RunToolLogic`                 |

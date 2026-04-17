@@ -120,3 +120,53 @@ reviews:
       - "docs/design/nuget-installer/utilities/path-helpers.md"
       - "src/**/Utilities/PathHelpers.cs"
       - "test/**/Utilities/PathHelpersTests.cs"
+
+  # NuGetInstaller-NuGet Review (one per subsystem)
+  - id: NuGetInstaller-NuGet
+    title: Review of NuGet Installer NuGet subsystem architecture and interfaces
+    paths:
+      - "docs/reqstream/nuget-installer/nuget/nuget.yaml"
+      - "docs/design/nuget-installer/nuget/nuget.md"
+      - "test/**/NuGet/NuGetSubsystemTests.cs"
+
+  # NuGetInstaller-NuGet-PackageEntry Review (one per unit)
+  - id: NuGetInstaller-NuGet-Models-PackageEntry
+    title: Review of NuGet Installer PackageEntry unit implementation
+    paths:
+      - "docs/reqstream/nuget-installer/nuget/models/package-entry.yaml"
+      - "docs/design/nuget-installer/nuget/models/package-entry.md"
+      - "src/**/NuGet/Models/PackageEntry.cs"
+
+  # NuGetInstaller-NuGet-Models Review (one per subsystem)
+  - id: NuGetInstaller-NuGet-Models
+    title: Review of NuGet Installer Models subsystem architecture and interfaces
+    paths:
+      - "docs/reqstream/nuget-installer/nuget/models/models.yaml"
+      - "docs/design/nuget-installer/nuget/models/models.md"
+      - "test/**/NuGet/Models/ModelsSubsystemTests.cs"
+
+  # NuGetInstaller-NuGet-PackagesConfigReader Review (one per unit)
+  - id: NuGetInstaller-NuGet-PackagesConfigReader
+    title: Review of NuGet Installer PackagesConfigReader unit implementation
+    paths:
+      - "docs/reqstream/nuget-installer/nuget/packages-config-reader.yaml"
+      - "docs/design/nuget-installer/nuget/packages-config-reader.md"
+      - "src/**/NuGet/PackagesConfigReader.cs"
+      - "test/**/NuGet/PackagesConfigReaderTests.cs"
+
+  # NuGetInstaller-NuGet-PackageExtractor Review (one per unit)
+  - id: NuGetInstaller-NuGet-PackageExtractor
+    title: Review of NuGet Installer PackageExtractor unit implementation
+    paths:
+      - "docs/reqstream/nuget-installer/nuget/package-extractor.yaml"
+      - "docs/design/nuget-installer/nuget/package-extractor.md"
+      - "src/**/NuGet/PackageExtractor.cs"
+      - "test/**/NuGet/PackageExtractorTests.cs"
+
+  # NuGetInstaller-NuGet-PackageInstaller Review (one per unit)
+  - id: NuGetInstaller-NuGet-PackageInstaller
+    title: Review of NuGet Installer PackageInstaller unit implementation
+    paths:
+      - "docs/reqstream/nuget-installer/nuget/package-installer.yaml"
+      - "docs/design/nuget-installer/nuget/package-installer.md"
+      - "src/**/NuGet/PackageInstaller.cs"
