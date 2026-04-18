@@ -1,6 +1,8 @@
 ---
 # CodeQL configuration for NuGet Installer
-# Suppresses intentional generic catch clauses
+# Suppresses intentional query warnings for specific files where the pattern is known-safe:
+# - cs/catch-of-all-exceptions: intentional top-level catch-all in Context and Validation
+# - cs/path-combine: Path.Combine output is immediately passed to Path.GetFullPath and validated
 
 name: "NuGet Installer CodeQL Config"
 
