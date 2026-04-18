@@ -15,4 +15,9 @@ query-filters:
   - exclude:
       id: cs/path-combine
     paths:
-      - src/DemaConsulting.NuGetInstaller/PathHelpers.cs
+      - src/DemaConsulting.NuGetInstaller/Utilities/PathHelpers.cs
+  # Exclude zip-slip warnings in PackageExtractor (path validated via PathHelpers.SafePathCombine)
+  - exclude:
+      id: cs/zipslip
+    paths:
+      - src/DemaConsulting.NuGetInstaller/NuGet/PackageExtractor.cs

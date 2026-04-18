@@ -69,7 +69,7 @@ public class SelfTestSubsystemTests
             Assert.AreEqual(0, context.ExitCode, "Validation should complete successfully");
             Assert.IsTrue(File.Exists(trxFile), "TRX file should be generated");
             var trxContent = File.ReadAllText(trxFile);
-            StringAssert.Contains(trxContent, "<TestRun", "TRX file should contain standard TestRun element");
+            Assert.Contains("<TestRun", trxContent, "TRX file should contain standard TestRun element");
         }
         finally
         {
@@ -103,7 +103,7 @@ public class SelfTestSubsystemTests
             Assert.AreEqual(0, context.ExitCode, "Validation should complete successfully");
             Assert.IsTrue(File.Exists(junitFile), "JUnit file should be generated");
             var junitContent = File.ReadAllText(junitFile);
-            StringAssert.Contains(junitContent, "<testsuites", "JUnit file should contain standard testsuites element");
+            Assert.Contains("<testsuites", junitContent, "JUnit file should contain standard testsuites element");
         }
         finally
         {
@@ -131,30 +131,26 @@ public class SelfTestSubsystemTests
         try
         {
             // Act: run validation with TRX output
-            using (var trxContext = Context.Create(trxArgs))
-            {
-                Validation.Run(trxContext);
+            using var trxContext = Context.Create(trxArgs);
+            Validation.Run(trxContext);
 
-                // Assert: verify validation completed and TRX result file was generated with standard format
-                Assert.IsTrue(trxContext.Validate, "Context should have validate flag set for TRX run");
-                Assert.AreEqual(0, trxContext.ExitCode, "Validation should complete successfully for TRX run");
-                Assert.IsTrue(File.Exists(trxFile), "TRX file should be generated");
-                var trxContent = File.ReadAllText(trxFile);
-                StringAssert.Contains(trxContent, "<TestRun", "TRX file should contain standard TestRun element");
-            }
+            // Assert: verify validation completed and TRX result file was generated with standard format
+            Assert.IsTrue(trxContext.Validate, "Context should have validate flag set for TRX run");
+            Assert.AreEqual(0, trxContext.ExitCode, "Validation should complete successfully for TRX run");
+            Assert.IsTrue(File.Exists(trxFile), "TRX file should be generated");
+            var trxContent = File.ReadAllText(trxFile);
+            Assert.Contains("<TestRun", trxContent, "TRX file should contain standard TestRun element");
 
             // Act: run validation with JUnit XML output
-            using (var junitContext = Context.Create(junitArgs))
-            {
-                Validation.Run(junitContext);
+            using var junitContext = Context.Create(junitArgs);
+            Validation.Run(junitContext);
 
-                // Assert: verify validation completed and JUnit XML result file was generated with standard format
-                Assert.IsTrue(junitContext.Validate, "Context should have validate flag set for JUnit run");
-                Assert.AreEqual(0, junitContext.ExitCode, "Validation should complete successfully for JUnit run");
-                Assert.IsTrue(File.Exists(junitFile), "JUnit file should be generated");
-                var junitContent = File.ReadAllText(junitFile);
-                StringAssert.Contains(junitContent, "<testsuites", "JUnit file should contain standard testsuites element");
-            }
+            // Assert: verify validation completed and JUnit XML result file was generated with standard format
+            Assert.IsTrue(junitContext.Validate, "Context should have validate flag set for JUnit run");
+            Assert.AreEqual(0, junitContext.ExitCode, "Validation should complete successfully for JUnit run");
+            Assert.IsTrue(File.Exists(junitFile), "JUnit file should be generated");
+            var junitContent = File.ReadAllText(junitFile);
+            Assert.Contains("<testsuites", junitContent, "JUnit file should contain standard testsuites element");
         }
         finally
         {

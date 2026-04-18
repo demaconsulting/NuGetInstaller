@@ -13,11 +13,19 @@ only.
 ### SafePathCombine Method
 
 ```csharp
-internal static string SafePathCombine(string basePath, string relativePath)
+internal static string SafePathCombine(string basePath, string relativePath, string? message = null)
 ```
 
 Combines `basePath` and `relativePath` safely, ensuring the resulting path remains within
 the base directory.
+
+**Parameters:**
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `basePath` | `string` | The base directory path. |
+| `relativePath` | `string` | The relative path to append. |
+| `message` | `string?` | Optional. If provided, throws `InvalidOperationException`; else throws `ArgumentException`. |
 
 **Validation steps:**
 
@@ -29,6 +37,8 @@ the base directory.
    the result is exactly `".."`, starts with `".."` followed by `Path.DirectorySeparatorChar`
    or `Path.AltDirectorySeparatorChar`, or is itself rooted (absolute), which would indicate
    the combined path escapes the base directory.
+5. When a traversal is detected and `message` is not `null`, throw `InvalidOperationException(message)`;
+   otherwise throw `ArgumentException` identifying `relativePath` as the problematic parameter.
 
 ## Design Decisions
 
@@ -40,7 +50,11 @@ the base directory.
 - **Post-combine canonical-path check**: Resolving paths after combining handles all traversal
   patterns — `../`, embedded `/../`, absolute-path overrides, and platform edge cases —
   without fragile pre-combine string inspection of `relativePath`.
-- **ArgumentException on invalid input**: Callers receive a specific `ArgumentException`
-  identifying `relativePath` as the problematic parameter, making debugging straightforward.
+- **`ArgumentException` vs `InvalidOperationException` on traversal**: When the optional
+  `message` parameter is `null`, callers receive a specific `ArgumentException` identifying
+  `relativePath` as the problematic parameter. When `message` is provided, an
+  `InvalidOperationException` is thrown with that message, allowing callers such as
+  `PackageExtractor` to supply context-rich error descriptions suited to their domain (e.g.
+  zip-slip detection during archive extraction).
 - **No logging or error accumulation**: `SafePathCombine` is a pure utility method that throws
   on invalid input; it does not interact with the `Context` or any output mechanism.

@@ -37,7 +37,7 @@ public class PackagesConfigReaderTests
         // Act & Assert
         var exception = Assert.ThrowsExactly<InvalidOperationException>(
             () => PackagesConfigReader.Read("nonexistent.config"));
-        StringAssert.Contains(exception.Message, "not found");
+        Assert.Contains("not found", exception.Message);
     }
 
     /// <summary>
@@ -62,7 +62,7 @@ public class PackagesConfigReaderTests
             var packages = PackagesConfigReader.Read(tempFile);
 
             // Assert: verify the single package entry
-            Assert.AreEqual(1, packages.Count);
+            Assert.HasCount(1, packages);
             Assert.AreEqual("TestPackage", packages[0].Id);
             Assert.AreEqual("1.2.3", packages[0].Version);
             Assert.AreEqual("net8.0", packages[0].TargetFramework);
@@ -96,7 +96,7 @@ public class PackagesConfigReaderTests
             var packages = PackagesConfigReader.Read(tempFile);
 
             // Assert: verify both entries
-            Assert.AreEqual(2, packages.Count);
+            Assert.HasCount(2, packages);
             Assert.AreEqual("PackageA", packages[0].Id);
             Assert.AreEqual("1.0.0", packages[0].Version);
             Assert.IsNull(packages[0].TargetFramework);
@@ -131,7 +131,7 @@ public class PackagesConfigReaderTests
             var packages = PackagesConfigReader.Read(tempFile);
 
             // Assert: verify empty result
-            Assert.AreEqual(0, packages.Count);
+            Assert.IsEmpty(packages);
         }
         finally
         {
@@ -160,7 +160,7 @@ public class PackagesConfigReaderTests
             // Act & Assert
             var exception = Assert.ThrowsExactly<InvalidOperationException>(
                 () => PackagesConfigReader.Read(tempFile));
-            StringAssert.Contains(exception.Message, "id");
+            Assert.Contains("id", exception.Message);
         }
         finally
         {
@@ -189,7 +189,7 @@ public class PackagesConfigReaderTests
             // Act & Assert
             var exception = Assert.ThrowsExactly<InvalidOperationException>(
                 () => PackagesConfigReader.Read(tempFile));
-            StringAssert.Contains(exception.Message, "version");
+            Assert.Contains("version", exception.Message);
         }
         finally
         {

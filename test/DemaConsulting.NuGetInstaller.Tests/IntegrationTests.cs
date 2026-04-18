@@ -287,7 +287,7 @@ public class IntegrationTests
             var expectedFolder = Path.Combine(tempDir, "DemaConsulting.NuGet.Caching.1.0.0");
             Assert.IsTrue(Directory.Exists(expectedFolder),
                 $"Package folder should exist at {expectedFolder}");
-            Assert.IsTrue(Directory.GetFileSystemEntries(expectedFolder).Length > 0,
+            Assert.IsNotEmpty(Directory.GetFileSystemEntries(expectedFolder),
                 "Package folder should contain extracted files");
         }
         finally

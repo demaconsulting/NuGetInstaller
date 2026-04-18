@@ -51,7 +51,7 @@ public class CliSubsystemTests
             // Assert: version flag is parsed, version text is displayed, and exit code is success
             Assert.IsTrue(context.Version, "Context should parse version flag");
             Assert.AreEqual(0, context.ExitCode, "Context should have success exit code");
-            StringAssert.Contains(capturedOut.ToString(), Program.Version, "Console output should contain the program version");
+            Assert.Contains(Program.Version, capturedOut.ToString(), "Console output should contain the program version");
         }
         finally
         {
@@ -82,8 +82,8 @@ public class CliSubsystemTests
             Assert.IsTrue(context.Help, "Context should parse help flag");
             Assert.AreEqual(0, context.ExitCode, "Context should have success exit code");
             var output = capturedOut.ToString();
-            StringAssert.Contains(output, "Usage:", "Console output should contain usage information");
-            StringAssert.Contains(output, "Options:", "Console output should contain options information");
+            Assert.Contains("Usage:", output, "Console output should contain usage information");
+            Assert.Contains("Options:", output, "Console output should contain options information");
         }
         finally
         {
@@ -114,8 +114,8 @@ public class CliSubsystemTests
             Assert.IsTrue(context.Help, "Context should parse -? flag as help");
             Assert.AreEqual(0, context.ExitCode, "Context should have success exit code");
             var output = capturedOut.ToString();
-            StringAssert.Contains(output, "Usage:", "Console output should contain usage information");
-            StringAssert.Contains(output, "Options:", "Console output should contain options information");
+            Assert.Contains("Usage:", output, "Console output should contain usage information");
+            Assert.Contains("Options:", output, "Console output should contain options information");
         }
         finally
         {
@@ -146,8 +146,8 @@ public class CliSubsystemTests
             Assert.IsTrue(context.Help, "Context should parse -h flag as help");
             Assert.AreEqual(0, context.ExitCode, "Context should have success exit code");
             var output = capturedOut.ToString();
-            StringAssert.Contains(output, "Usage:", "Console output should contain usage information");
-            StringAssert.Contains(output, "Options:", "Console output should contain options information");
+            Assert.Contains("Usage:", output, "Console output should contain usage information");
+            Assert.Contains("Options:", output, "Console output should contain options information");
         }
         finally
         {
@@ -309,7 +309,7 @@ public class CliSubsystemTests
             Assert.AreEqual(1, Convert.ToInt32(result), "Unknown arguments should cause exit code 1");
             var errorOutput = errWriter.ToString();
             Assert.IsFalse(string.IsNullOrWhiteSpace(errorOutput), "Program should write an error to stderr for unknown arguments");
-            StringAssert.Contains(errorOutput, "--unknown-flag");
+            Assert.Contains("--unknown-flag", errorOutput);
         }
         finally
         {
@@ -336,7 +336,7 @@ public class CliSubsystemTests
 
             // Assert: error is written to stderr and exit code reflects failure
             var errorOutput = errWriter.ToString();
-            StringAssert.Contains(errorOutput, "Test error message");
+            Assert.Contains("Test error message", errorOutput);
             Assert.AreEqual(1, context.ExitCode, "Exit code should be non-zero after error");
         }
         finally
@@ -402,7 +402,7 @@ public class CliSubsystemTests
 
             // Assert: log contains level-2 heading
             var logContent = File.ReadAllText(logFile);
-            StringAssert.Contains(logContent, "## DEMA Consulting", "Validation output should use depth-2 heading");
+            Assert.Contains("## DEMA Consulting", logContent, "Validation output should use depth-2 heading");
         }
         finally
         {
