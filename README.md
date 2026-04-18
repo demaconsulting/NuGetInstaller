@@ -134,6 +134,11 @@ Generated documentation includes:
 - **Requirements Justifications**: Detailed requirement rationale
 - **Trace Matrix**: Requirements to test traceability
 
+## Contributing
+
+Contributions are welcome. See [CONTRIBUTING.md][link-contributing] for development setup information
+and contribution guidelines.
+
 ## License
 
 Copyright (c) DEMA Consulting. Licensed under the MIT License. See [LICENSE][link-license] for details.
@@ -151,6 +156,7 @@ By contributing to this project, you agree that your contributions will be licen
 [badge-nuget]: https://img.shields.io/nuget/v/DemaConsulting.NuGetInstaller?style=plastic
 
 <!-- Link References -->
+[link-contributing]: https://github.com/demaconsulting/NuGetInstaller/blob/main/CONTRIBUTING.md
 [link-forks]: https://github.com/demaconsulting/NuGetInstaller/network/members
 [link-stars]: https://github.com/demaconsulting/NuGetInstaller/stargazers
 [link-contributors]: https://github.com/demaconsulting/NuGetInstaller/graphs/contributors

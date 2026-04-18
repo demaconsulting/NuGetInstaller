@@ -33,7 +33,8 @@ internal static class PackagesConfigReader
     /// </summary>
     /// <param name="filePath">Path to the packages.config file.</param>
     /// <returns>A read-only list of package entries.</returns>
-    /// <exception cref="InvalidOperationException">Thrown when the file is not found or cannot be parsed.</exception>
+    /// <exception cref="InvalidOperationException">Thrown when the file is not found or a required attribute is missing.</exception>
+    /// <exception cref="System.Xml.XmlException">Thrown when the file contains malformed XML.</exception>
     public static IReadOnlyList<PackageEntry> Read(string filePath)
     {
         if (!File.Exists(filePath))

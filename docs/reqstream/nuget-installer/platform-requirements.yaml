@@ -19,7 +19,7 @@
 sections:
   - title: Platform Support
     requirements:
-      - id: Template-Platform-Windows
+      - id: NuGetInstaller-Platform-Windows
         title: The tool shall build and run on Windows platforms.
         justification: |
           DEMA Consulting tools must support Windows as a major development platform.
@@ -28,7 +28,7 @@ sections:
           - "windows@NuGetInstaller_VersionDisplay"
           - "windows@NuGetInstaller_HelpDisplay"
 
-      - id: Template-Platform-Linux
+      - id: NuGetInstaller-Platform-Linux
         title: The tool shall build and run on Linux platforms.
         justification: |
           DEMA Consulting tools must support Linux for CI/CD and containerized environments.
@@ -37,7 +37,7 @@ sections:
           - "ubuntu@NuGetInstaller_VersionDisplay"
           - "ubuntu@NuGetInstaller_HelpDisplay"
 
-      - id: Template-Platform-MacOS
+      - id: NuGetInstaller-Platform-MacOS
         title: The tool shall build and run on macOS platforms.
         justification: |
           DEMA Consulting tools must support macOS for developers using Apple platforms.
@@ -46,7 +46,7 @@ sections:
           - "macos@NuGetInstaller_VersionDisplay"
           - "macos@NuGetInstaller_HelpDisplay"
 
-      - id: Template-Platform-Net8
+      - id: NuGetInstaller-Platform-Net8
         title: The tool shall support .NET 8 runtime.
         justification: |
           .NET 8 is an LTS release providing long-term stability for enterprise users.
@@ -54,7 +54,7 @@ sections:
           - "dotnet8.x@NuGetInstaller_VersionDisplay"
           - "dotnet8.x@NuGetInstaller_HelpDisplay"
 
-      - id: Template-Platform-Net9
+      - id: NuGetInstaller-Platform-Net9
         title: The tool shall support .NET 9 runtime.
         justification: |
           .NET 9 support enables users to leverage the latest .NET features.
@@ -62,7 +62,7 @@ sections:
           - "dotnet9.x@NuGetInstaller_VersionDisplay"
           - "dotnet9.x@NuGetInstaller_HelpDisplay"
 
-      - id: Template-Platform-Net10
+      - id: NuGetInstaller-Platform-Net10
         title: The tool shall support .NET 10 runtime.
         justification: |
           .NET 10 support ensures the tool remains compatible with the latest .NET ecosystem.

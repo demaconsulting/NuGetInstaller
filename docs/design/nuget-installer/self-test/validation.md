@@ -1,14 +1,10 @@
 # Validation
 
-<!-- TODO: This is an example design section for the Validation class. Replace with your own unit design. -->
-
 The `Validation` class provides the self-validation framework for the NuGet Installer.
 It runs a suite of internal tests that demonstrate the tool is functioning correctly in the
 deployment environment.
 
 ## Overview
-
-<!-- TODO: Fill in for your project -->
 
 `Validation.Run` prints a header, executes each test, accumulates results into a
 `DemaConsulting.TestResults.TestResults` object, prints a summary, and optionally writes
@@ -16,13 +12,9 @@ a results file in TRX or JUnit XML format.
 
 ## Data Model
 
-<!-- TODO: Fill in for your project -->
-
 `Validation` holds no instance state. All state is local to `Run` and the private test methods.
 
 ## Methods
-
-<!-- TODO: Fill in for your project -->
 
 ### Run(Context context)
 
@@ -36,15 +28,26 @@ Orchestrates the validation sequence:
 4. Prints a summary line for each test result.
 5. Calls `WriteResultsFile` if `context.ResultsFile` is set.
 
-### RunVersionTest / RunHelpTest / RunInstallPackageTest
+### RunVersionTest / RunHelpTest
 
-Each test method:
+Each of these test methods:
 
-1. Creates a temporary directory via `TempDirectory`.
+1. Creates a temporary directory via `TemporaryDirectory`.
 2. Constructs a log-file path using `PathHelpers.SafePathCombine`.
 3. Invokes `Program.Run` with the relevant arguments and captures the output log.
 4. Validates the output against expected content.
 5. Records pass or fail in the shared `TestResults`.
+
+### RunInstallPackageTest
+
+This test method exercises the package installation API directly:
+
+1. Creates a temporary directory via `TemporaryDirectory`.
+2. Writes a `packages.config` file referencing a known NuGet package.
+3. Reads the package list via `PackagesConfigReader.Read`.
+4. Installs the packages via `PackageInstaller.InstallAsync`.
+5. Verifies the expected package folder exists and is non-empty.
+6. Records pass or fail in the shared `TestResults`.
 
 ### WriteResultsFile(Context context, TestResults testResults)
 
@@ -53,8 +56,6 @@ Writes `testResults` to `context.ResultsFile`. The format is determined by the f
 
 ## Interactions
 
-<!-- TODO: Fill in for your project -->
-
 | Dependency              | Direction | Purpose                                         |
 |-------------------------|-----------|-------------------------------------------------|
 | `Context`               | Uses      | Output channel for header and summary lines.    |
@@ -62,3 +63,10 @@ Writes `testResults` to `context.ResultsFile`. The format is determined by the f
 | `PathHelpers`           | Uses      | `SafePathCombine` for temp-dir file paths.      |
 | `PackagesConfigReader`  | Uses      | Reads packages.config in install test.          |
 | `PackageInstaller`      | Uses      | Installs packages in install test.              |
+
+## Error Handling
+
+Exceptions thrown inside individual test methods (`RunVersionTest`, `RunHelpTest`,
+`RunInstallPackageTest`) are caught by a try/catch block inside each runner. The exception
+message is recorded as the test failure reason in the shared `TestResults` object, and
+execution continues with the next test.

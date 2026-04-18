@@ -17,11 +17,20 @@ sections:
         tests:
           - NuGetSubsystem_ReadAndInstallWorkflow_ValidConfig_ReturnsAndInstallsPackages
 
-      - id: NuGetInstaller-PackageInstaller-FolderNaming
-        title: The PackageInstaller class shall support both versioned and version-less folder naming.
+      - id: NuGetInstaller-PackageInstaller-FolderNamingVersioned
+        title: The PackageInstaller class shall use {Id}.{Version}/ folder naming by default.
         justification: |
-          Users may prefer {Id}/ naming (via -ExcludeVersion) for simpler path
-          references, or {Id}.{Version}/ naming (default) for side-by-side version
-          installation. Both conventions must be supported to match NuGet.exe behavior.
+          The default {Id}.{Version}/ convention matches NuGet.exe behavior and
+          allows multiple versions of the same package to coexist side-by-side
+          in the output directory.
         tests:
           - NuGetSubsystem_ReadAndInstallWorkflow_ValidConfig_ReturnsAndInstallsPackages
+
+      - id: NuGetInstaller-PackageInstaller-FolderNamingExcludeVersion
+        title: The PackageInstaller class shall use {Id}/ folder naming when the excludeVersion flag is true.
+        justification: |
+          Some build systems reference packages by a version-less folder name.
+          When the user passes -ExcludeVersion, the installer must use the simpler
+          {Id}/ convention to satisfy those consumers.
+        tests:
+          - PackageInstaller_InstallAsync_ExcludeVersion_UsesFlatFolderNaming

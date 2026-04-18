@@ -9,7 +9,7 @@
 sections:
   - title: Utilities Subsystem Requirements
     requirements:
-      - id: Template-Utilities-SafePaths
+      - id: NuGetInstaller-Utilities-SafePaths
         title: The Utilities subsystem shall provide safe file path manipulation that prevents path traversal.
         justification: |
           The Utilities subsystem provides shared path utilities consumed by other subsystems.
@@ -21,3 +21,14 @@ sections:
           - UtilitiesSubsystem_PathResolutionWorkflow_ValidPaths_ResolvesCorrectly
           - UtilitiesSubsystem_DirectoryCreationWorkflow_ValidPaths_CreatesDirectories
           - UtilitiesSubsystem_PathTraversalValidation_DangerousPaths_ThrowsException
+          - UtilitiesSubsystem_SafePathCombine_RootedRelativePath_ThrowsArgumentException
+
+      - id: NuGetInstaller-Utilities-NullRejection
+        title: The Utilities subsystem shall reject null arguments to SafePathCombine with ArgumentNullException.
+        justification: |
+          Null arguments must be explicitly rejected to prevent null reference
+          exceptions deeper in the call stack and to clearly communicate API
+          contract violations to callers.
+        tests:
+          - UtilitiesSubsystem_SafePathCombine_NullBasePath_ThrowsArgumentNullException
+          - UtilitiesSubsystem_SafePathCombine_NullRelativePath_ThrowsArgumentNullException

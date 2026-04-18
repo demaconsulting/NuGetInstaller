@@ -1,22 +1,16 @@
 # Program
 
-<!-- TODO: This is an example design section for the Program class. Replace with your own unit design. -->
-
 The `Program` class is the main entry point for the NuGet Installer. It creates a `Context`
 from command-line arguments, dispatches to the appropriate logic based on the flags, and returns
 the exit code.
 
 ## Overview
 
-<!-- TODO: Fill in for your project -->
-
 `Program` owns the top-level execution flow. It delegates all argument interpretation to `Context`
 and all validation logic to `Validation`. Its own responsibility is limited to reading the flags
 that `Context` exposes and calling the correct handler.
 
 ## Data Model
-
-<!-- TODO: Fill in for your project -->
 
 `Program` holds no instance state. Its single static property is:
 
@@ -26,20 +20,27 @@ that `Context` exposes and calling the correct handler.
 
 ## Methods
 
-<!-- TODO: Fill in for your project -->
-
 ### Main(string[] args)
 
 Entry point. Creates a `Context`, calls `Run`, and returns `context.ExitCode`.
 
 **Returns:** `int` — 0 for success, non-zero for failure.
 
+### PrintBanner(Context context)
+
+Prints the tool name and version banner to the context output. Called at startup before
+dispatching to other handlers.
+
+### PrintHelp(Context context)
+
+Prints the usage information and available options to the context output.
+
 ### Run(Context context)
 
 Inspects the flags on `context` and dispatches:
 
-- `Version` flag → prints `Version` string and returns.
-- `Help` flag → prints usage information and returns.
+- `Version` flag → writes the version string directly via `context.WriteLine(Version)` and returns.
+- `Help` flag → calls `PrintHelp` to print usage information and returns.
 - `Validate` flag → calls `Validation.Run(context)`.
 - Otherwise → calls `RunToolLogic(context)` to install packages.
 
@@ -57,9 +58,15 @@ Executes the package installation workflow:
 Reads `AssemblyInformationalVersionAttribute` from the executing assembly, falling back to
 `AssemblyVersion`, then `"0.0.0"`.
 
-## Interactions
+## Error Handling
 
-<!-- TODO: Fill in for your project -->
+| Condition                                  | Behavior                                              |
+|--------------------------------------------|-------------------------------------------------------|
+| `packages.config` file not found           | Calls `context.WriteError` and sets exit code to 1.   |
+| Package installation fails                 | Exception propagates; exit code reflects failure.     |
+| Unknown or malformed command-line argument | Caught in `Main`; written to stderr, exit code 1.     |
+
+## Interactions
 
 | Dependency              | Direction | Purpose                                             |
 |-------------------------|-----------|-----------------------------------------------------|

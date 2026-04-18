@@ -20,7 +20,7 @@ This user guide covers:
 
 # Continuous Compliance
 
-This template follows the
+NuGet Installer follows the
 [Continuous Compliance](https://github.com/demaconsulting/ContinuousCompliance) methodology, which ensures
 compliance evidence is generated automatically on every CI run.
 
@@ -141,9 +141,10 @@ Example validation report:
 
 ✓ NuGetInstaller_VersionDisplay - Passed
 ✓ NuGetInstaller_HelpDisplay - Passed
+✓ NuGetInstaller_InstallPackage - Passed
 
-Total Tests: 2
-Passed: 2
+Total Tests: 3
+Passed: 3
 Failed: 0
 ```
 
@@ -161,6 +162,17 @@ Suppress console output:
 
 ```bash
 nuget-installer --silent
+```
+
+## Error Handling
+
+When unrecognized arguments are provided, the tool prints an error message to stderr and
+returns a non-zero exit code:
+
+```bash
+nuget-installer --unknown-flag
+# Error: Unknown argument: --unknown-flag
+# Exit code: 1
 ```
 
 ## Logging

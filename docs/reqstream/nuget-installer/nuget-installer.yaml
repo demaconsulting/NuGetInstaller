@@ -10,25 +10,25 @@
 sections:
   - title: System-Level Requirements
     requirements:
-      - id: Template-System-Version
+      - id: NuGetInstaller-System-Version
         title: The tool shall display version information when the version flag is provided.
         justification: |
           Users need to quickly identify the version of the tool they are using for
           troubleshooting and compatibility verification. The version display must
           work from a standard dotnet invocation without additional configuration.
         tests:
-          - IntegrationTest_VersionFlag_OutputsVersion
+          - NuGetInstaller_VersionFlag_FlagProvided_OutputsVersion
 
-      - id: Template-System-Help
+      - id: NuGetInstaller-System-Help
         title: The tool shall display usage information when the help flag is provided.
         justification: |
           Users need access to command-line usage documentation without requiring
           external resources. Help output must be accessible from a standard dotnet
           invocation and must list the available options so that users can self-serve.
         tests:
-          - IntegrationTest_HelpFlag_OutputsUsageInformation
+          - NuGetInstaller_HelpFlag_FlagProvided_OutputsUsageInformation
 
-      - id: Template-System-Validate
+      - id: NuGetInstaller-System-Validate
         title: The tool shall execute self-validation tests when the validate flag is provided.
         justification: |
           Regulated environments require tool qualification evidence to demonstrate
@@ -37,35 +37,83 @@ sections:
           core behaviors and produces a structured test result file, providing the
           qualification evidence required by quality management systems.
         tests:
-          - IntegrationTest_ValidateFlag_RunsValidation
-          - IntegrationTest_ValidateWithResults_GeneratesTrxFile
-          - IntegrationTest_ValidateWithResults_GeneratesJUnitFile
+          - NuGetInstaller_ValidateFlag_FlagProvided_RunsValidation
+          - NuGetInstaller_ValidateWithResults_TrxExtension_GeneratesTrxFile
+          - NuGetInstaller_ValidateWithResults_XmlExtension_GeneratesJUnitFile
 
-      - id: Template-System-Silent
+      - id: NuGetInstaller-System-Silent
         title: The tool shall suppress console output when the silent flag is provided.
         justification: |
           Enables automated scripts and CI/CD pipelines to run the tool without
           cluttering output logs when only the exit code is needed.
         tests:
-          - IntegrationTest_SilentFlag_SuppressesOutput
+          - NuGetInstaller_SilentFlag_FlagProvided_SuppressesOutput
 
-      - id: Template-System-Log
+      - id: NuGetInstaller-System-Log
         title: The tool shall write output to a log file when the log flag is provided.
         justification: |
           Provides persistent logging for debugging and compliance audit trails.
           Log files enable post-run inspection of tool output without requiring
           console capture.
         tests:
-          - IntegrationTest_LogFlag_WritesOutputToFile
+          - NuGetInstaller_LogFlag_FlagProvided_WritesOutputToFile
 
-      - id: Template-System-ErrorHandling
-        title: The tool shall return a non-zero exit code and report an error for unrecognized arguments.
+      - id: NuGetInstaller-System-ErrorHandling-ExitCode
+        title: The tool shall return a non-zero exit code for unrecognized arguments.
+        justification: |
+          A non-zero exit code enables CI/CD pipelines to detect and surface
+          misconfiguration failures automatically.
+        tests:
+          - NuGetInstaller_UnknownArgument_InvalidFlag_ReturnsNonZeroExitCode
+
+      - id: NuGetInstaller-System-ErrorHandling-Report
+        title: The tool shall report an error message for unrecognized arguments.
         justification: |
           Clear feedback for unrecognized arguments helps users quickly correct
-          mistakes. A non-zero exit code enables CI/CD pipelines to detect and
-          surface misconfiguration failures automatically.
+          mistakes without requiring external documentation.
         tests:
-          - IntegrationTest_UnknownArgument_ReturnsError
+          - NuGetInstaller_UnknownArgument_InvalidFlag_ReturnsNonZeroExitCode
+
+      - id: NuGetInstaller-System-OutputDirectory
+        title: >-
+          The tool shall install NuGet packages into the directory specified by the
+          output-directory flag, defaulting to the current working directory when
+          the flag is not provided.
+        justification: |
+          Users need control over where packages are installed. Defaulting to the
+          current working directory provides a sensible convention while the flag
+          allows scripts and CI pipelines to target an explicit path.
+        tests:
+          - NuGetInstaller_InstallPackages_ValidConfig_ExtractsPackageToOutputDirectory
+
+      - id: NuGetInstaller-System-ExcludeVersion
+        title: The tool shall use {Id}/ folder naming (excluding the version) when the exclude-version flag is provided.
+        justification: |
+          Some build systems reference packages by a version-less folder name.
+          The exclude-version flag enables this naming convention, making it
+          easier to update package versions without changing downstream references.
+        tests:
+          - NuGetInstaller_InstallPackages_ExcludeVersionFlag_UsesFlatFolderNaming
+
+      - id: NuGetInstaller-System-Depth
+        title: >-
+          The tool shall control the Markdown heading depth of validation output
+          using the depth flag (default heading level 1).
+        justification: |
+          When embedding validation reports inside a larger document, the heading
+          level must match the surrounding structure. The depth flag allows callers
+          to specify the desired level without post-processing the output.
+        tests:
+          - NuGetInstaller_ValidateDepth_DepthFlagProvided_AdjustsHeadingDepth
+
+      - id: NuGetInstaller-System-SkipExisting
+        title: The tool shall skip packages whose output folder already exists.
+        justification: |
+          Incremental builds must not re-extract packages already present in the
+          output directory. Skipping existing folders makes installation idempotent
+          and reduces unnecessary I/O in CI/CD pipelines.
+        tests:
+          - NuGetInstaller_InstallPackages_ExistingFolder_SkipsInstallation
 
       - id: NuGetInstaller-System-Install
         title: The tool shall install NuGet packages from a packages.config file into the output directory.
@@ -75,4 +123,4 @@ sections:
           systems and CI/CD pipelines to restore NuGet dependencies without requiring
           the full NuGet.exe or Visual Studio tooling.
         tests:
-          - IntegrationTest_InstallPackages_ExtractsPackageToOutputDirectory
+          - NuGetInstaller_InstallPackages_ValidConfig_ExtractsPackageToOutputDirectory

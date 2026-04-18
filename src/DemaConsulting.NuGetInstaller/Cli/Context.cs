@@ -98,6 +98,7 @@ internal sealed class Context : IDisposable
     /// <param name="args">Command-line arguments.</param>
     /// <returns>A new Context instance.</returns>
     /// <exception cref="ArgumentException">Thrown when arguments are invalid.</exception>
+    /// <exception cref="InvalidOperationException">Thrown when the log file specified by --log cannot be created or opened.</exception>
     public static Context Create(string[] args)
     {
         // Validate input

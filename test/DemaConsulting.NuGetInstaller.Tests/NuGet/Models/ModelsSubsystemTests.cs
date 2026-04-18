@@ -20,7 +20,7 @@
 
 using DemaConsulting.NuGetInstaller.NuGet;
 
-namespace DemaConsulting.NuGetInstaller.Tests;
+namespace DemaConsulting.NuGetInstaller.Tests.NuGet.Models;
 
 /// <summary>
 ///     Subsystem tests for the NuGet Models subsystem covering PackageEntry data model workflows.
@@ -64,6 +64,31 @@ public class ModelsSubsystemTests
             Assert.AreEqual("2.0.0", packages[1].Version);
             Assert.AreEqual("net8.0", packages[1].TargetFramework,
                 "TargetFramework should be preserved when specified");
+        }
+        finally
+        {
+            File.Delete(tempFile);
+        }
+    }
+
+    /// <summary>
+    ///     Test that the Models subsystem returns an empty list for a self-closing packages element.
+    /// </summary>
+    [TestMethod]
+    public void ModelsSubsystem_ReadPackages_EmptyPackagesElement_ReturnsEmptyList()
+    {
+        // Arrange: create a packages.config with a self-closing packages element
+        var tempFile = Path.GetTempFileName();
+
+        try
+        {
+            File.WriteAllText(tempFile, "<packages/>");
+
+            // Act: read packages through the reader
+            var packages = PackagesConfigReader.Read(tempFile);
+
+            // Assert: empty packages element returns an empty list
+            Assert.IsEmpty(packages, "Self-closing <packages/> element should return an empty list");
         }
         finally
         {

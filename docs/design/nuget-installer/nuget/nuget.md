@@ -38,4 +38,33 @@ The `NuGet` subsystem exposes the following interfaces to the rest of the tool:
 |----------------|-----------|-----------------------------------------------------------------------|
 | `Context`      | Uses      | Output channel for status messages during installation.               |
 | `NuGetCache`   | Uses      | OTS library for resolving packages in the NuGet global package cache. |
-| `PathHelpers`  | Uses      | Safe path combination for constructing file paths.                    |
+
+## Error Handling
+
+| Component              | Exception                   | Condition                                               |
+|------------------------|-----------------------------|-------------------------------------------------------- |
+| `PackagesConfigReader` | `InvalidOperationException` | File not found or missing `id`/`version` attribute.     |
+| `PackagesConfigReader` | `XmlException`              | File contains malformed XML.                            |
+| `PackageExtractor`     | `InvalidOperationException` | Zip-slip entry or decompressed size exceeds 1 GB.       |
+| `PackageInstaller`     | Propagates from above       | Any exception from `PackageExtractor` or `NuGetCache`.  |
+
+## Security Algorithms
+
+### Zip-Slip Defense
+
+Before writing each archive entry, `PackageExtractor` resolves the canonical destination
+path via `Path.GetFullPath` and verifies it starts with the canonical destination folder
+(with a trailing separator). Entries that would escape the destination folder are rejected
+with `InvalidOperationException`.
+
+### Zip-Bomb Defense
+
+`PackageExtractor` tracks the total number of decompressed bytes written during extraction.
+If the running total exceeds 1 GB (`1_073_741_824` bytes), extraction is aborted with
+`InvalidOperationException`.
+
+### Parallel Installation
+
+`PackageInstaller` installs packages using `Task.WhenAll`, so multiple packages are cached
+and extracted concurrently. Each package is processed independently with no shared mutable
+state between tasks.

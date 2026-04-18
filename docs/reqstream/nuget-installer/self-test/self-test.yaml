@@ -10,7 +10,7 @@
 sections:
   - title: SelfTest Subsystem Requirements
     requirements:
-      - id: Template-SelfTest-Qualification
+      - id: NuGetInstaller-SelfTest-Qualification
         title: The tool shall provide a self-validation mechanism to qualify the tool in its deployment environment.
         justification: |
           In regulated environments, tool qualification evidence is required to demonstrate
@@ -22,15 +22,22 @@ sections:
         tests:
           - SelfTestSubsystem_ValidationWorkflow_NoResultFiles_CompletesSuccessfully
 
-      - id: Template-SelfTest-ResultsOutput
-        title: The tool shall write self-validation results to a standard test result file when --results is provided.
+      - id: NuGetInstaller-SelfTest-TrxOutput
+        title: The tool shall write self-validation results to a TRX file when a .trx results path is provided.
         justification: |
-          CI/CD pipelines and requirements traceability tools (such as ReqStream) consume
-          test result files in standard formats. By supporting both TRX (MSTest) and JUnit
-          XML output, the SelfTest subsystem enables self-validation results to be fed
-          directly into pipeline tooling and traceability reports without additional
+          CI/CD pipelines and requirements traceability tools such as ReqStream consume
+          TRX (MSTest) format test result files. TRX output enables self-validation results
+          to be fed directly into pipeline tooling and traceability reports without additional
           conversion steps, satisfying audit trail requirements.
         tests:
           - SelfTestSubsystem_ValidationWorkflow_WithTrxFile_GeneratesResults
+
+      - id: NuGetInstaller-SelfTest-JUnitOutput
+        title: The tool shall write self-validation results to a JUnit XML file when an .xml results path is provided.
+        justification: |
+          Many CI tools consume JUnit XML format test result files. JUnit output enables
+          self-validation results to be fed directly into pipeline tooling and traceability
+          reports without additional conversion steps, satisfying audit trail requirements.
+        tests:
           - SelfTestSubsystem_ValidationWorkflow_WithJUnitFile_GeneratesResults
           - SelfTestSubsystem_ValidationWorkflow_WithBothResultFiles_GeneratesBothResults

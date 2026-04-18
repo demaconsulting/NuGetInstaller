@@ -55,3 +55,12 @@ the base directory.
   their own path validation before calling this method.
 - **No logging or error accumulation**: `SafePathCombine` is a pure utility method that throws
   on invalid input; it does not interact with the `Context` or any output mechanism.
+
+## Error Handling
+
+| Exception                 | Condition                                                                  |
+|---------------------------|----------------------------------------------------------------------------|
+| `ArgumentNullException`   | `basePath` or `relativePath` is null.                                      |
+| `ArgumentException`       | The resolved combined path escapes the base directory (path traversal).    |
+| `NotSupportedException`   | A supplied path contains an unsupported format (propagated from `Path`).   |
+| `PathTooLongException`    | The combined or resolved path exceeds the system-defined maximum length.   |

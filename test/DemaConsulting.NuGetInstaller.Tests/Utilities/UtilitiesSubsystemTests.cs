@@ -20,7 +20,7 @@
 
 using DemaConsulting.NuGetInstaller.Utilities;
 
-namespace DemaConsulting.NuGetInstaller.Tests;
+namespace DemaConsulting.NuGetInstaller.Tests.Utilities;
 
 /// <summary>
 ///     Subsystem tests for the Utilities subsystem covering PathHelpers integration workflows.
@@ -80,7 +80,7 @@ public class UtilitiesSubsystemTests
         // Act & Assert: attempt path traversal and verify exceptions are thrown
         foreach (var dangerousPath in dangerousPaths)
         {
-            var exception = Assert.Throws<ArgumentException>(() =>
+            var exception = Assert.ThrowsExactly<ArgumentException>(() =>
                 PathHelpers.SafePathCombine(basePath, dangerousPath));
             Assert.IsNotNull(exception, $"SafePathCombine should reject path traversal: {dangerousPath}");
         }
@@ -121,6 +121,39 @@ public class UtilitiesSubsystemTests
                 Directory.Delete(rootDir, true);
             }
         }
+    }
+
+    /// <summary>
+    ///     Test that SafePathCombine throws ArgumentNullException when basePath is null.
+    /// </summary>
+    [TestMethod]
+    public void UtilitiesSubsystem_SafePathCombine_NullBasePath_ThrowsArgumentNullException()
+    {
+        // Act & Assert: null basePath must throw ArgumentNullException
+        Assert.ThrowsExactly<ArgumentNullException>(() =>
+            PathHelpers.SafePathCombine(null!, "file.txt"));
+    }
+
+    /// <summary>
+    ///     Test that SafePathCombine throws ArgumentNullException when relativePath is null.
+    /// </summary>
+    [TestMethod]
+    public void UtilitiesSubsystem_SafePathCombine_NullRelativePath_ThrowsArgumentNullException()
+    {
+        // Act & Assert: null relativePath must throw ArgumentNullException
+        Assert.ThrowsExactly<ArgumentNullException>(() =>
+            PathHelpers.SafePathCombine(Path.GetTempPath(), null!));
+    }
+
+    /// <summary>
+    ///     Test that SafePathCombine throws ArgumentException when relativePath is a rooted path.
+    /// </summary>
+    [TestMethod]
+    public void UtilitiesSubsystem_SafePathCombine_RootedRelativePath_ThrowsArgumentException()
+    {
+        // Act & Assert: an absolute path as relativePath must be rejected
+        Assert.ThrowsExactly<ArgumentException>(() =>
+            PathHelpers.SafePathCombine("/base", "/absolute/path"));
     }
 }
 

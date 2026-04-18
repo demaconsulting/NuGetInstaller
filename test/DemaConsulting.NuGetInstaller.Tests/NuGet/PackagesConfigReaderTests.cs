@@ -20,7 +20,7 @@
 
 using DemaConsulting.NuGetInstaller.NuGet;
 
-namespace DemaConsulting.NuGetInstaller.Tests;
+namespace DemaConsulting.NuGetInstaller.Tests.NuGet;
 
 /// <summary>
 ///     Unit tests for the PackagesConfigReader class.
@@ -190,6 +190,28 @@ public class PackagesConfigReaderTests
             var exception = Assert.ThrowsExactly<InvalidOperationException>(
                 () => PackagesConfigReader.Read(tempFile));
             Assert.Contains("version", exception.Message);
+        }
+        finally
+        {
+            File.Delete(tempFile);
+        }
+    }
+
+    /// <summary>
+    ///     Test that Read propagates XmlException when the file contains malformed XML.
+    /// </summary>
+    [TestMethod]
+    public void PackagesConfigReader_Read_MalformedXml_ThrowsXmlException()
+    {
+        // Arrange: write a file with malformed/incomplete XML
+        var tempFile = Path.GetTempFileName();
+        try
+        {
+            File.WriteAllText(tempFile, "<packages><package id=\"test\" version=\"");
+
+            // Act & Assert: XmlException is propagated directly from XDocument.Load
+            Assert.ThrowsExactly<System.Xml.XmlException>(
+                () => PackagesConfigReader.Read(tempFile));
         }
         finally
         {

@@ -5,7 +5,7 @@ folder.
 
 ## Overview
 
-`PackageExtractor` is a static utility class with a single `Extract` method. It opens the
+`PackageExtractor` is an `internal` static utility class with a single `Extract` method. It opens the
 archive with `ZipFile.OpenRead` and extracts entries one at a time, accumulating the total
 number of bytes written. If the destination folder already exists, extraction is skipped
 and the method returns `false`. If the total extracted size exceeds 1 GB the method throws
@@ -42,22 +42,24 @@ Extracts all entries from a .nupkg file into the destination folder.
 **Algorithm:**
 
 1. If `destFolder` already exists, return `false`.
-2. Allocate a single reusable `CopyBufferSize` byte buffer and initialize
+2. Open the archive with `ZipFile.OpenRead(nupkgPath)`.
+3. Allocate a single reusable `CopyBufferSize` byte buffer and initialize
    `totalExtractedBytes` to zero.
-3. Open the archive with `ZipFile.OpenRead(nupkgPath)`.
-4. For each `ZipArchiveEntry` in the archive:
+4. Resolve the canonical destination folder once with `Path.GetFullPath` and append a
+   trailing `Path.DirectorySeparatorChar` (stored as `canonicalDestFolderWithSep`) to prevent
+   partial-path prefix attacks.
+5. For each `ZipArchiveEntry` in the archive:
    a. Skip entries that have an empty `Name` (directory markers).
    b. Resolve the canonical destination path: `destPath = Path.GetFullPath(Path.Combine(destFolder, entry.FullName))`.
-      Verify `destPath` starts with the canonical destination folder plus a trailing directory
-      separator (`canonicalDestFolderWithSep`). If it does not, throw `InvalidOperationException`
-      with a descriptive zip-slip message.
+      Verify `destPath` starts with `canonicalDestFolderWithSep`. If it does not, throw
+      `InvalidOperationException` with a descriptive zip-slip message.
    c. Ensure the parent directory exists (`Directory.CreateDirectory`).
    d. Open the entry stream and the destination file stream.
    e. Read the entry in `CopyBufferSize` (80 KiB) chunks; after each chunk add the bytes
       read to `totalExtractedBytes`. If `totalExtractedBytes` exceeds `MaxExtractedBytes`,
       throw `InvalidOperationException` (zip-bomb defense).
    f. Write the chunk to the destination file stream.
-5. Return `true`.
+6. Return `true`.
 
 ## Security
 
@@ -72,6 +74,9 @@ Two attack vectors are mitigated:
   and verified to start with the canonical destination folder (with a trailing directory separator)
   before any file is written. This follows the SonarQube S6096 / CodeQL `cs/zipslip`-recognized
   pattern and guards against path-traversal entries that would write outside `destFolder`.
+- **Partial-extraction on exception**: When a zip-slip or zip-bomb exception is thrown
+  mid-extraction, no cleanup of the partially created destination folder is performed.
+  The caller is responsible for cleaning up any partially populated folder if desired.
 
 ## Interactions
 

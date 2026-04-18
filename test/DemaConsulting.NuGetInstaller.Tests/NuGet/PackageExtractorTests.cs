@@ -21,7 +21,7 @@
 using System.IO.Compression;
 using DemaConsulting.NuGetInstaller.NuGet;
 
-namespace DemaConsulting.NuGetInstaller.Tests;
+namespace DemaConsulting.NuGetInstaller.Tests.NuGet;
 
 /// <summary>
 ///     Unit tests for the PackageExtractor class.
@@ -120,9 +120,54 @@ public class PackageExtractorTests
             }
 
             // Act & Assert: extraction must be rejected with the zip-slip message
-            var exception = Assert.Throws<InvalidOperationException>(() =>
+            var exception = Assert.ThrowsExactly<InvalidOperationException>(() =>
                 PackageExtractor.Extract(zipPath, destFolder));
             Assert.Contains("zip-slip", exception.Message);
+        }
+        finally
+        {
+            if (Directory.Exists(tempDir))
+            {
+                Directory.Delete(tempDir, true);
+            }
+        }
+    }
+
+    /// <summary>
+    ///     Test that Extract throws InvalidOperationException when the total decompressed size exceeds 1 GB.
+    /// </summary>
+    [TestMethod]
+    public void PackageExtractor_Extract_ZipBombEntry_ThrowsInvalidOperationException()
+    {
+        // Arrange: create a zip archive whose entries total more than 1 GB uncompressed
+        var tempDir = Path.Combine(Path.GetTempPath(), $"extractor_test_{Guid.NewGuid()}");
+        var destFolder = Path.Combine(tempDir, "output");
+
+        try
+        {
+            Directory.CreateDirectory(tempDir);
+            var zipPath = Path.Combine(tempDir, "bomb.zip");
+
+            using (var zipStream = new FileStream(zipPath, FileMode.Create))
+            using (var archive = new ZipArchive(zipStream, ZipArchiveMode.Create))
+            {
+                var entry = archive.CreateEntry("content/bomb.bin", CompressionLevel.Optimal);
+                using var entryStream = entry.Open();
+                var buffer = new byte[1024 * 1024]; // 1 MB all zeros (compresses very well)
+                long bytesWritten = 0;
+                const long targetSize = 1_181_116_006L; // ~1.1 GiB — exceeds the 1 GiB limit
+                while (bytesWritten < targetSize)
+                {
+                    var toWrite = (int)Math.Min(buffer.Length, targetSize - bytesWritten);
+                    entryStream.Write(buffer, 0, toWrite);
+                    bytesWritten += toWrite;
+                }
+            }
+
+            // Act & Assert: extraction must be aborted when the 1 GB limit is exceeded
+            var exception = Assert.ThrowsExactly<InvalidOperationException>(() =>
+                PackageExtractor.Extract(zipPath, destFolder));
+            Assert.Contains("zip-bomb", exception.Message);
         }
         finally
         {

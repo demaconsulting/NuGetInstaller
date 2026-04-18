@@ -18,3 +18,4 @@ sections:
           during package resolution and extraction.
         tests:
           - ModelsSubsystem_PackageEntryWorkflow_ValidEntries_RepresentsPackageMetadata
+          - ModelsSubsystem_ReadPackages_EmptyPackagesElement_ReturnsEmptyList

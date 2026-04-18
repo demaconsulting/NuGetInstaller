@@ -21,7 +21,7 @@
 using System.Reflection;
 using DemaConsulting.NuGetInstaller.Cli;
 
-namespace DemaConsulting.NuGetInstaller.Tests;
+namespace DemaConsulting.NuGetInstaller.Tests.Cli;
 
 /// <summary>
 ///     Subsystem tests for the CLI subsystem covering Context and Program integration.
@@ -503,4 +503,95 @@ public class CliSubsystemTests
             Console.SetOut(originalOut);
         }
     }
+
+    /// <summary>
+    ///     Test that Context and Program work together to handle the -v short version flag.
+    /// </summary>
+    [TestMethod]
+    public void CliSubsystem_VersionFlow_ContextAndProgram_DisplaysVersionAndExits_WithShortVFlag()
+    {
+        // Arrange: command line arguments with -v short version flag; capture console output
+        var args = new[] { "-v" };
+        var originalOut = Console.Out;
+        using var capturedOut = new StringWriter();
+
+        try
+        {
+            Console.SetOut(capturedOut);
+
+            // Act: create context and run program logic
+            using var context = Context.Create(args);
+            Program.Run(context);
+
+            // Assert: version flag is parsed, version text is displayed, and exit code is success
+            Assert.IsTrue(context.Version, "Context should parse -v flag as version");
+            Assert.AreEqual(0, context.ExitCode, "Context should have success exit code");
+            Assert.Contains(Program.Version, capturedOut.ToString(), "Console output should contain the program version");
+        }
+        finally
+        {
+            Console.SetOut(originalOut);
+        }
+    }
+
+    /// <summary>
+    ///     Test that Context and Program work together to handle the -OutputDirectory long flag.
+    /// </summary>
+    [TestMethod]
+    public void CliSubsystem_OutputDirectoryFlow_ContextAndProgram_SetsOutputDirectory_WithLongFlag()
+    {
+        // Arrange: command line arguments with -OutputDirectory long flag and --version to avoid file lookup
+        var args = new[] { "-OutputDirectory", "./packages", "--version" };
+        var originalOut = Console.Out;
+        using var capturedOut = new StringWriter();
+
+        try
+        {
+            Console.SetOut(capturedOut);
+
+            // Act: create context and run program logic
+            using var context = Context.Create(args);
+            Program.Run(context);
+
+            // Assert: output directory is parsed from -OutputDirectory flag
+            Assert.AreEqual("./packages", context.OutputDirectory,
+                "Context should parse -OutputDirectory flag as output directory");
+            Assert.AreEqual(0, context.ExitCode, "Program should complete successfully");
+        }
+        finally
+        {
+            Console.SetOut(originalOut);
+        }
+    }
+
+    /// <summary>
+    ///     Test that Context and Program work together to handle the -ExcludeVersion long flag.
+    /// </summary>
+    [TestMethod]
+    public void CliSubsystem_ExcludeVersionFlow_ContextAndProgram_SetsExcludeVersion_WithLongFlag()
+    {
+        // Arrange: command line arguments with -ExcludeVersion long flag and --version to avoid file lookup
+        var args = new[] { "-ExcludeVersion", "--version" };
+        var originalOut = Console.Out;
+        using var capturedOut = new StringWriter();
+
+        try
+        {
+            Console.SetOut(capturedOut);
+
+            // Act: create context and run program logic
+            using var context = Context.Create(args);
+            Program.Run(context);
+
+            // Assert: exclude version flag is parsed from -ExcludeVersion flag
+            Assert.IsTrue(context.ExcludeVersion,
+                "Context should parse -ExcludeVersion flag as exclude version");
+            Assert.AreEqual(0, context.ExitCode, "Program should complete successfully");
+        }
+        finally
+        {
+            Console.SetOut(originalOut);
+        }
+    }
 }
+

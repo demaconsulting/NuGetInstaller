@@ -35,3 +35,12 @@ sections:
         tests:
           - PackagesConfigReader_Read_MissingIdAttribute_ThrowsInvalidOperationException
           - PackagesConfigReader_Read_MissingVersionAttribute_ThrowsInvalidOperationException
+
+      - id: NuGetInstaller-PackagesConfigReader-MalformedXml
+        title: The PackagesConfigReader class shall propagate XmlException when the file contains malformed XML.
+        justification: |
+          Callers need to know the exception type for malformed XML to implement
+          appropriate error handling. Propagating XmlException directly preserves
+          the diagnostic information in the exception message.
+        tests:
+          - PackagesConfigReader_Read_MalformedXml_ThrowsXmlException
