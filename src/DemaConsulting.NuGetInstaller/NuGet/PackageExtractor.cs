@@ -19,6 +19,7 @@
 // SOFTWARE.
 
 using System.IO.Compression;
+using DemaConsulting.NuGetInstaller.Utilities;
 
 namespace DemaConsulting.NuGetInstaller.NuGet;
 
@@ -56,13 +57,6 @@ internal static class PackageExtractor
             return false;
         }
 
-        // Canonicalise once with a guaranteed trailing separator for prefix matching
-        var canonicalDestFolder = Path.GetFullPath(destFolder);
-        if (!canonicalDestFolder.EndsWith(Path.DirectorySeparatorChar))
-        {
-            canonicalDestFolder += Path.DirectorySeparatorChar;
-        }
-
         // Extract each zip entry individually, tracking total bytes to defend against zip-bombs
         using var archive = ZipFile.OpenRead(nupkgPath);
         var totalExtractedBytes = 0L;
@@ -76,15 +70,13 @@ internal static class PackageExtractor
                 continue;
             }
 
-            // Resolve and validate destination path to defend against zip-slip
-            var destPath = Path.GetFullPath(Path.Combine(destFolder, entry.FullName));
-            if (!destPath.StartsWith(canonicalDestFolder, StringComparison.Ordinal))
-            {
-                throw new InvalidOperationException(
-                    $"Extraction of '{nupkgPath}' aborted: entry '{entry.FullName}' would escape the destination folder (zip-slip).");
-            }
+            // Combine and validate the destination path to defend against zip-slip
+            var destPath = PathHelpers.SafePathCombine(
+                destFolder,
+                entry.FullName,
+                $"Extraction of '{nupkgPath}' aborted: entry '{entry.FullName}' would escape the destination folder (zip-slip).");
 
-            // destPath is a child of canonicalDestFolder so GetDirectoryName cannot return null
+            // destPath is a child of destFolder so GetDirectoryName cannot return null
             var destDir = Path.GetDirectoryName(destPath)!;
             Directory.CreateDirectory(destDir);
 

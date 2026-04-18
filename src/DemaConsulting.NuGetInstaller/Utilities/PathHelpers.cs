@@ -30,14 +30,23 @@ internal static class PathHelpers
     /// </summary>
     /// <param name="basePath">The base path.</param>
     /// <param name="relativePath">The relative path to combine.</param>
+    /// <param name="message">
+    ///     Optional message for the exception thrown when the path escapes the base directory.
+    ///     When provided, an <see cref="InvalidOperationException"/> is thrown with this message instead
+    ///     of the default <see cref="ArgumentException"/>.
+    /// </param>
     /// <returns>The combined path.</returns>
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="basePath"/> or <paramref name="relativePath"/> is <see langword="null"/>.</exception>
     /// <exception cref="ArgumentException">
-    ///     Thrown when the resolved combined path escapes the base directory, or when a supplied path is invalid.
+    ///     Thrown when the resolved combined path escapes the base directory and <paramref name="message"/> is <see langword="null"/>,
+    ///     or when a supplied path is invalid.
+    /// </exception>
+    /// <exception cref="InvalidOperationException">
+    ///     Thrown when the resolved combined path escapes the base directory and <paramref name="message"/> is not <see langword="null"/>.
     /// </exception>
     /// <exception cref="NotSupportedException">Thrown when a supplied path contains an unsupported format.</exception>
     /// <exception cref="PathTooLongException">Thrown when the combined or resolved path exceeds the system-defined maximum length.</exception>
-    internal static string SafePathCombine(string basePath, string relativePath)
+    internal static string SafePathCombine(string basePath, string relativePath, string? message = null)
     {
         // Validate inputs
         ArgumentNullException.ThrowIfNull(basePath);
@@ -58,6 +67,11 @@ internal static class PathHelpers
             || checkRelative.StartsWith(".." + Path.AltDirectorySeparatorChar, StringComparison.Ordinal)
             || Path.IsPathRooted(checkRelative))
         {
+            if (message != null)
+            {
+                throw new InvalidOperationException(message);
+            }
+
             throw new ArgumentException($"Invalid path component: {relativePath}", nameof(relativePath));
         }
 

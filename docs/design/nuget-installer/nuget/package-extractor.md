@@ -42,21 +42,21 @@ Extracts all entries from a .nupkg file into the destination folder.
 **Algorithm:**
 
 1. If `destFolder` already exists, return `false`.
-2. Compute `canonicalDestFolder = Path.GetFullPath(destFolder)` with a trailing
-   `DirectorySeparatorChar`, and allocate a single reusable `CopyBufferSize` byte buffer.
-   Initialise `totalExtractedBytes` to zero.
+2. Allocate a single reusable `CopyBufferSize` byte buffer and initialise
+   `totalExtractedBytes` to zero.
 3. Open the archive with `ZipFile.OpenRead(nupkgPath)`.
 4. For each `ZipArchiveEntry` in the archive:
    a. Skip entries that have an empty `Name` (directory markers).
-   b. Resolve `destPath = Path.GetFullPath(Path.Combine(destFolder, entry.FullName))`.
-   c. If `destPath` does not start with `canonicalDestFolder`, throw
-      `InvalidOperationException` (zip-slip defence).
-   d. Ensure the parent directory exists (`Directory.CreateDirectory`).
-   e. Open the entry stream and the destination file stream.
-   f. Read the entry in `CopyBufferSize` (80 KiB) chunks; after each chunk add the bytes
+   b. Combine and validate the destination path using
+      `PathHelpers.SafePathCombine(destFolder, entry.FullName, message)`, passing a
+      descriptive zip-slip message. If the entry would escape `destFolder`,
+      `SafePathCombine` throws `InvalidOperationException` with the provided message.
+   c. Ensure the parent directory exists (`Directory.CreateDirectory`).
+   d. Open the entry stream and the destination file stream.
+   e. Read the entry in `CopyBufferSize` (80 KiB) chunks; after each chunk add the bytes
       read to `totalExtractedBytes`. If `totalExtractedBytes` exceeds `MaxExtractedBytes`,
       throw `InvalidOperationException` (zip-bomb defence).
-   g. Write the chunk to the destination file stream.
+   f. Write the chunk to the destination file stream.
 5. Return `true`.
 
 ## Security
@@ -68,12 +68,12 @@ Two attack vectors are mitigated:
   `InvalidOperationException`. The limit is enforced incrementally as each chunk is
   decompressed, so memory consumption remains bounded regardless of the archive's claimed
   uncompressed sizes.
-- **Zip-slip**: Each entry's destination path is resolved with `Path.GetFullPath` before
-  use. If the resolved path does not begin with the fully-qualified `destFolder`, extraction
-  is aborted with an `InvalidOperationException`, preventing a maliciously crafted entry
-  from writing files outside the intended directory.
+- **Zip-slip**: Each entry's destination path is validated by `PathHelpers.SafePathCombine`,
+  which uses `Path.GetFullPath` and `Path.GetRelativePath` to detect traversal sequences and
+  throws `InvalidOperationException` when an entry would write outside `destFolder`.
 
 ## Interactions
 
-`PackageExtractor` has no dependencies on other tool units. It uses only .NET base class
-library types (`Directory`, `File`, `ZipFile`, `ZipArchiveEntry`).
+`PackageExtractor` depends on `PathHelpers.SafePathCombine` from the `Utilities` subsystem
+for zip-slip path validation. It also uses .NET base class library types (`Directory`,
+`File`, `ZipFile`, `ZipArchiveEntry`).
