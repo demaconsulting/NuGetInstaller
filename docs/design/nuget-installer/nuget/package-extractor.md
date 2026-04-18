@@ -42,7 +42,7 @@ Extracts all entries from a .nupkg file into the destination folder.
 **Algorithm:**
 
 1. If `destFolder` already exists, return `false`.
-2. Allocate a single reusable `CopyBufferSize` byte buffer and initialise
+2. Allocate a single reusable `CopyBufferSize` byte buffer and initialize
    `totalExtractedBytes` to zero.
 3. Open the archive with `ZipFile.OpenRead(nupkgPath)`.
 4. For each `ZipArchiveEntry` in the archive:
@@ -55,7 +55,7 @@ Extracts all entries from a .nupkg file into the destination folder.
    d. Open the entry stream and the destination file stream.
    e. Read the entry in `CopyBufferSize` (80 KiB) chunks; after each chunk add the bytes
       read to `totalExtractedBytes`. If `totalExtractedBytes` exceeds `MaxExtractedBytes`,
-      throw `InvalidOperationException` (zip-bomb defence).
+      throw `InvalidOperationException` (zip-bomb defense).
    f. Write the chunk to the destination file stream.
 5. Return `true`.
 
