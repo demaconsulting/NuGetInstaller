@@ -26,7 +26,9 @@ sections:
           - Validation_Run_WithTrxResultsFile_WritesTrxFile
 
       - id: NuGetInstaller-Validation-JUnitResults
-        title: The Validation class shall write test results to a JUnit XML file when the results file has an .xml extension.
+        title: >-
+          The Validation class shall write test results to a JUnit XML file
+          when the results file has an .xml extension.
         justification: |
           JUnit XML format is compatible with many CI tools and enables self-validation
           results to be consumed by pipeline tooling without additional conversion steps.
