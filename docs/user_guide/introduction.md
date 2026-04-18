@@ -164,6 +164,17 @@ Suppress console output:
 nuget-installer --silent
 ```
 
+## Error Handling
+
+When unrecognized arguments are provided, the tool prints an error message to stderr and
+returns a non-zero exit code:
+
+```bash
+nuget-installer --unknown-flag
+# Error: Unknown argument: --unknown-flag
+# Exit code: 1
+```
+
 ## Logging
 
 Write output to a log file:

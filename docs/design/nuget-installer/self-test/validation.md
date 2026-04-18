@@ -63,3 +63,10 @@ Writes `testResults` to `context.ResultsFile`. The format is determined by the f
 | `PathHelpers`           | Uses      | `SafePathCombine` for temp-dir file paths.      |
 | `PackagesConfigReader`  | Uses      | Reads packages.config in install test.          |
 | `PackageInstaller`      | Uses      | Installs packages in install test.              |
+
+## Error Handling
+
+Exceptions thrown inside individual test methods (`RunVersionTest`, `RunHelpTest`,
+`RunInstallPackageTest`) are caught by a try/catch block inside each runner. The exception
+message is recorded as the test failure reason in the shared `TestResults` object, and
+execution continues with the next test.

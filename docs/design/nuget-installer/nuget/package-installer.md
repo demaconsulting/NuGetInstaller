@@ -56,3 +56,8 @@ Installs a single package.
 | `PackageEntry`     | Reads     | Reads `Id` and `Version` from each entry.                  |
 | `PackageExtractor` | Uses      | Delegates ZIP extraction to `PackageExtractor.Extract`.    |
 | `NuGetCache`       | Uses      | OTS library for resolving packages in the global cache.    |
+
+## Error Handling
+
+`InstallPackageAsync` does not catch exceptions. All exceptions thrown by
+`NuGetCache.EnsureCachedAsync` or `PackageExtractor.Extract` propagate to the caller.

@@ -17,7 +17,7 @@ sections:
           troubleshooting and compatibility verification. The version display must
           work from a standard dotnet invocation without additional configuration.
         tests:
-          - IntegrationTest_VersionFlag_OutputsVersion
+          - NuGetInstaller_VersionFlag_FlagProvided_OutputsVersion
 
       - id: NuGetInstaller-System-Help
         title: The tool shall display usage information when the help flag is provided.
@@ -26,7 +26,7 @@ sections:
           external resources. Help output must be accessible from a standard dotnet
           invocation and must list the available options so that users can self-serve.
         tests:
-          - IntegrationTest_HelpFlag_OutputsUsageInformation
+          - NuGetInstaller_HelpFlag_FlagProvided_OutputsUsageInformation
 
       - id: NuGetInstaller-System-Validate
         title: The tool shall execute self-validation tests when the validate flag is provided.
@@ -37,9 +37,9 @@ sections:
           core behaviors and produces a structured test result file, providing the
           qualification evidence required by quality management systems.
         tests:
-          - IntegrationTest_ValidateFlag_RunsValidation
-          - IntegrationTest_ValidateWithResults_GeneratesTrxFile
-          - IntegrationTest_ValidateWithResults_GeneratesJUnitFile
+          - NuGetInstaller_ValidateFlag_FlagProvided_RunsValidation
+          - NuGetInstaller_ValidateWithResults_TrxExtension_GeneratesTrxFile
+          - NuGetInstaller_ValidateWithResults_XmlExtension_GeneratesJUnitFile
 
       - id: NuGetInstaller-System-Silent
         title: The tool shall suppress console output when the silent flag is provided.
@@ -47,7 +47,7 @@ sections:
           Enables automated scripts and CI/CD pipelines to run the tool without
           cluttering output logs when only the exit code is needed.
         tests:
-          - IntegrationTest_SilentFlag_SuppressesOutput
+          - NuGetInstaller_SilentFlag_FlagProvided_SuppressesOutput
 
       - id: NuGetInstaller-System-Log
         title: The tool shall write output to a log file when the log flag is provided.
@@ -56,7 +56,7 @@ sections:
           Log files enable post-run inspection of tool output without requiring
           console capture.
         tests:
-          - IntegrationTest_LogFlag_WritesOutputToFile
+          - NuGetInstaller_LogFlag_FlagProvided_WritesOutputToFile
 
       - id: NuGetInstaller-System-ErrorHandling-ExitCode
         title: The tool shall return a non-zero exit code for unrecognized arguments.
@@ -64,7 +64,7 @@ sections:
           A non-zero exit code enables CI/CD pipelines to detect and surface
           misconfiguration failures automatically.
         tests:
-          - IntegrationTest_UnknownArgument_ReturnsError
+          - NuGetInstaller_UnknownArgument_InvalidFlag_ReturnsNonZeroExitCode
 
       - id: NuGetInstaller-System-ErrorHandling-Report
         title: The tool shall report an error message for unrecognized arguments.
@@ -72,7 +72,7 @@ sections:
           Clear feedback for unrecognized arguments helps users quickly correct
           mistakes without requiring external documentation.
         tests:
-          - IntegrationTest_UnknownArgument_ReturnsError
+          - NuGetInstaller_UnknownArgument_InvalidFlag_ReturnsNonZeroExitCode
 
       - id: NuGetInstaller-System-OutputDirectory
         title: >-
@@ -84,7 +84,7 @@ sections:
           current working directory provides a sensible convention while the flag
           allows scripts and CI pipelines to target an explicit path.
         tests:
-          - IntegrationTest_InstallPackages_ExtractsPackageToOutputDirectory
+          - NuGetInstaller_InstallPackages_ValidConfig_ExtractsPackageToOutputDirectory
 
       - id: NuGetInstaller-System-ExcludeVersion
         title: The tool shall use {Id}/ folder naming (excluding the version) when the exclude-version flag is provided.
@@ -93,7 +93,7 @@ sections:
           The exclude-version flag enables this naming convention, making it
           easier to update package versions without changing downstream references.
         tests:
-          - IntegrationTest_InstallPackages_ExcludeVersion_UsesFlatFolderNaming
+          - NuGetInstaller_InstallPackages_ExcludeVersionFlag_UsesFlatFolderNaming
 
       - id: NuGetInstaller-System-Depth
         title: >-
@@ -104,7 +104,7 @@ sections:
           level must match the surrounding structure. The depth flag allows callers
           to specify the desired level without post-processing the output.
         tests:
-          - IntegrationTest_DepthFlag_AdjustsHeadingDepth
+          - NuGetInstaller_ValidateDepth_DepthFlagProvided_AdjustsHeadingDepth
 
       - id: NuGetInstaller-System-SkipExisting
         title: The tool shall skip packages whose output folder already exists.
@@ -113,7 +113,7 @@ sections:
           output directory. Skipping existing folders makes installation idempotent
           and reduces unnecessary I/O in CI/CD pipelines.
         tests:
-          - IntegrationTest_InstallPackages_SkipsExistingPackageFolders
+          - NuGetInstaller_InstallPackages_ExistingFolder_SkipsInstallation
 
       - id: NuGetInstaller-System-Install
         title: The tool shall install NuGet packages from a packages.config file into the output directory.
@@ -123,4 +123,4 @@ sections:
           systems and CI/CD pipelines to restore NuGet dependencies without requiring
           the full NuGet.exe or Visual Studio tooling.
         tests:
-          - IntegrationTest_InstallPackages_ExtractsPackageToOutputDirectory
+          - NuGetInstaller_InstallPackages_ValidConfig_ExtractsPackageToOutputDirectory

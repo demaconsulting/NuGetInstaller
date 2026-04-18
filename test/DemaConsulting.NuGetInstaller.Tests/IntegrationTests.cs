@@ -48,7 +48,7 @@ public class IntegrationTests
     ///     Test that version flag outputs version information.
     /// </summary>
     [TestMethod]
-    public void IntegrationTest_VersionFlag_OutputsVersion()
+    public void NuGetInstaller_VersionFlag_FlagProvided_OutputsVersion()
     {
         // Act: run the tool with version flag
         var exitCode = Runner.Run(
@@ -68,9 +68,9 @@ public class IntegrationTests
     ///     Test that help flag outputs usage information.
     /// </summary>
     [TestMethod]
-    public void IntegrationTest_HelpFlag_OutputsUsageInformation()
+    public void NuGetInstaller_HelpFlag_FlagProvided_OutputsUsageInformation()
     {
-        // Act: execute the operation being tested
+        // Act: run the tool with the --help flag
         var exitCode = Runner.Run(
             out var output,
             "dotnet",
@@ -88,9 +88,9 @@ public class IntegrationTests
     ///     Test that validate flag runs self-validation.
     /// </summary>
     [TestMethod]
-    public void IntegrationTest_ValidateFlag_RunsValidation()
+    public void NuGetInstaller_ValidateFlag_FlagProvided_RunsValidation()
     {
-        // Act: execute the operation being tested
+        // Act: run the tool with the --validate flag
         var exitCode = Runner.Run(
             out var output,
             "dotnet",
@@ -107,14 +107,14 @@ public class IntegrationTests
     ///     Test that validate with results flag generates TRX file.
     /// </summary>
     [TestMethod]
-    public void IntegrationTest_ValidateWithResults_GeneratesTrxFile()
+    public void NuGetInstaller_ValidateWithResults_TrxExtension_GeneratesTrxFile()
     {
         // Arrange: setup test conditions
         var resultsFile = Path.Combine(Path.GetTempPath(), $"integration_test_{Guid.NewGuid()}.trx");
 
         try
         {
-            // Act: execute the operation being tested
+            // Act: run the tool with --validate and --results flags (TRX file)
             var exitCode = Runner.Run(
                 out var _,
                 "dotnet",
@@ -144,9 +144,9 @@ public class IntegrationTests
     ///     Test that silent flag suppresses output.
     /// </summary>
     [TestMethod]
-    public void IntegrationTest_SilentFlag_SuppressesOutput()
+    public void NuGetInstaller_SilentFlag_FlagProvided_SuppressesOutput()
     {
-        // Act: execute the operation being tested (with --version to avoid packages.config lookup)
+        // Act: run the tool with --silent and --version flags
         var exitCode = Runner.Run(
             out var output,
             "dotnet",
@@ -163,7 +163,7 @@ public class IntegrationTests
     ///     Test that log flag writes output to file.
     /// </summary>
     [TestMethod]
-    public void IntegrationTest_LogFlag_WritesOutputToFile()
+    public void NuGetInstaller_LogFlag_FlagProvided_WritesOutputToFile()
     {
         // Arrange: setup test conditions
         var logFile = Path.GetTempFileName();
@@ -199,14 +199,14 @@ public class IntegrationTests
     ///     Test that validate with results flag generates JUnit XML file.
     /// </summary>
     [TestMethod]
-    public void IntegrationTest_ValidateWithResults_GeneratesJUnitFile()
+    public void NuGetInstaller_ValidateWithResults_XmlExtension_GeneratesJUnitFile()
     {
         // Arrange: setup test conditions
         var resultsFile = Path.Combine(Path.GetTempPath(), $"integration_test_{Guid.NewGuid()}.xml");
 
         try
         {
-            // Act: execute the operation being tested
+            // Act: run the tool with --validate and --results flags (JUnit XML file)
             var exitCode = Runner.Run(
                 out var _,
                 "dotnet",
@@ -235,9 +235,9 @@ public class IntegrationTests
     ///     Test that unknown argument returns error.
     /// </summary>
     [TestMethod]
-    public void IntegrationTest_UnknownArgument_ReturnsError()
+    public void NuGetInstaller_UnknownArgument_InvalidFlag_ReturnsNonZeroExitCode()
     {
-        // Act: execute the operation being tested
+        // Act: run the tool with an unknown --unknown flag
         var exitCode = Runner.Run(
             out var output,
             "dotnet",
@@ -253,7 +253,7 @@ public class IntegrationTests
     ///     Test that the tool installs NuGet packages from a packages.config file into the output directory.
     /// </summary>
     [TestMethod]
-    public void IntegrationTest_InstallPackages_ExtractsPackageToOutputDirectory()
+    public void NuGetInstaller_InstallPackages_ValidConfig_ExtractsPackageToOutputDirectory()
     {
         // Arrange: create a temporary directory with a packages.config file
         var tempDir = Path.Combine(Path.GetTempPath(), $"integration_install_test_{Guid.NewGuid()}");
@@ -302,7 +302,7 @@ public class IntegrationTests
     ///     Test that the tool uses {Id}/ folder naming when exclude-version flag is provided.
     /// </summary>
     [TestMethod]
-    public void IntegrationTest_InstallPackages_ExcludeVersion_UsesFlatFolderNaming()
+    public void NuGetInstaller_InstallPackages_ExcludeVersionFlag_UsesFlatFolderNaming()
     {
         // Arrange: create a temporary directory with a packages.config file
         var tempDir = Path.Combine(Path.GetTempPath(), $"integration_excludeversion_test_{Guid.NewGuid()}");
@@ -351,7 +351,7 @@ public class IntegrationTests
     ///     Test that validate with depth flag adjusts heading depth of output.
     /// </summary>
     [TestMethod]
-    public void IntegrationTest_DepthFlag_AdjustsHeadingDepth()
+    public void NuGetInstaller_ValidateDepth_DepthFlagProvided_AdjustsHeadingDepth()
     {
         // Act: run with --validate and --depth 2
         var exitCode = Runner.Run(
@@ -371,7 +371,7 @@ public class IntegrationTests
     ///     Test that the tool skips packages whose output folder already exists.
     /// </summary>
     [TestMethod]
-    public void IntegrationTest_InstallPackages_SkipsExistingPackageFolders()
+    public void NuGetInstaller_InstallPackages_ExistingFolder_SkipsInstallation()
     {
         // Arrange: create a temporary directory, pre-create the package output folder
         var tempDir = Path.Combine(Path.GetTempPath(), $"integration_skip_test_{Guid.NewGuid()}");

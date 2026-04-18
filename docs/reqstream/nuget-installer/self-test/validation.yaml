@@ -17,16 +17,21 @@ sections:
           - Validation_Run_WithSilentContext_PrintsSummary
           - Validation_Run_WithSilentContext_ExitCodeIsZero
 
-      - id: NuGetInstaller-Validation-Results
-        title: The Validation class shall write test results to a file in TRX or JUnit format.
+      - id: NuGetInstaller-Validation-TrxResults
+        title: The Validation class shall write test results to a TRX file when the results file has a .trx extension.
         justification: |
-          Enables integration with CI/CD systems that expect standard test result formats.
-          TRX format is compatible with MSTest; JUnit XML is compatible with many CI tools.
+          TRX format is compatible with MSTest and ReqStream requirements traceability tools,
+          enabling self-validation results to be fed directly into pipeline tooling.
         tests:
           - Validation_Run_WithTrxResultsFile_WritesTrxFile
+
+      - id: NuGetInstaller-Validation-JUnitResults
+        title: The Validation class shall write test results to a JUnit XML file when the results file has an .xml extension.
+        justification: |
+          JUnit XML format is compatible with many CI tools and enables self-validation
+          results to be consumed by pipeline tooling without additional conversion steps.
+        tests:
           - Validation_Run_WithXmlResultsFile_WritesXmlFile
-          - IntegrationTest_ValidateWithResults_GeneratesTrxFile
-          - IntegrationTest_ValidateWithResults_GeneratesJUnitFile
 
       - id: NuGetInstaller-Validation-InstallPackage
         title: The Validation class shall include a self-test that installs a known package.

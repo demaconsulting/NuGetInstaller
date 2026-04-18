@@ -48,6 +48,7 @@ The system accepts command-line arguments following standard conventions:
 - **Silent Mode**: `--silent` — Suppress console output
 - **Self-Validation**: `--validate` — Run internal test suite
 - **Results Output**: `--results <file>` — Write test results to TRX or XML file
+- **Heading Depth**: `--depth <#>` — Set heading depth for Markdown output (default: 1)
 - **Logging**: `--log <file>` — Write all output to log file
 - **Output Directory**: `-o`, `-OutputDirectory <dir>` — Output directory for package installation
 - **Exclude Version**: `-x`, `-ExcludeVersion` — Use `{Id}/` folder naming instead of `{Id}.{Version}/`
@@ -68,7 +69,7 @@ The system interacts with the file system for:
 The system uses standard console I/O streams:
 
 - **Standard Output** — Normal program output and information display
-- **Standard Error** — Error messages and exception information  
+- **Standard Error** — Error messages and exception information
 - **Color Output** — Red color coding for error messages when supported
 
 ## Data Flow
