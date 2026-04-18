@@ -69,7 +69,7 @@ public class SelfTestSubsystemTests
             Assert.AreEqual(0, context.ExitCode, "Validation should complete successfully");
             Assert.IsTrue(File.Exists(trxFile), "TRX file should be generated");
             var trxContent = File.ReadAllText(trxFile);
-            Assert.Contains(trxContent, "<TestRun", "TRX file should contain standard TestRun element");
+            Assert.Contains("<TestRun", trxContent, "TRX file should contain standard TestRun element");
         }
         finally
         {
@@ -103,7 +103,7 @@ public class SelfTestSubsystemTests
             Assert.AreEqual(0, context.ExitCode, "Validation should complete successfully");
             Assert.IsTrue(File.Exists(junitFile), "JUnit file should be generated");
             var junitContent = File.ReadAllText(junitFile);
-            Assert.Contains(junitContent, "<testsuites", "JUnit file should contain standard testsuites element");
+            Assert.Contains("<testsuites", junitContent, "JUnit file should contain standard testsuites element");
         }
         finally
         {
@@ -139,7 +139,7 @@ public class SelfTestSubsystemTests
             Assert.AreEqual(0, trxContext.ExitCode, "Validation should complete successfully for TRX run");
             Assert.IsTrue(File.Exists(trxFile), "TRX file should be generated");
             var trxContent = File.ReadAllText(trxFile);
-            Assert.Contains(trxContent, "<TestRun", "TRX file should contain standard TestRun element");
+            Assert.Contains("<TestRun", trxContent, "TRX file should contain standard TestRun element");
 
             // Act: run validation with JUnit XML output
             using var junitContext = Context.Create(junitArgs);
@@ -150,7 +150,7 @@ public class SelfTestSubsystemTests
             Assert.AreEqual(0, junitContext.ExitCode, "Validation should complete successfully for JUnit run");
             Assert.IsTrue(File.Exists(junitFile), "JUnit file should be generated");
             var junitContent = File.ReadAllText(junitFile);
-            Assert.Contains(junitContent, "<testsuites", "JUnit file should contain standard testsuites element");
+            Assert.Contains("<testsuites", junitContent, "JUnit file should contain standard testsuites element");
         }
         finally
         {

@@ -37,7 +37,7 @@ public class PackagesConfigReaderTests
         // Act & Assert
         var exception = Assert.ThrowsExactly<InvalidOperationException>(
             () => PackagesConfigReader.Read("nonexistent.config"));
-        Assert.Contains(exception.Message, "not found");
+        Assert.Contains("not found", exception.Message);
     }
 
     /// <summary>
@@ -160,7 +160,7 @@ public class PackagesConfigReaderTests
             // Act & Assert
             var exception = Assert.ThrowsExactly<InvalidOperationException>(
                 () => PackagesConfigReader.Read(tempFile));
-            Assert.Contains(exception.Message, "id");
+            Assert.Contains("id", exception.Message);
         }
         finally
         {
@@ -189,7 +189,7 @@ public class PackagesConfigReaderTests
             // Act & Assert
             var exception = Assert.ThrowsExactly<InvalidOperationException>(
                 () => PackagesConfigReader.Read(tempFile));
-            Assert.Contains(exception.Message, "version");
+            Assert.Contains("version", exception.Message);
         }
         finally
         {
