@@ -38,7 +38,6 @@ The `Cli` subsystem exposes the following interface to the rest of the tool:
 | `Context.WriteError`         | Outbound  | Writes an error to stderr and sets the error exit code.                |
 | `Context.ExitCode`           | Outbound  | Returns 0 for success or 1 when errors have been reported.             |
 | `Context.HeadingDepth`       | Outbound  | Heading depth for markdown output (default 1); supplied via `--depth`. |
-| `Context.LogFile`            | Outbound  | The log file path supplied via `--log` (null when not specified).      |
 | `Context.Dispose`            | Outbound  | Releases resources held by the context (flushes and closes log file).  |
 
 ## Error Handling

@@ -8,7 +8,7 @@ decisions that affect all subsystems.
 
 The NuGet Installer is a command-line application built on the .NET
 platform that demonstrates DEMA Consulting best practices for .NET tool
-development. The system consists of three primary subsystems working together
+development. The system consists of four primary subsystems working together
 to provide a robust, testable, and maintainable command-line tool:
 
 ### Major Components
@@ -103,13 +103,13 @@ The system targets multiple .NET runtime versions to maximize compatibility:
 - **.NET 9.0** — Current standard runtime
 - **.NET 10.0** — Latest runtime for forward compatibility
 
-### Dependency Injection Architecture
+### Parameter Passing Architecture
 
-All subsystems follow dependency injection patterns:
+All subsystems follow explicit parameter passing patterns:
 
-- **Constructor injection** — All external dependencies injected via constructors
-- **Interface abstraction** — Dependencies defined through interfaces where appropriate
-- **Testability focus** — Design enables comprehensive unit testing with mocked dependencies
+- **Static utility classes** — Subsystems expose static methods with explicit parameters
+- **Context propagation** — The shared `Context` object is passed explicitly to methods that need it
+- **Testability focus** — Design enables comprehensive unit testing through controlled inputs and outputs
 
 ### Error Handling Strategy
 

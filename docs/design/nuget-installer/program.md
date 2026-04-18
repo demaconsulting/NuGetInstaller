@@ -39,7 +39,7 @@ Prints the usage information and available options to the context output.
 
 Inspects the flags on `context` and dispatches:
 
-- `Version` flag → calls `PrintBanner` to print the version string and returns.
+- `Version` flag → writes the version string directly via `context.WriteLine(Version)` and returns.
 - `Help` flag → calls `PrintHelp` to print usage information and returns.
 - `Validate` flag → calls `Validation.Run(context)`.
 - Otherwise → calls `RunToolLogic(context)` to install packages.
