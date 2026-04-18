@@ -28,11 +28,20 @@ namespace DemaConsulting.NuGetInstaller.NuGet;
 internal static class PackageExtractor
 {
     /// <summary>
+    ///     Maximum number of bytes allowed to be extracted from a single archive (1 GB).
+    ///     Extraction exceeding this limit is rejected as a potential zip-bomb.
+    /// </summary>
+    private const long MaxExtractedBytes = 1L * 1024 * 1024 * 1024;
+
+    /// <summary>
     ///     Extracts all entries from a .nupkg file into the specified destination folder.
     /// </summary>
     /// <param name="nupkgPath">Path to the .nupkg file.</param>
     /// <param name="destFolder">Destination folder for extraction.</param>
     /// <returns><see langword="true"/> if extraction was performed; <see langword="false"/> if the destination folder already exists (skipped).</returns>
+    /// <exception cref="InvalidOperationException">
+    ///     Thrown when the total extracted size exceeds 1 GB, indicating a potential zip-bomb.
+    /// </exception>
     public static bool Extract(string nupkgPath, string destFolder)
     {
         // If destination already exists, skip extraction
@@ -41,8 +50,39 @@ internal static class PackageExtractor
             return false;
         }
 
-        // Extract all zip entries into the destination folder
-        ZipFile.ExtractToDirectory(nupkgPath, destFolder);
+        // Extract each zip entry individually, tracking total bytes to defend against zip-bombs
+        using var archive = ZipFile.OpenRead(nupkgPath);
+        var totalExtractedBytes = 0L;
+        foreach (var entry in archive.Entries)
+        {
+            // Skip directory entries (entries with no name component after the last separator)
+            if (string.IsNullOrEmpty(entry.Name))
+            {
+                continue;
+            }
+
+            var destPath = Path.Combine(destFolder, entry.FullName);
+            var destDir = Path.GetDirectoryName(destPath)!;
+            Directory.CreateDirectory(destDir);
+
+            using var entryStream = entry.Open();
+            using var destStream = File.Create(destPath);
+
+            var buffer = new byte[81920];
+            int bytesRead;
+            while ((bytesRead = entryStream.Read(buffer, 0, buffer.Length)) > 0)
+            {
+                totalExtractedBytes += bytesRead;
+                if (totalExtractedBytes > MaxExtractedBytes)
+                {
+                    throw new InvalidOperationException(
+                        $"Extraction of '{nupkgPath}' aborted: total extracted size exceeded {MaxExtractedBytes:N0} bytes (potential zip-bomb).");
+                }
+
+                destStream.Write(buffer, 0, bytesRead);
+            }
+        }
+
         return true;
     }
 }
