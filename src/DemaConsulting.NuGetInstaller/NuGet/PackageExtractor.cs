@@ -19,7 +19,6 @@
 // SOFTWARE.
 
 using System.IO.Compression;
-using DemaConsulting.NuGetInstaller.Utilities;
 
 namespace DemaConsulting.NuGetInstaller.NuGet;
 
@@ -62,6 +61,15 @@ internal static class PackageExtractor
         var totalExtractedBytes = 0L;
         var buffer = new byte[CopyBufferSize];
 
+        // Resolve the canonical destination folder once and append a trailing separator.
+        // Per SonarQube S6096, the base path must end with a directory separator before
+        // the StartsWith check to prevent partial-path traversal attacks (e.g.
+        // /dest/dirmalicious must not be accepted as a child of /dest/dir).
+        var canonicalDestFolder = Path.GetFullPath(destFolder);
+        var canonicalDestFolderWithSep = canonicalDestFolder.EndsWith(Path.DirectorySeparatorChar)
+            ? canonicalDestFolder
+            : canonicalDestFolder + Path.DirectorySeparatorChar;
+
         foreach (var entry in archive.Entries)
         {
             // Skip directory entries (entries with no name component after the last separator)
@@ -70,11 +78,14 @@ internal static class PackageExtractor
                 continue;
             }
 
-            // Combine and validate the destination path to defend against zip-slip
-            var destPath = PathHelpers.SafePathCombine(
-                destFolder,
-                entry.FullName,
-                $"Extraction of '{nupkgPath}' aborted: entry '{entry.FullName}' would escape the destination folder (zip-slip).");
+            // Resolve the canonical destination path for this entry and verify it stays
+            // within the destination folder (zip-slip defense).
+            var destPath = Path.GetFullPath(Path.Combine(destFolder, entry.FullName));
+            if (!destPath.StartsWith(canonicalDestFolderWithSep, StringComparison.Ordinal))
+            {
+                throw new InvalidOperationException(
+                    $"Extraction of '{nupkgPath}' aborted: entry '{entry.FullName}' would escape the destination folder (zip-slip).");
+            }
 
             // destPath is a child of destFolder so GetDirectoryName cannot return null
             var destDir = Path.GetDirectoryName(destPath)!;
