@@ -180,4 +180,48 @@ public class NuGetSubsystemTests
             }
         }
     }
+
+    /// <summary>
+    ///     Test that the NuGet subsystem installs packages using {Id}/ folder naming when excludeVersion is true.
+    /// </summary>
+    [TestMethod]
+    public void NuGetSubsystem_ReadAndInstallWorkflow_ExcludeVersion_UsesFlatFolderNaming()
+    {
+        // Arrange: create a temporary directory with a packages.config file
+        var tempDir = Path.Combine(Path.GetTempPath(), $"nuget_subsystem_test_{Guid.NewGuid()}");
+
+        try
+        {
+            Directory.CreateDirectory(tempDir);
+            var configPath = Path.Combine(tempDir, "packages.config");
+            File.WriteAllText(configPath,
+                """
+                <?xml version="1.0" encoding="utf-8"?>
+                <packages>
+                  <package id="DemaConsulting.NuGet.Caching" version="1.0.0" />
+                </packages>
+                """);
+
+            // Act: read config and install packages using excludeVersion: true
+            var packages = PackagesConfigReader.Read(configPath);
+            using var context = Context.Create(["--silent"]);
+            PackageInstaller.InstallAsync(context, packages, tempDir, excludeVersion: true)
+                .GetAwaiter().GetResult();
+
+            // Assert: folder uses {Id}/ naming, not {Id}.{Version}/
+            var expectedFolder = Path.Combine(tempDir, "DemaConsulting.NuGet.Caching");
+            Assert.IsTrue(Directory.Exists(expectedFolder),
+                "Version-less package folder should exist when excludeVersion is true");
+            var versionedFolder = Path.Combine(tempDir, "DemaConsulting.NuGet.Caching.1.0.0");
+            Assert.IsFalse(Directory.Exists(versionedFolder),
+                "Versioned package folder should not exist when excludeVersion is true");
+        }
+        finally
+        {
+            if (Directory.Exists(tempDir))
+            {
+                Directory.Delete(tempDir, true);
+            }
+        }
+    }
 }

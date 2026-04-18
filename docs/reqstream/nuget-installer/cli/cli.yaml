@@ -31,6 +31,7 @@ sections:
           troubleshooting and compatibility verification.
         tests:
           - CliSubsystem_VersionFlow_ContextAndProgram_DisplaysVersionAndExits
+          - CliSubsystem_VersionFlow_ContextAndProgram_DisplaysVersionAndExits_WithShortVFlag
 
       - id: NuGetInstaller-Cli-Help
         title: The Cli subsystem shall support -?, -h, and --help flags to signal help display.
@@ -64,6 +65,14 @@ sections:
           Enables integration with CI/CD systems that expect standard test result formats.
         tests:
           - CliSubsystem_ResultsFlow_ContextAndProgram_WritesResultsFile
+
+      - id: NuGetInstaller-Cli-ResultAlias
+        title: The Cli subsystem shall support --result as an alias for the --results flag.
+        justification: |
+          Provides a convenient short-form alias for the results flag, reducing
+          typing in interactive use and script files.
+        tests:
+          - CliSubsystem_ResultAliasFlow_ContextAndProgram_WritesResultsFile
 
       - id: NuGetInstaller-Cli-Depth
         title: The Cli subsystem shall support --depth flag to control the heading depth of markdown output.
@@ -120,6 +129,7 @@ sections:
           allows specifying a custom path, defaulting to the current directory.
         tests:
           - CliSubsystem_OutputDirectoryFlow_ContextAndProgram_SetsOutputDirectory
+          - CliSubsystem_OutputDirectoryFlow_ContextAndProgram_SetsOutputDirectory_WithLongFlag
 
       - id: NuGetInstaller-Cli-ExcludeVersion
         title: The Cli subsystem shall support -x and -ExcludeVersion flags to control folder naming.
@@ -128,3 +138,4 @@ sections:
           The exclude version flag changes folder naming from {Id}.{Version}/ to {Id}/.
         tests:
           - CliSubsystem_ExcludeVersionFlow_ContextAndProgram_SetsExcludeVersion
+          - CliSubsystem_ExcludeVersionFlow_ContextAndProgram_SetsExcludeVersion_WithLongFlag

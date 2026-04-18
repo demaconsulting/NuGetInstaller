@@ -22,11 +22,29 @@ The `Utilities` subsystem contains the following software unit:
 
 The `Utilities` subsystem exposes the following interface to the rest of the tool:
 
-| Interface                     | Direction | Description                                                |
-|-------------------------------|-----------|------------------------------------------------------------|
-| `PathHelpers.SafePathCombine` | Outbound  | Combines two path segments, rejecting traversal sequences. |
+| Interface                     | Direction | Description                                                                  |
+|-------------------------------|-----------|------------------------------------------------------------------------------|
+| `PathHelpers.SafePathCombine` | Outbound  | Combines two path segments, rejecting null arguments and traversal sequences. |
 
 ## Interactions
 
 `PathHelpers` has no dependencies on other tool units or subsystems. It uses only .NET base
 class library types (`Path`, `ArgumentNullException`).
+
+## Error Handling
+
+`SafePathCombine` throws the following exceptions:
+
+| Exception                | Condition                                                                           |
+|--------------------------|-------------------------------------------------------------------------------------|
+| `ArgumentNullException`  | Either `basePath` or `relativePath` is `null`.                                     |
+| `ArgumentException`      | The combined path would escape the base directory (path traversal detected).        |
+| `NotSupportedException`  | A path component contains an unsupported character.                                 |
+| `PathTooLongException`   | The resulting path exceeds the system's maximum path length.                        |
+
+## Algorithm
+
+Both paths are resolved to absolute form via `Path.GetFullPath` before using
+`Path.GetRelativePath` for containment checking. This avoids simple prefix-matching
+vulnerabilities where a path such as `/base-dir-sibling` could falsely appear to be
+inside `/base-dir`.

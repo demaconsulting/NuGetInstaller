@@ -52,3 +52,4 @@ sections:
           that end users invoke without special flags.
         tests:
           - Program_Run_NoArguments_DisplaysDefaultBehavior
+          - IntegrationTest_InstallPackages_ExtractsPackageToOutputDirectory

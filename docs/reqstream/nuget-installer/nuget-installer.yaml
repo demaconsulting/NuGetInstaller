@@ -58,14 +58,59 @@ sections:
         tests:
           - IntegrationTest_LogFlag_WritesOutputToFile
 
-      - id: NuGetInstaller-System-ErrorHandling
-        title: The tool shall return a non-zero exit code and report an error for unrecognized arguments.
+      - id: NuGetInstaller-System-ErrorHandling-ExitCode
+        title: The tool shall return a non-zero exit code for unrecognized arguments.
         justification: |
-          Clear feedback for unrecognized arguments helps users quickly correct
-          mistakes. A non-zero exit code enables CI/CD pipelines to detect and
-          surface misconfiguration failures automatically.
+          A non-zero exit code enables CI/CD pipelines to detect and surface
+          misconfiguration failures automatically.
         tests:
           - IntegrationTest_UnknownArgument_ReturnsError
+
+      - id: NuGetInstaller-System-ErrorHandling-Report
+        title: The tool shall report an error message for unrecognized arguments.
+        justification: |
+          Clear feedback for unrecognized arguments helps users quickly correct
+          mistakes without requiring external documentation.
+        tests:
+          - IntegrationTest_UnknownArgument_ReturnsError
+
+      - id: NuGetInstaller-System-OutputDirectory
+        title: The tool shall install NuGet packages into the directory specified by the output-directory flag, defaulting
+          to the current working directory when the flag is not provided.
+        justification: |
+          Users need control over where packages are installed. Defaulting to the
+          current working directory provides a sensible convention while the flag
+          allows scripts and CI pipelines to target an explicit path.
+        tests:
+          - IntegrationTest_InstallPackages_ExtractsPackageToOutputDirectory
+
+      - id: NuGetInstaller-System-ExcludeVersion
+        title: The tool shall use {Id}/ folder naming (excluding the version) when the exclude-version flag is provided.
+        justification: |
+          Some build systems reference packages by a version-less folder name.
+          The exclude-version flag enables this naming convention, making it
+          easier to update package versions without changing downstream references.
+        tests:
+          - IntegrationTest_InstallPackages_ExcludeVersion_UsesFlatFolderNaming
+
+      - id: NuGetInstaller-System-Depth
+        title: The tool shall control the Markdown heading depth of validation output using the depth flag (default heading
+          level 1).
+        justification: |
+          When embedding validation reports inside a larger document, the heading
+          level must match the surrounding structure. The depth flag allows callers
+          to specify the desired level without post-processing the output.
+        tests:
+          - IntegrationTest_DepthFlag_AdjustsHeadingDepth
+
+      - id: NuGetInstaller-System-SkipExisting
+        title: The tool shall skip packages whose output folder already exists.
+        justification: |
+          Incremental builds must not re-extract packages already present in the
+          output directory. Skipping existing folders makes installation idempotent
+          and reduces unnecessary I/O in CI/CD pipelines.
+        tests:
+          - IntegrationTest_InstallPackages_SkipsExistingPackageFolders
 
       - id: NuGetInstaller-System-Install
         title: The tool shall install NuGet packages from a packages.config file into the output directory.

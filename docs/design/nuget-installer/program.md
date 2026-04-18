@@ -26,12 +26,21 @@ Entry point. Creates a `Context`, calls `Run`, and returns `context.ExitCode`.
 
 **Returns:** `int` — 0 for success, non-zero for failure.
 
+### PrintBanner(Context context)
+
+Prints the tool name and version banner to the context output. Called at startup before
+dispatching to other handlers.
+
+### PrintHelp(Context context)
+
+Prints the usage information and available options to the context output.
+
 ### Run(Context context)
 
 Inspects the flags on `context` and dispatches:
 
-- `Version` flag → prints `Version` string and returns.
-- `Help` flag → prints usage information and returns.
+- `Version` flag → calls `PrintBanner` to print the version string and returns.
+- `Help` flag → calls `PrintHelp` to print usage information and returns.
 - `Validate` flag → calls `Validation.Run(context)`.
 - Otherwise → calls `RunToolLogic(context)` to install packages.
 
@@ -48,6 +57,14 @@ Executes the package installation workflow:
 
 Reads `AssemblyInformationalVersionAttribute` from the executing assembly, falling back to
 `AssemblyVersion`, then `"0.0.0"`.
+
+## Error Handling
+
+| Condition                                 | Behavior                                              |
+|-------------------------------------------|-------------------------------------------------------|
+| `packages.config` file not found          | Calls `context.WriteError` and sets exit code to 1.   |
+| Package installation fails                | Exception propagates; exit code reflects failure.     |
+| Unknown or malformed command-line argument | Caught in `Main`; written to stderr, exit code 1.    |
 
 ## Interactions
 

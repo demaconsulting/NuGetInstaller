@@ -24,7 +24,7 @@ The `SelfTest` subsystem exposes the following interface to the rest of the tool
 
 | Interface        | Direction | Description                                                           |
 |------------------|-----------|-----------------------------------------------------------------------|
-| `Validation.Run` | Inbound   | Runs all self-validation tests, prints a summary, and writes results. |
+| `Validation.Run` | Outbound  | Runs all self-validation tests, prints a summary, and writes results. |
 
 ## Interactions
 

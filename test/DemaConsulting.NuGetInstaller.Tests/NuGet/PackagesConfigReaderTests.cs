@@ -196,4 +196,26 @@ public class PackagesConfigReaderTests
             File.Delete(tempFile);
         }
     }
+
+    /// <summary>
+    ///     Test that Read propagates XmlException when the file contains malformed XML.
+    /// </summary>
+    [TestMethod]
+    public void PackagesConfigReader_Read_MalformedXml_ThrowsXmlException()
+    {
+        // Arrange: write a file with malformed/incomplete XML
+        var tempFile = Path.GetTempFileName();
+        try
+        {
+            File.WriteAllText(tempFile, "<packages><package id=\"test\" version=\"");
+
+            // Act & Assert: XmlException is propagated directly from XDocument.Load
+            Assert.Throws<System.Xml.XmlException>(
+                () => PackagesConfigReader.Read(tempFile));
+        }
+        finally
+        {
+            File.Delete(tempFile);
+        }
+    }
 }

@@ -33,3 +33,12 @@ sections:
           and avoids overwriting user modifications in the output directory.
         tests:
           - PackageExtractor_Extract_DestinationExists_ReturnsFalse
+
+      - id: NuGetInstaller-PackageExtractor-ZipBomb
+        title: The PackageExtractor class shall abort extraction when the total decompressed size exceeds 1 GB.
+        justification: |
+          Zip-bomb attacks use small compressed archives that expand to enormous sizes.
+          A 1 GB limit prevents denial-of-service attacks that could exhaust disk space
+          during package extraction.
+        tests:
+          - PackageExtractor_Extract_ZipBombEntry_ThrowsInvalidOperationException

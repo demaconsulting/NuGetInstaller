@@ -20,3 +20,13 @@ sections:
           - PathHelpers_SafePathCombine_DoubleDotsInMiddle_ThrowsArgumentException
           - PathHelpers_SafePathCombine_AbsolutePath_ThrowsArgumentException
           - PathHelpers_SafePathCombine_NestedPaths_CombinesCorrectly
+
+      - id: NuGetInstaller-PathHelpers-NullInputRejection
+        title: The PathHelpers class shall throw ArgumentNullException when either path argument is null.
+        justification: |
+          Null arguments must be explicitly rejected to prevent null reference
+          exceptions deeper in the call stack and to clearly communicate API
+          contract violations to callers.
+        tests:
+          - PathHelpers_SafePathCombine_NullBasePath_ThrowsArgumentNullException
+          - PathHelpers_SafePathCombine_NullRelativePath_ThrowsArgumentNullException

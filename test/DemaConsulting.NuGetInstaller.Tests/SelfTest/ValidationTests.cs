@@ -21,7 +21,7 @@
 using DemaConsulting.NuGetInstaller.Cli;
 using DemaConsulting.NuGetInstaller.SelfTest;
 
-namespace DemaConsulting.NuGetInstaller.Tests;
+namespace DemaConsulting.NuGetInstaller.Tests.SelfTest;
 
 /// <summary>
 ///     Unit tests for the Validation class.
@@ -170,6 +170,36 @@ public class ValidationTests
             if (File.Exists(jsonFile))
             {
                 File.Delete(jsonFile);
+            }
+        }
+    }
+
+    /// <summary>
+    ///     Test that Run writes output containing the install-package self-test result.
+    /// </summary>
+    [TestMethod]
+    public void Validation_Run_WithSilentContext_PrintsInstallPackageTestResult()
+    {
+        // Arrange: setup unique log file path to capture silent context output
+        var logFile = Path.Combine(Path.GetTempPath(), $"validation_test_{Guid.NewGuid()}.log");
+        try
+        {
+            using (var context = Context.Create(["--silent", "--log", logFile]))
+            {
+                // Act: run validation with silent context and log file
+                Validation.Run(context);
+            }
+
+            // Assert: verify install-package test result is written to log file
+            var logContent = File.ReadAllText(logFile);
+            Assert.Contains("NuGetInstaller_InstallPackage", logContent,
+                "Validation output should include the install-package self-test result");
+        }
+        finally
+        {
+            if (File.Exists(logFile))
+            {
+                File.Delete(logFile);
             }
         }
     }

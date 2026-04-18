@@ -20,7 +20,7 @@ This user guide covers:
 
 # Continuous Compliance
 
-This template follows the
+NuGet Installer follows the
 [Continuous Compliance](https://github.com/demaconsulting/ContinuousCompliance) methodology, which ensures
 compliance evidence is generated automatically on every CI run.
 

@@ -38,3 +38,11 @@ sections:
           installation for CI/CD pipelines that cache the output directory.
         tests:
           - NuGetSubsystem_ExtractionWorkflow_ExistingDestination_SkipsExtraction
+
+      - id: NuGetInstaller-NuGet-MissingFile
+        title: The NuGet subsystem shall throw InvalidOperationException when packages.config is not found.
+        justification: |
+          A clear exception when the configuration file is absent prevents silent failures
+          and gives callers actionable diagnostic information.
+        tests:
+          - PackagesConfigReader_Read_FileNotFound_ThrowsInvalidOperationException

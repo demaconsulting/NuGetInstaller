@@ -70,4 +70,29 @@ public class ModelsSubsystemTests
             File.Delete(tempFile);
         }
     }
+
+    /// <summary>
+    ///     Test that the Models subsystem returns an empty list for a self-closing packages element.
+    /// </summary>
+    [TestMethod]
+    public void ModelsSubsystem_ReadPackages_EmptyPackagesElement_ReturnsEmptyList()
+    {
+        // Arrange: create a packages.config with a self-closing packages element
+        var tempFile = Path.GetTempFileName();
+
+        try
+        {
+            File.WriteAllText(tempFile, "<packages/>");
+
+            // Act: read packages through the reader
+            var packages = PackagesConfigReader.Read(tempFile);
+
+            // Assert: empty packages element returns an empty list
+            Assert.IsEmpty(packages, "Self-closing <packages/> element should return an empty list");
+        }
+        finally
+        {
+            File.Delete(tempFile);
+        }
+    }
 }

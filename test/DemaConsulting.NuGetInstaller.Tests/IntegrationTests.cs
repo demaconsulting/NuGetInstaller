@@ -148,7 +148,7 @@ public class IntegrationTests
     {
         // Act: execute the operation being tested (with --version to avoid packages.config lookup)
         var exitCode = Runner.Run(
-            out var _,
+            out var output,
             "dotnet",
             _dllPath,
             "--silent",
@@ -156,8 +156,7 @@ public class IntegrationTests
 
         // Assert: verify expected behavior
         Assert.AreEqual(0, exitCode);
-
-        // Output check removed since silent mode may still produce some output
+        Assert.IsTrue(string.IsNullOrWhiteSpace(output), $"Expected no output but got: {output}");
     }
 
     /// <summary>
@@ -298,5 +297,119 @@ public class IntegrationTests
             }
         }
     }
-}
 
+    /// <summary>
+    ///     Test that the tool uses {Id}/ folder naming when exclude-version flag is provided.
+    /// </summary>
+    [TestMethod]
+    public void IntegrationTest_InstallPackages_ExcludeVersion_UsesFlatFolderNaming()
+    {
+        // Arrange: create a temporary directory with a packages.config file
+        var tempDir = Path.Combine(Path.GetTempPath(), $"integration_excludeversion_test_{Guid.NewGuid()}");
+
+        try
+        {
+            Directory.CreateDirectory(tempDir);
+            var configPath = Path.Combine(tempDir, "packages.config");
+            File.WriteAllText(configPath,
+                """
+                <?xml version="1.0" encoding="utf-8"?>
+                <packages>
+                  <package id="DemaConsulting.NuGet.Caching" version="1.0.0" />
+                </packages>
+                """);
+
+            // Act: run the tool with -x (exclude version) flag
+            var exitCode = Runner.Run(
+                out var output,
+                "dotnet",
+                _dllPath,
+                configPath,
+                "-o",
+                tempDir,
+                "-x");
+
+            // Assert: package folder uses {Id}/ naming, not {Id}.{Version}/
+            Assert.AreEqual(0, exitCode, $"Tool should succeed. Output: {output}");
+            var expectedFolder = Path.Combine(tempDir, "DemaConsulting.NuGet.Caching");
+            Assert.IsTrue(Directory.Exists(expectedFolder),
+                $"Version-less package folder should exist at {expectedFolder}");
+            var versionedFolder = Path.Combine(tempDir, "DemaConsulting.NuGet.Caching.1.0.0");
+            Assert.IsFalse(Directory.Exists(versionedFolder),
+                "Versioned package folder should not exist when -x flag is used");
+        }
+        finally
+        {
+            if (Directory.Exists(tempDir))
+            {
+                Directory.Delete(tempDir, true);
+            }
+        }
+    }
+
+    /// <summary>
+    ///     Test that validate with depth flag adjusts heading depth of output.
+    /// </summary>
+    [TestMethod]
+    public void IntegrationTest_DepthFlag_AdjustsHeadingDepth()
+    {
+        // Act: run with --validate and --depth 2
+        var exitCode = Runner.Run(
+            out var output,
+            "dotnet",
+            _dllPath,
+            "--validate",
+            "--depth",
+            "2");
+
+        // Assert: output contains level-2 heading
+        Assert.AreEqual(0, exitCode, $"Tool should succeed. Output: {output}");
+        Assert.Contains("## ", output, "Validation output should use depth-2 heading");
+    }
+
+    /// <summary>
+    ///     Test that the tool skips packages whose output folder already exists.
+    /// </summary>
+    [TestMethod]
+    public void IntegrationTest_InstallPackages_SkipsExistingPackageFolders()
+    {
+        // Arrange: create a temporary directory, pre-create the package output folder
+        var tempDir = Path.Combine(Path.GetTempPath(), $"integration_skip_test_{Guid.NewGuid()}");
+
+        try
+        {
+            Directory.CreateDirectory(tempDir);
+            var configPath = Path.Combine(tempDir, "packages.config");
+            File.WriteAllText(configPath,
+                """
+                <?xml version="1.0" encoding="utf-8"?>
+                <packages>
+                  <package id="DemaConsulting.NuGet.Caching" version="1.0.0" />
+                </packages>
+                """);
+
+            // Pre-create the output folder to simulate an already-installed package
+            var existingFolder = Path.Combine(tempDir, "DemaConsulting.NuGet.Caching.1.0.0");
+            Directory.CreateDirectory(existingFolder);
+
+            // Act: run the tool - it should skip the already-existing folder
+            var exitCode = Runner.Run(
+                out var output,
+                "dotnet",
+                _dllPath,
+                configPath,
+                "-o",
+                tempDir);
+
+            // Assert: exit code is 0 and the tool reports skipping
+            Assert.AreEqual(0, exitCode, $"Tool should succeed even when skipping. Output: {output}");
+        }
+        finally
+        {
+            if (Directory.Exists(tempDir))
+            {
+                Directory.Delete(tempDir, true);
+            }
+        }
+    }
+}

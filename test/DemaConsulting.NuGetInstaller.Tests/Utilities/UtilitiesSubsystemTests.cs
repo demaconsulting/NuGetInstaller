@@ -122,5 +122,38 @@ public class UtilitiesSubsystemTests
             }
         }
     }
+
+    /// <summary>
+    ///     Test that SafePathCombine throws ArgumentNullException when basePath is null.
+    /// </summary>
+    [TestMethod]
+    public void UtilitiesSubsystem_SafePathCombine_NullBasePath_ThrowsArgumentNullException()
+    {
+        // Act & Assert: null basePath must throw ArgumentNullException
+        Assert.Throws<ArgumentNullException>(() =>
+            PathHelpers.SafePathCombine(null!, "file.txt"));
+    }
+
+    /// <summary>
+    ///     Test that SafePathCombine throws ArgumentNullException when relativePath is null.
+    /// </summary>
+    [TestMethod]
+    public void UtilitiesSubsystem_SafePathCombine_NullRelativePath_ThrowsArgumentNullException()
+    {
+        // Act & Assert: null relativePath must throw ArgumentNullException
+        Assert.Throws<ArgumentNullException>(() =>
+            PathHelpers.SafePathCombine(Path.GetTempPath(), null!));
+    }
+
+    /// <summary>
+    ///     Test that SafePathCombine throws ArgumentException when relativePath is a rooted path.
+    /// </summary>
+    [TestMethod]
+    public void UtilitiesSubsystem_SafePathCombine_RootedRelativePath_ThrowsArgumentException()
+    {
+        // Act & Assert: an absolute path as relativePath must be rejected
+        Assert.Throws<ArgumentException>(() =>
+            PathHelpers.SafePathCombine("/base", "/absolute/path"));
+    }
 }
 
