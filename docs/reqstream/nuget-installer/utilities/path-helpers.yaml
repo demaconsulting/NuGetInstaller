@@ -22,7 +22,8 @@ sections:
           - PathHelpers_SafePathCombine_NestedPaths_CombinesCorrectly
 
       - id: Template-PathHelpers-SafeCombine-CustomMessage
-        title: The PathHelpers class shall throw an InvalidOperationException with a caller-supplied message when a path traversal is detected and a custom message is provided.
+        title: The PathHelpers class shall throw an InvalidOperationException with a caller-supplied message when a path
+          traversal is detected and a custom message is provided.
         justification: |
           Callers such as PackageExtractor need to surface domain-specific error messages
           (e.g. describing a zip-slip attack) when a path traversal is detected. Providing

@@ -21,11 +21,11 @@ the base directory.
 
 **Parameters:**
 
-| Parameter      | Type      | Description                                                                                              |
-|----------------|-----------|----------------------------------------------------------------------------------------------------------|
-| `basePath`     | `string`  | The base directory path.                                                                                 |
-| `relativePath` | `string`  | The relative path to append.                                                                             |
-| `message`      | `string?` | Optional. When provided, an `InvalidOperationException` is thrown with this message on a traversal violation instead of the default `ArgumentException`. |
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `basePath` | `string` | The base directory path. |
+| `relativePath` | `string` | The relative path to append. |
+| `message` | `string?` | Optional. If provided, throws `InvalidOperationException`; else throws `ArgumentException`. |
 
 **Validation steps:**
 

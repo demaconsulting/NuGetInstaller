@@ -16,6 +16,8 @@ language: en
 words:
   - Blockquotes
   - buildmark
+  - defence
+  - initialise
   - buildtransitive
   - contentfiles
   - dcterms
