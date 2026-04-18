@@ -39,6 +39,7 @@ words:
   - NuGetInstaller
   - venv
   - versionmark
+  - zipslip
   - Weasyprint
   - yamlfix
 

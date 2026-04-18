@@ -1,6 +1,8 @@
 ---
 # CodeQL configuration for NuGet Installer
-# Suppresses intentional generic catch clauses
+# Suppresses intentional query warnings for specific files where the pattern is known-safe:
+# - cs/catch-of-all-exceptions: intentional top-level catch-all in Context and Validation
+# - cs/path-combine: Path.Combine output is immediately passed to Path.GetFullPath and validated
 
 name: "NuGet Installer CodeQL Config"
 
@@ -16,8 +18,9 @@ query-filters:
       id: cs/path-combine
     paths:
       - src/DemaConsulting.NuGetInstaller/Utilities/PathHelpers.cs
-  # Exclude zip-slip warnings in PackageExtractor (path validated via PathHelpers.SafePathCombine)
+  # Exclude path-combine warnings in PackageExtractor (Path.Combine output is immediately
+  # passed to Path.GetFullPath and the canonical result is validated against the destination folder)
   - exclude:
-      id: cs/zipslip
+      id: cs/path-combine
     paths:
       - src/DemaConsulting.NuGetInstaller/NuGet/PackageExtractor.cs

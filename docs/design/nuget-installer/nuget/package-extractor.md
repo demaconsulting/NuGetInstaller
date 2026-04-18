@@ -47,10 +47,10 @@ Extracts all entries from a .nupkg file into the destination folder.
 3. Open the archive with `ZipFile.OpenRead(nupkgPath)`.
 4. For each `ZipArchiveEntry` in the archive:
    a. Skip entries that have an empty `Name` (directory markers).
-   b. Combine and validate the destination path using
-      `PathHelpers.SafePathCombine(destFolder, entry.FullName, message)`, passing a
-      descriptive zip-slip message. If the entry would escape `destFolder`,
-      `SafePathCombine` throws `InvalidOperationException` with the provided message.
+   b. Resolve the canonical destination path: `destPath = Path.GetFullPath(Path.Combine(destFolder, entry.FullName))`.
+      Verify `destPath` starts with the canonical destination folder plus a trailing directory
+      separator (`canonicalDestFolderWithSep`). If it does not, throw `InvalidOperationException`
+      with a descriptive zip-slip message.
    c. Ensure the parent directory exists (`Directory.CreateDirectory`).
    d. Open the entry stream and the destination file stream.
    e. Read the entry in `CopyBufferSize` (80 KiB) chunks; after each chunk add the bytes
@@ -68,12 +68,11 @@ Two attack vectors are mitigated:
   `InvalidOperationException`. The limit is enforced incrementally as each chunk is
   decompressed, so memory consumption remains bounded regardless of the archive's claimed
   uncompressed sizes.
-- **Zip-slip**: Each entry's destination path is validated by `PathHelpers.SafePathCombine`,
-  which uses `Path.GetFullPath` and `Path.GetRelativePath` to detect traversal sequences and
-  throws `InvalidOperationException` when an entry would write outside `destFolder`.
+- **Zip-slip**: The canonical destination path for each entry is resolved with `Path.GetFullPath`
+  and verified to start with the canonical destination folder (with a trailing directory separator)
+  before any file is written. This follows the SonarQube S6096 / CodeQL `cs/zipslip`-recognized
+  pattern and guards against path-traversal entries that would write outside `destFolder`.
 
 ## Interactions
 
-`PackageExtractor` depends on `PathHelpers.SafePathCombine` from the `Utilities` subsystem
-for zip-slip path validation. It also uses .NET base class library types (`Directory`,
-`File`, `ZipFile`, `ZipArchiveEntry`).
+`PackageExtractor` uses .NET base class library types (`Directory`, `File`, `ZipFile`, `ZipArchiveEntry`).

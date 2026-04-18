@@ -16,6 +16,16 @@ sections:
         tests:
           - PackageExtractor_Extract_NewDestination_ExtractsAndReturnsTrue
 
+      - id: NuGetInstaller-PackageExtractor-ZipSlip
+        title: The PackageExtractor class shall reject zip entries that would escape the destination folder (zip-slip).
+        justification: |
+          Malicious archives may contain entries with path-traversal sequences (e.g. ../evil.txt)
+          designed to write files outside the intended destination. Canonical-path validation
+          using Path.GetFullPath and a separator-terminated StartsWith check detects and rejects
+          such entries before any file is written.
+        tests:
+          - PackageExtractor_Extract_ZipSlipEntry_ThrowsInvalidOperationException
+
       - id: NuGetInstaller-PackageExtractor-SkipExisting
         title: The PackageExtractor class shall skip extraction when the destination folder already exists.
         justification: |

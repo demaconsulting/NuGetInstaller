@@ -95,4 +95,41 @@ public class PackageExtractorTests
             }
         }
     }
+
+    /// <summary>
+    ///     Test that Extract throws InvalidOperationException when a zip entry would escape the destination folder (zip-slip).
+    /// </summary>
+    [TestMethod]
+    public void PackageExtractor_Extract_ZipSlipEntry_ThrowsInvalidOperationException()
+    {
+        // Arrange: create a zip containing a traversal entry (../evil.txt)
+        var tempDir = Path.Combine(Path.GetTempPath(), $"extractor_test_{Guid.NewGuid()}");
+        var destFolder = Path.Combine(tempDir, "output");
+
+        try
+        {
+            Directory.CreateDirectory(tempDir);
+            var zipPath = Path.Combine(tempDir, "malicious.nupkg");
+
+            using (var archive = ZipFile.Open(zipPath, ZipArchiveMode.Create))
+            {
+                var entry = archive.CreateEntry("../evil.txt");
+                using var stream = entry.Open();
+                using var writer = new StreamWriter(stream);
+                writer.Write("malicious content");
+            }
+
+            // Act & Assert: extraction must be rejected with the zip-slip message
+            var exception = Assert.Throws<InvalidOperationException>(() =>
+                PackageExtractor.Extract(zipPath, destFolder));
+            Assert.Contains("zip-slip", exception.Message);
+        }
+        finally
+        {
+            if (Directory.Exists(tempDir))
+            {
+                Directory.Delete(tempDir, true);
+            }
+        }
+    }
 }

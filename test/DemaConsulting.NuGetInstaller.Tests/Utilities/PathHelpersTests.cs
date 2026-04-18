@@ -168,40 +168,4 @@ public class PathHelpersTests
         // Assert: verify expected behavior
         Assert.AreEqual(Path.Combine(basePath, relativePath), result);
     }
-
-    /// <summary>
-    ///     Test that SafePathCombine throws InvalidOperationException with the custom message when traversal is
-    ///     detected and a message is provided.
-    /// </summary>
-    [TestMethod]
-    public void PathHelpers_SafePathCombine_PathTraversalWithMessage_ThrowsInvalidOperationException()
-    {
-        // Arrange: setup base path, traversal path, and custom message
-        var basePath = "/home/user/project";
-        var relativePath = "../etc/passwd";
-        var customMessage = "Custom zip-slip error message";
-
-        // Act & Assert: verify InvalidOperationException is thrown with the custom message
-        var exception = Assert.Throws<InvalidOperationException>(() =>
-            PathHelpers.SafePathCombine(basePath, relativePath, customMessage));
-        Assert.AreEqual(customMessage, exception.Message);
-    }
-
-    /// <summary>
-    ///     Test that SafePathCombine returns the combined path unchanged when a message is provided but the path is valid.
-    /// </summary>
-    [TestMethod]
-    public void PathHelpers_SafePathCombine_ValidPathWithMessage_CombinesCorrectly()
-    {
-        // Arrange: setup valid base path, relative path, and custom message
-        var basePath = "/home/user/project";
-        var relativePath = "subfolder/file.txt";
-        var customMessage = "Should not be thrown";
-
-        // Act: execute the operation being tested
-        var result = PathHelpers.SafePathCombine(basePath, relativePath, customMessage);
-
-        // Assert: verify expected behavior
-        Assert.AreEqual(Path.Combine(basePath, relativePath), result);
-    }
 }
