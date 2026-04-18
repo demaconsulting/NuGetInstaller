@@ -42,12 +42,14 @@ Extracts all entries from a .nupkg file into the destination folder.
 **Algorithm:**
 
 1. If `destFolder` already exists, return `false`.
-2. Open the archive with `ZipFile.OpenRead(nupkgPath)` and initialise `totalExtractedBytes`
-   to zero.
-3. For each `ZipArchiveEntry` in the archive:
+2. Compute `canonicalDestFolder = Path.GetFullPath(destFolder)` with a trailing
+   `DirectorySeparatorChar`, and allocate a single reusable `CopyBufferSize` byte buffer.
+   Initialise `totalExtractedBytes` to zero.
+3. Open the archive with `ZipFile.OpenRead(nupkgPath)`.
+4. For each `ZipArchiveEntry` in the archive:
    a. Skip entries that have an empty `Name` (directory markers).
-   b. Determine the destination path by resolving `Path.GetFullPath(Path.Combine(destFolder, entry.FullName))`.
-   c. Verify the resolved path starts with the fully-qualified `destFolder`; if not, throw
+   b. Resolve `destPath = Path.GetFullPath(Path.Combine(destFolder, entry.FullName))`.
+   c. If `destPath` does not start with `canonicalDestFolder`, throw
       `InvalidOperationException` (zip-slip defence).
    d. Ensure the parent directory exists (`Directory.CreateDirectory`).
    e. Open the entry stream and the destination file stream.
@@ -55,7 +57,7 @@ Extracts all entries from a .nupkg file into the destination folder.
       read to `totalExtractedBytes`. If `totalExtractedBytes` exceeds `MaxExtractedBytes`,
       throw `InvalidOperationException` (zip-bomb defence).
    g. Write the chunk to the destination file stream.
-4. Return `true`.
+5. Return `true`.
 
 ## Security
 

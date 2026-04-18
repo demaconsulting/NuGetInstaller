@@ -45,7 +45,8 @@ internal static class PackageExtractor
     /// <param name="destFolder">Destination folder for extraction.</param>
     /// <returns><see langword="true"/> if extraction was performed; <see langword="false"/> if the destination folder already exists (skipped).</returns>
     /// <exception cref="InvalidOperationException">
-    ///     Thrown when the total extracted size exceeds 1 GB, indicating a potential zip-bomb.
+    ///     Thrown when an entry would escape the destination folder (zip-slip), or when the
+    ///     total extracted size exceeds 1 GB (zip-bomb).
     /// </exception>
     public static bool Extract(string nupkgPath, string destFolder)
     {
@@ -55,9 +56,18 @@ internal static class PackageExtractor
             return false;
         }
 
+        // Canonicalise once with a guaranteed trailing separator for prefix matching
+        var canonicalDestFolder = Path.GetFullPath(destFolder);
+        if (!canonicalDestFolder.EndsWith(Path.DirectorySeparatorChar))
+        {
+            canonicalDestFolder += Path.DirectorySeparatorChar;
+        }
+
         // Extract each zip entry individually, tracking total bytes to defend against zip-bombs
         using var archive = ZipFile.OpenRead(nupkgPath);
         var totalExtractedBytes = 0L;
+        var buffer = new byte[CopyBufferSize];
+
         foreach (var entry in archive.Entries)
         {
             // Skip directory entries (entries with no name component after the last separator)
@@ -66,23 +76,21 @@ internal static class PackageExtractor
                 continue;
             }
 
+            // Resolve and validate destination path to defend against zip-slip
             var destPath = Path.GetFullPath(Path.Combine(destFolder, entry.FullName));
-
-            // Defend against zip-slip: reject any entry that would escape the destination folder
-            if (!destPath.StartsWith(Path.GetFullPath(destFolder) + Path.DirectorySeparatorChar, StringComparison.Ordinal) &&
-                destPath != Path.GetFullPath(destFolder))
+            if (!destPath.StartsWith(canonicalDestFolder, StringComparison.Ordinal))
             {
                 throw new InvalidOperationException(
                     $"Extraction of '{nupkgPath}' aborted: entry '{entry.FullName}' would escape the destination folder (zip-slip).");
             }
 
+            // destPath is a child of canonicalDestFolder so GetDirectoryName cannot return null
             var destDir = Path.GetDirectoryName(destPath)!;
             Directory.CreateDirectory(destDir);
 
             using var entryStream = entry.Open();
             using var destStream = File.Create(destPath);
 
-            var buffer = new byte[CopyBufferSize];
             int bytesRead;
             while ((bytesRead = entryStream.Read(buffer, 0, buffer.Length)) > 0)
             {
