@@ -53,7 +53,7 @@ public class ModelsSubsystemTests
             var packages = PackagesConfigReader.Read(tempFile);
 
             // Assert: verify PackageEntry data model represents all fields correctly
-            Assert.AreEqual(2, packages.Count);
+            Assert.HasCount(2, packages);
 
             Assert.AreEqual("PackageA", packages[0].Id);
             Assert.AreEqual("1.0.0", packages[0].Version);

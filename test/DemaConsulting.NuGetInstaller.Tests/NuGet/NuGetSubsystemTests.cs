@@ -59,12 +59,12 @@ public class NuGetSubsystemTests
                 .GetAwaiter().GetResult();
 
             // Assert: verify packages were read and installed
-            Assert.AreEqual(1, packages.Count);
+            Assert.HasCount(1, packages);
             Assert.AreEqual("DemaConsulting.NuGet.Caching", packages[0].Id);
             var expectedFolder = Path.Combine(tempDir, "DemaConsulting.NuGet.Caching.1.0.0");
             Assert.IsTrue(Directory.Exists(expectedFolder),
                 "Package should be extracted to output directory");
-            Assert.IsTrue(Directory.GetFileSystemEntries(expectedFolder).Length > 0,
+            Assert.IsNotEmpty(Directory.GetFileSystemEntries(expectedFolder),
                 "Extracted folder should contain files");
         }
         finally
@@ -100,7 +100,7 @@ public class NuGetSubsystemTests
             var packages = PackagesConfigReader.Read(tempFile);
 
             // Assert: verify all entries are returned with correct data
-            Assert.AreEqual(2, packages.Count);
+            Assert.HasCount(2, packages);
             Assert.AreEqual("PackageA", packages[0].Id);
             Assert.AreEqual("1.0.0", packages[0].Version);
             Assert.AreEqual("PackageB", packages[1].Id);
