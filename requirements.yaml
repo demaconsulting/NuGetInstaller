@@ -5,6 +5,12 @@ includes:
   - docs/reqstream/nuget-installer/program.yaml
   - docs/reqstream/nuget-installer/cli/cli.yaml
   - docs/reqstream/nuget-installer/cli/context.yaml
+  - docs/reqstream/nuget-installer/nuget/nuget.yaml
+  - docs/reqstream/nuget-installer/nuget/models/models.yaml
+  - docs/reqstream/nuget-installer/nuget/models/package-entry.yaml
+  - docs/reqstream/nuget-installer/nuget/packages-config-reader.yaml
+  - docs/reqstream/nuget-installer/nuget/package-extractor.yaml
+  - docs/reqstream/nuget-installer/nuget/package-installer.yaml
   - docs/reqstream/nuget-installer/self-test/self-test.yaml
   - docs/reqstream/nuget-installer/self-test/validation.yaml
   - docs/reqstream/nuget-installer/utilities/utilities.yaml

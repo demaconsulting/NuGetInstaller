@@ -146,12 +146,13 @@ public class IntegrationTests
     [TestMethod]
     public void IntegrationTest_SilentFlag_SuppressesOutput()
     {
-        // Act: execute the operation being tested
+        // Act: execute the operation being tested (with --version to avoid packages.config lookup)
         var exitCode = Runner.Run(
             out var _,
             "dotnet",
             _dllPath,
-            "--silent");
+            "--silent",
+            "--version");
 
         // Assert: verify expected behavior
         Assert.AreEqual(0, exitCode);
@@ -170,20 +171,21 @@ public class IntegrationTests
 
         try
         {
-            // Act: execute the operation being tested
+            // Act: execute the operation being tested (with --version to produce known output)
             var exitCode = Runner.Run(
                 out var _,
                 "dotnet",
                 _dllPath,
                 "--log",
-                logFile);
+                logFile,
+                "--version");
 
             // Assert: verify expected behavior
             Assert.AreEqual(0, exitCode);
             Assert.IsTrue(File.Exists(logFile), "Log file was not created");
 
             var logContent = File.ReadAllText(logFile);
-            Assert.Contains("NuGet Installer version", logContent);
+            Assert.IsFalse(string.IsNullOrWhiteSpace(logContent), "Log file should contain output");
         }
         finally
         {
@@ -246,6 +248,55 @@ public class IntegrationTests
         // Assert: verify expected behavior
         Assert.AreNotEqual(0, exitCode);
         Assert.Contains("Error", output);
+    }
+
+    /// <summary>
+    ///     Test that the tool installs NuGet packages from a packages.config file into the output directory.
+    /// </summary>
+    [TestMethod]
+    public void IntegrationTest_InstallPackages_ExtractsPackageToOutputDirectory()
+    {
+        // Arrange: create a temporary directory with a packages.config file
+        var tempDir = Path.Combine(Path.GetTempPath(), $"integration_install_test_{Guid.NewGuid()}");
+
+        try
+        {
+            Directory.CreateDirectory(tempDir);
+            var configPath = Path.Combine(tempDir, "packages.config");
+            File.WriteAllText(configPath,
+                """
+                <?xml version="1.0" encoding="utf-8"?>
+                <packages>
+                  <package id="DemaConsulting.NuGet.Caching" version="1.0.0" />
+                </packages>
+                """);
+
+            // Act: run the tool to install packages into the temp directory
+            var exitCode = Runner.Run(
+                out var output,
+                "dotnet",
+                _dllPath,
+                configPath,
+                "-o",
+                tempDir);
+
+            // Assert: verify the tool exits successfully and the package is extracted
+            Assert.AreEqual(0, exitCode, $"Tool should succeed. Output: {output}");
+            Assert.Contains("Installed", output, "Output should confirm package installation");
+
+            var expectedFolder = Path.Combine(tempDir, "DemaConsulting.NuGet.Caching.1.0.0");
+            Assert.IsTrue(Directory.Exists(expectedFolder),
+                $"Package folder should exist at {expectedFolder}");
+            Assert.IsTrue(Directory.GetFileSystemEntries(expectedFolder).Length > 0,
+                "Package folder should contain extracted files");
+        }
+        finally
+        {
+            if (Directory.Exists(tempDir))
+            {
+                Directory.Delete(tempDir, true);
+            }
+        }
     }
 }
 

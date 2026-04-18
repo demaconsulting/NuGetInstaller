@@ -44,6 +44,9 @@ public class ContextTests
         Assert.IsFalse(context.Validate);
         Assert.IsNull(context.ResultsFile);
         Assert.AreEqual(1, context.HeadingDepth);
+        Assert.AreEqual("packages.config", context.PackagesConfigFile);
+        Assert.IsNull(context.OutputDirectory);
+        Assert.IsFalse(context.ExcludeVersion);
         Assert.AreEqual(0, context.ExitCode);
     }
 
@@ -489,6 +492,103 @@ public class ContextTests
                 File.Delete(logFile);
             }
         }
+    }
+
+    /// <summary>
+    ///     Test creating a context with a positional packages.config file argument.
+    /// </summary>
+    [TestMethod]
+    public void Context_Create_PositionalArgument_SetsPackagesConfigFile()
+    {
+        // Act: execute the operation being tested
+        using var context = Context.Create(["my-packages.config"]);
+
+        // Assert: verify expected behavior
+        Assert.AreEqual("my-packages.config", context.PackagesConfigFile);
+        Assert.AreEqual(0, context.ExitCode);
+    }
+
+    /// <summary>
+    ///     Test creating a context with the -x flag sets ExcludeVersion.
+    /// </summary>
+    [TestMethod]
+    public void Context_Create_ExcludeVersionShortFlag_SetsExcludeVersionTrue()
+    {
+        // Act: execute the operation being tested
+        using var context = Context.Create(["-x"]);
+
+        // Assert: verify expected behavior
+        Assert.IsTrue(context.ExcludeVersion);
+        Assert.AreEqual(0, context.ExitCode);
+    }
+
+    /// <summary>
+    ///     Test creating a context with the -ExcludeVersion flag sets ExcludeVersion.
+    /// </summary>
+    [TestMethod]
+    public void Context_Create_ExcludeVersionLongFlag_SetsExcludeVersionTrue()
+    {
+        // Act: execute the operation being tested
+        using var context = Context.Create(["-ExcludeVersion"]);
+
+        // Assert: verify expected behavior
+        Assert.IsTrue(context.ExcludeVersion);
+        Assert.AreEqual(0, context.ExitCode);
+    }
+
+    /// <summary>
+    ///     Test creating a context with the -o flag sets OutputDirectory.
+    /// </summary>
+    [TestMethod]
+    public void Context_Create_OutputDirectoryShortFlag_SetsOutputDirectory()
+    {
+        // Act: execute the operation being tested
+        using var context = Context.Create(["-o", "./packages"]);
+
+        // Assert: verify expected behavior
+        Assert.AreEqual("./packages", context.OutputDirectory);
+        Assert.AreEqual(0, context.ExitCode);
+    }
+
+    /// <summary>
+    ///     Test creating a context with the -OutputDirectory flag sets OutputDirectory.
+    /// </summary>
+    [TestMethod]
+    public void Context_Create_OutputDirectoryLongFlag_SetsOutputDirectory()
+    {
+        // Act: execute the operation being tested
+        using var context = Context.Create(["-OutputDirectory", "./packages"]);
+
+        // Assert: verify expected behavior
+        Assert.AreEqual("./packages", context.OutputDirectory);
+        Assert.AreEqual(0, context.ExitCode);
+    }
+
+    /// <summary>
+    ///     Test creating a context with -o flag but no value throws exception.
+    /// </summary>
+    [TestMethod]
+    public void Context_Create_OutputDirectoryFlag_WithoutValue_ThrowsArgumentException()
+    {
+        // Act & Assert
+        var exception = Assert.Throws<ArgumentException>(() => Context.Create(["-o"]));
+        Assert.Contains("-o", exception.Message);
+    }
+
+    /// <summary>
+    ///     Test creating a context with all new arguments combined.
+    /// </summary>
+    [TestMethod]
+    public void Context_Create_AllNewArguments_SetsAllProperties()
+    {
+        // Act: execute the operation being tested
+        using var context = Context.Create(["custom.config", "-x", "-o", "./out"]);
+
+        // Assert: verify expected behavior
+        Assert.AreEqual("custom.config", context.PackagesConfigFile);
+        Assert.IsTrue(context.ExcludeVersion);
+        Assert.AreEqual("./out", context.OutputDirectory);
+        Assert.AreEqual(0, context.ExitCode);
     }
 }
 

@@ -27,3 +27,13 @@ sections:
           - Validation_Run_WithXmlResultsFile_WritesXmlFile
           - IntegrationTest_ValidateWithResults_GeneratesTrxFile
           - IntegrationTest_ValidateWithResults_GeneratesJUnitFile
+
+      - id: NuGetInstaller-Validation-InstallPackage
+        title: The Validation class shall include a self-test that installs a known package.
+        justification: |
+          The self-validation suite must exercise the core package installation
+          functionality to provide qualification evidence that the tool can
+          resolve, cache, and extract NuGet packages in the deployment environment.
+        tests:
+          - Validation_Run_WithSilentContext_PrintsSummary
+          - Validation_Run_WithSilentContext_ExitCodeIsZero

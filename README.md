@@ -9,26 +9,23 @@
 [![Security][badge-security]][link-security]
 [![NuGet][badge-nuget]][link-nuget]
 
-DEMA Consulting template project for DotNet Tools, demonstrating best practices for building command-line tools with .NET.
+DEMA Consulting NuGet package installer tool. Installs NuGet packages listed in a
+`packages.config` file into a local output directory, mirroring the behavior of
+`nuget.exe install`.
 
 ## Features
 
-This template demonstrates:
-
+- **Package Installation**: Install NuGet packages from a `packages.config` file
+- **Output Directory Control**: Specify custom output directory with `-o`/`-OutputDirectory`
+- **Version-less Folders**: Use `-x`/`-ExcludeVersion` for `{Id}/` folder naming
+- **Skip Existing**: Re-running skips packages whose output folder already exists
 - **Standardized Command-Line Interface**: Context class handling common arguments
   (`--version`, `--help`, `--silent`, `--validate`, `--results`, `--depth`, `--log`)
 - **Self-Validation**: Built-in validation tests with TRX/JUnit output
 - **Multi-Platform Support**: Builds and runs on Windows, Linux, and macOS
 - **Multi-Runtime Support**: Targets .NET 8, 9, and 10
-- **Comprehensive CI/CD**: GitHub Actions workflows with quality checks, builds, and
-  integration tests
-- **Linting Enforcement**: markdownlint, cspell, and yamllint enforced on every CI run
 - **Continuous Compliance**: Compliance evidence generated automatically on every CI run, following
   the [Continuous Compliance][link-continuous-compliance] methodology
-- **SonarCloud Integration**: Quality gate and security analysis on every build
-- **Documentation Generation**: Automated build notes, user guide, code quality reports,
-  requirements, justifications, and trace matrix
-- **Requirements Traceability**: Requirements linked to passing tests with auto-generated trace matrix
 
 ## Installation
 
@@ -41,6 +38,15 @@ dotnet tool install -g DemaConsulting.NuGetInstaller
 ## Usage
 
 ```bash
+# Install packages from packages.config into current directory
+nuget-installer packages.config
+
+# Install into a specific output directory
+nuget-installer packages.config -o ./packages
+
+# Use {Id}/ folder naming instead of {Id}.{Version}/
+nuget-installer -x packages.config
+
 # Display version
 nuget-installer --version
 
@@ -62,15 +68,18 @@ nuget-installer --silent --log output.log
 
 ## Command-Line Options
 
-| Option               | Description                                                  |
-| -------------------- | ------------------------------------------------------------ |
-| `-v`, `--version`    | Display version information                                  |
-| `-?`, `-h`, `--help` | Display help message                                         |
-| `--silent`           | Suppress console output                                      |
-| `--validate`         | Run self-validation                                          |
-| `--results <file>`   | Write validation results to file (TRX or JUnit format)       |
-| `--depth <#>`        | Set heading depth for markdown output (default: 1)           |
-| `--log <file>`       | Write output to log file                                     |
+| Option                          | Description                                                  |
+| ------------------------------- | ------------------------------------------------------------ |
+| `[packages.config]`             | Path to packages.config (default: packages.config)           |
+| `-x`, `-ExcludeVersion`         | Name output folder {Id}/ instead of {Id}.{Version}/          |
+| `-o`, `-OutputDirectory <dir>`  | Output directory (default: current directory)                |
+| `-v`, `--version`               | Display version information                                  |
+| `-?`, `-h`, `--help`            | Display help message                                         |
+| `--silent`                      | Suppress console output                                      |
+| `--validate`                    | Run self-validation                                          |
+| `--results <file>`              | Write validation results to file (TRX or JUnit format)       |
+| `--depth <#>`                   | Set heading depth for markdown output (default: 1)           |
+| `--log <file>`                  | Write output to log file                                     |
 
 ## Self Validation
 
@@ -89,9 +98,10 @@ Running self-validation produces a report containing the following information:
 
 ✓ NuGetInstaller_VersionDisplay - Passed
 ✓ NuGetInstaller_HelpDisplay - Passed
+✓ NuGetInstaller_InstallPackage - Passed
 
-Total Tests: 2
-Passed: 2
+Total Tests: 3
+Passed: 3
 Failed: 0
 ```
 
@@ -99,6 +109,7 @@ Each test in the report proves:
 
 - **`NuGetInstaller_VersionDisplay`** - `--version` outputs a valid version string.
 - **`NuGetInstaller_HelpDisplay`** - `--help` outputs usage and options information.
+- **`NuGetInstaller_InstallPackage`** - Installs a NuGet package from a packages.config file.
 
 Use `--depth <#>` to control the heading level of the validation output (default: `1`).
 This is useful when embedding validation output into a larger markdown document:

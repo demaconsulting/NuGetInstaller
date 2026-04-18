@@ -1,0 +1,98 @@
+// Copyright (c) DEMA Consulting
+// 
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+// 
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+
+using System.IO.Compression;
+using DemaConsulting.NuGetInstaller.NuGet;
+
+namespace DemaConsulting.NuGetInstaller.Tests;
+
+/// <summary>
+///     Unit tests for the PackageExtractor class.
+/// </summary>
+[TestClass]
+public class PackageExtractorTests
+{
+    /// <summary>
+    ///     Test that Extract returns false when destination folder already exists.
+    /// </summary>
+    [TestMethod]
+    public void PackageExtractor_Extract_DestinationExists_ReturnsFalse()
+    {
+        // Arrange: create a temporary zip file and a destination folder
+        var tempDir = Path.Combine(Path.GetTempPath(), $"extractor_test_{Guid.NewGuid()}");
+        var destFolder = Path.Combine(tempDir, "output");
+
+        try
+        {
+            Directory.CreateDirectory(destFolder);
+            var zipPath = Path.Combine(tempDir, "test.nupkg");
+            ZipFile.CreateFromDirectory(destFolder, zipPath);
+
+            // Act: extract to existing destination
+            var result = PackageExtractor.Extract(zipPath, destFolder);
+
+            // Assert: should return false (skipped)
+            Assert.IsFalse(result);
+        }
+        finally
+        {
+            if (Directory.Exists(tempDir))
+            {
+                Directory.Delete(tempDir, true);
+            }
+        }
+    }
+
+    /// <summary>
+    ///     Test that Extract returns true and extracts content when destination folder does not exist.
+    /// </summary>
+    [TestMethod]
+    public void PackageExtractor_Extract_NewDestination_ExtractsAndReturnsTrue()
+    {
+        // Arrange: create a temporary zip file with a test file inside
+        var tempDir = Path.Combine(Path.GetTempPath(), $"extractor_test_{Guid.NewGuid()}");
+        var sourceDir = Path.Combine(tempDir, "source");
+        var destFolder = Path.Combine(tempDir, "output");
+
+        try
+        {
+            Directory.CreateDirectory(sourceDir);
+            File.WriteAllText(Path.Combine(sourceDir, "test.txt"), "test content");
+
+            var zipPath = Path.Combine(tempDir, "test.nupkg");
+            ZipFile.CreateFromDirectory(sourceDir, zipPath);
+
+            // Act: extract to new destination
+            var result = PackageExtractor.Extract(zipPath, destFolder);
+
+            // Assert: should return true (extracted) and contain the file
+            Assert.IsTrue(result);
+            Assert.IsTrue(Directory.Exists(destFolder));
+            Assert.IsTrue(File.Exists(Path.Combine(destFolder, "test.txt")));
+        }
+        finally
+        {
+            if (Directory.Exists(tempDir))
+            {
+                Directory.Delete(tempDir, true);
+            }
+        }
+    }
+}

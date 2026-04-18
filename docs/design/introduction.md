@@ -23,8 +23,20 @@ This document covers the detailed design of the following software units:
 
 - **Program** — entry point and execution orchestrator (`Program.cs`)
 - **Context** — command-line argument parser and I/O owner (`Cli/Context.cs`)
+- **PackageEntry** — package entry data model (`NuGet/Models/PackageEntry.cs`)
+- **PackagesConfigReader** — XML parser for packages.config files (`NuGet/PackagesConfigReader.cs`)
+- **PackageExtractor** — ZIP extraction wrapper for .nupkg files (`NuGet/PackageExtractor.cs`)
+- **PackageInstaller** — parallel install orchestrator (`NuGet/PackageInstaller.cs`)
 - **Validation** — self-validation test runner (`SelfTest/Validation.cs`)
 - **PathHelpers** — safe path combination utilities (`Utilities/PathHelpers.cs`)
+
+The following subsystems are described in their own chapters:
+
+- **Cli** — command-line interface subsystem
+- **NuGet** — package management subsystem
+- **Models** — package data models (child subsystem of NuGet)
+- **SelfTest** — self-validation subsystem
+- **Utilities** — shared utility subsystem
 
 The following topics are out of scope:
 
@@ -44,6 +56,12 @@ NuGetInstaller (System)
 ├── Program (Unit)
 ├── Cli (Subsystem)
 │   └── Context (Unit)
+├── NuGet (Subsystem)
+│   ├── Models (Subsystem)
+│   │   └── PackageEntry (Unit)
+│   ├── PackagesConfigReader (Unit)
+│   ├── PackageExtractor (Unit)
+│   └── PackageInstaller (Unit)
 ├── SelfTest (Subsystem)
 │   └── Validation (Unit)
 └── Utilities (Subsystem)
@@ -64,6 +82,12 @@ src/DemaConsulting.NuGetInstaller/
 ├── Program.cs                  — entry point and execution orchestrator
 ├── Cli/
 │   └── Context.cs              — command-line argument parser and I/O owner
+├── NuGet/
+│   ├── Models/
+│   │   └── PackageEntry.cs     — package entry data model
+│   ├── PackagesConfigReader.cs — XML parser for packages.config files
+│   ├── PackageExtractor.cs     — ZIP extraction wrapper for .nupkg files
+│   └── PackageInstaller.cs     — parallel install orchestrator
 ├── SelfTest/
 │   └── Validation.cs           — self-validation test runner
 └── Utilities/

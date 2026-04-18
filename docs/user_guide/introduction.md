@@ -2,16 +2,20 @@
 
 ## Purpose
 
-NuGet Installer is a demonstration project that showcases best practices for DEMA
-Consulting DotNet Tools.
+NuGet Installer is a command-line tool that installs NuGet packages from a `packages.config`
+file into a local output directory. It resolves packages through the NuGet global package
+cache, downloading them from NuGet feeds as needed, and extracts their contents for use by
+downstream build processes.
 
 ## Scope
 
 This user guide covers:
 
 - Installation instructions
+- Package installation from packages.config
 - Usage examples for common tasks
 - Command-line options reference
+- Self-validation and compliance features
 - Practical examples for various scenarios
 
 # Continuous Compliance
@@ -38,6 +42,36 @@ dotnet tool install -g DemaConsulting.NuGetInstaller
 ```
 
 # Usage
+
+## Installing Packages
+
+Install NuGet packages from a `packages.config` file:
+
+```bash
+nuget-installer packages.config
+```
+
+Specify a custom output directory:
+
+```bash
+nuget-installer packages.config -o ./packages
+```
+
+Use version-less folder naming (`{Id}/` instead of `{Id}.{Version}/`):
+
+```bash
+nuget-installer packages.config -o ./packages -x
+```
+
+The `packages.config` file uses the standard NuGet XML format:
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<packages>
+  <package id="NLog" version="5.2.8" />
+  <package id="DemaConsulting.NuGet.Caching" version="1.0.0" targetFramework="net8.0" />
+</packages>
+```
 
 ## Display Version
 
@@ -119,6 +153,7 @@ Each test proves specific functionality works correctly:
 
 - **`NuGetInstaller_VersionDisplay`** - `--version` outputs a valid version string.
 - **`NuGetInstaller_HelpDisplay`** - `--help` outputs usage and options information.
+- **`NuGetInstaller_InstallPackage`** - Installs a known package from a packages.config file.
 
 ## Silent Mode
 
@@ -140,31 +175,40 @@ nuget-installer --log output.log
 
 The following command-line options are supported:
 
-| Option               | Description                                                  |
-| -------------------- | ------------------------------------------------------------ |
-| `-v`, `--version`    | Display version information                                  |
-| `-?`, `-h`, `--help` | Display help message                                         |
-| `--silent`           | Suppress console output                                      |
-| `--validate`         | Run self-validation                                          |
-| `--results <file>`   | Write validation results to file (TRX or JUnit format)       |
-| `--depth <#>`        | Set heading depth for markdown output (default: 1)           |
-| `--log <file>`       | Write output to log file                                     |
+| Option                          | Description                                                  |
+| ------------------------------- | ------------------------------------------------------------ |
+| `[packages.config]`             | Path to packages.config (default: packages.config)           |
+| `-x`, `-ExcludeVersion`         | Name output folder {Id}/ instead of {Id}.{Version}/          |
+| `-o`, `-OutputDirectory <dir>`  | Output directory (default: current directory)                |
+| `-v`, `--version`               | Display version information                                  |
+| `-?`, `-h`, `--help`            | Display help message                                         |
+| `--silent`                      | Suppress console output                                      |
+| `--validate`                    | Run self-validation                                          |
+| `--results <file>`              | Write validation results to file (TRX or JUnit format)       |
+| `--depth <#>`                   | Set heading depth for markdown output (default: 1)           |
+| `--log <file>`                  | Write output to log file                                     |
 
 # Examples
 
-## Example 1: Basic Usage
+## Example 1: Install Packages
 
 ```bash
-nuget-installer
+nuget-installer packages.config -o ./packages
 ```
 
-## Example 2: Self-Validation with Results
+## Example 2: Install with Version-less Folders
+
+```bash
+nuget-installer packages.config -o ./packages -x
+```
+
+## Example 3: Self-Validation with Results
 
 ```bash
 nuget-installer --validate --results validation-results.trx
 ```
 
-## Example 3: Silent Mode with Logging
+## Example 4: Silent Mode with Logging
 
 ```bash
 nuget-installer --silent --log tool-output.log

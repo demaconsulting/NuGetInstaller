@@ -20,6 +20,7 @@
 
 using System.Reflection;
 using DemaConsulting.NuGetInstaller.Cli;
+using DemaConsulting.NuGetInstaller.NuGet;
 using DemaConsulting.NuGetInstaller.SelfTest;
 
 namespace DemaConsulting.NuGetInstaller;
@@ -135,16 +136,19 @@ internal static class Program
     /// <param name="context">The context for output.</param>
     private static void PrintHelp(Context context)
     {
-        context.WriteLine("Usage: nuget-installer [options]");
+        context.WriteLine("Usage: nuget-installer [packages.config] [options]");
         context.WriteLine("");
         context.WriteLine("Options:");
-        context.WriteLine("  -v, --version              Display version information");
-        context.WriteLine("  -?, -h, --help             Display this help message");
-        context.WriteLine("  --silent                   Suppress console output");
-        context.WriteLine("  --validate                 Run self-validation");
-        context.WriteLine("  --results <file>           Write validation results to file (.trx or .xml)");
-        context.WriteLine("  --depth <#>                Set heading depth for markdown output (default: 1)");
-        context.WriteLine("  --log <file>               Write output to log file");
+        context.WriteLine("  [packages.config]            Path to packages.config (default: packages.config)");
+        context.WriteLine("  -x, -ExcludeVersion          Name output folder {Id}/ instead of {Id}.{Version}/");
+        context.WriteLine("  -o, -OutputDirectory <dir>   Output directory (default: current directory)");
+        context.WriteLine("  -v, --version                Display version information");
+        context.WriteLine("  -?, -h, --help               Display this help message");
+        context.WriteLine("  --silent                     Suppress console output");
+        context.WriteLine("  --validate                   Run self-validation");
+        context.WriteLine("  --results <file>             Write validation results to file (.trx or .xml)");
+        context.WriteLine("  --depth <#>                  Set heading depth for markdown output (default: 1)");
+        context.WriteLine("  --log <file>                 Write output to log file");
     }
 
     /// <summary>
@@ -153,9 +157,22 @@ internal static class Program
     /// <param name="context">The context containing command line arguments and program state.</param>
     private static void RunToolLogic(Context context)
     {
-        context.WriteLine("NuGet Installer - Demo Functionality");
-        context.WriteLine("This is a template project demonstrating best practices.");
-        context.WriteLine("");
-        context.WriteLine("Replace this with your actual tool implementation.");
+        // Resolve and validate packages.config path
+        if (!File.Exists(context.PackagesConfigFile))
+        {
+            context.WriteError($"packages.config not found: {context.PackagesConfigFile}");
+            return;
+        }
+
+        // Read packages
+        var packages = PackagesConfigReader.Read(context.PackagesConfigFile);
+        context.WriteLine($"Found {packages.Count} package(s) in {context.PackagesConfigFile}");
+
+        // Resolve output directory
+        var outputDirectory = context.OutputDirectory ?? Directory.GetCurrentDirectory();
+
+        // Install
+        PackageInstaller.InstallAsync(context, packages, outputDirectory, context.ExcludeVersion)
+            .GetAwaiter().GetResult();
     }
 }

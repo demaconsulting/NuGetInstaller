@@ -3,6 +3,8 @@ resource-path:
   - docs/design
   - docs/design/nuget-installer
   - docs/design/nuget-installer/cli
+  - docs/design/nuget-installer/nuget
+  - docs/design/nuget-installer/nuget/models
   - docs/design/nuget-installer/self-test
   - docs/design/nuget-installer/utilities
   - docs/template
@@ -14,6 +16,12 @@ input-files:
   - docs/design/nuget-installer/program.md
   - docs/design/nuget-installer/cli/cli.md
   - docs/design/nuget-installer/cli/context.md
+  - docs/design/nuget-installer/nuget/nuget.md
+  - docs/design/nuget-installer/nuget/models/models.md
+  - docs/design/nuget-installer/nuget/models/package-entry.md
+  - docs/design/nuget-installer/nuget/packages-config-reader.md
+  - docs/design/nuget-installer/nuget/package-extractor.md
+  - docs/design/nuget-installer/nuget/package-installer.md
   - docs/design/nuget-installer/self-test/self-test.md
   - docs/design/nuget-installer/self-test/validation.md
   - docs/design/nuget-installer/utilities/utilities.md
