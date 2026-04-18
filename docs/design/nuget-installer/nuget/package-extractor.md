@@ -15,11 +15,12 @@ an `InvalidOperationException` to defend against zip-bomb attacks.
 
 `PackageExtractor` holds no instance state. All state is local to the `Extract` method.
 
-The class defines one constant:
+The class defines two constants:
 
-| Constant              | Value        | Description                                        |
-|-----------------------|--------------|----------------------------------------------------|
+| Constant              | Value         | Description                                        |
+|-----------------------|---------------|----------------------------------------------------|
 | `MaxExtractedBytes`   | 1 073 741 824 | Maximum bytes that may be extracted (1 GB ceiling) |
+| `CopyBufferSize`      | 81 920        | Buffer size (80 KiB) used when copying entry data  |
 
 ## Methods
 
@@ -45,21 +46,30 @@ Extracts all entries from a .nupkg file into the destination folder.
    to zero.
 3. For each `ZipArchiveEntry` in the archive:
    a. Skip entries that have an empty `Name` (directory markers).
-   b. Determine the destination path by combining `destFolder` with `entry.FullName`.
-   c. Ensure the parent directory exists (`Directory.CreateDirectory`).
-   d. Open the entry stream and the destination file stream.
-   e. Read the entry in 80 KiB chunks; after each chunk add the bytes read to
-      `totalExtractedBytes`. If `totalExtractedBytes` exceeds `MaxExtractedBytes`, throw
-      `InvalidOperationException` (potential zip-bomb).
-   f. Write the chunk to the destination file stream.
+   b. Determine the destination path by resolving `Path.GetFullPath(Path.Combine(destFolder, entry.FullName))`.
+   c. Verify the resolved path starts with the fully-qualified `destFolder`; if not, throw
+      `InvalidOperationException` (zip-slip defence).
+   d. Ensure the parent directory exists (`Directory.CreateDirectory`).
+   e. Open the entry stream and the destination file stream.
+   f. Read the entry in `CopyBufferSize` (80 KiB) chunks; after each chunk add the bytes
+      read to `totalExtractedBytes`. If `totalExtractedBytes` exceeds `MaxExtractedBytes`,
+      throw `InvalidOperationException` (zip-bomb defence).
+   g. Write the chunk to the destination file stream.
 4. Return `true`.
 
 ## Security
 
-The zip-bomb defence prevents a maliciously crafted archive from consuming unbounded
-disk space by limiting total output to 1 GB. The limit is enforced incrementally as each
-chunk is decompressed and written, so memory consumption remains bounded regardless of
-the archive's claimed uncompressed sizes.
+Two attack vectors are mitigated:
+
+- **Zip-bomb**: The cumulative decompressed bytes written to disk is tracked across all
+  entries. If the total exceeds `MaxExtractedBytes` (1 GB), extraction is aborted with an
+  `InvalidOperationException`. The limit is enforced incrementally as each chunk is
+  decompressed, so memory consumption remains bounded regardless of the archive's claimed
+  uncompressed sizes.
+- **Zip-slip**: Each entry's destination path is resolved with `Path.GetFullPath` before
+  use. If the resolved path does not begin with the fully-qualified `destFolder`, extraction
+  is aborted with an `InvalidOperationException`, preventing a maliciously crafted entry
+  from writing files outside the intended directory.
 
 ## Interactions
 

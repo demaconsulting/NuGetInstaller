@@ -34,6 +34,11 @@ internal static class PackageExtractor
     private const long MaxExtractedBytes = 1L * 1024 * 1024 * 1024;
 
     /// <summary>
+    ///     Buffer size used when copying decompressed entry data to disk (80 KiB).
+    /// </summary>
+    private const int CopyBufferSize = 81920;
+
+    /// <summary>
     ///     Extracts all entries from a .nupkg file into the specified destination folder.
     /// </summary>
     /// <param name="nupkgPath">Path to the .nupkg file.</param>
@@ -61,14 +66,23 @@ internal static class PackageExtractor
                 continue;
             }
 
-            var destPath = Path.Combine(destFolder, entry.FullName);
+            var destPath = Path.GetFullPath(Path.Combine(destFolder, entry.FullName));
+
+            // Defend against zip-slip: reject any entry that would escape the destination folder
+            if (!destPath.StartsWith(Path.GetFullPath(destFolder) + Path.DirectorySeparatorChar, StringComparison.Ordinal) &&
+                destPath != Path.GetFullPath(destFolder))
+            {
+                throw new InvalidOperationException(
+                    $"Extraction of '{nupkgPath}' aborted: entry '{entry.FullName}' would escape the destination folder (zip-slip).");
+            }
+
             var destDir = Path.GetDirectoryName(destPath)!;
             Directory.CreateDirectory(destDir);
 
             using var entryStream = entry.Open();
             using var destStream = File.Create(destPath);
 
-            var buffer = new byte[81920];
+            var buffer = new byte[CopyBufferSize];
             int bytesRead;
             while ((bytesRead = entryStream.Read(buffer, 0, buffer.Length)) > 0)
             {
