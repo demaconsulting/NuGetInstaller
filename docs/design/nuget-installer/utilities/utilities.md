@@ -22,9 +22,9 @@ The `Utilities` subsystem contains the following software unit:
 
 The `Utilities` subsystem exposes the following interface to the rest of the tool:
 
-| Interface                     | Direction | Description                                                                  |
-|-------------------------------|-----------|------------------------------------------------------------------------------|
-| `PathHelpers.SafePathCombine` | Outbound  | Combines two path segments, rejecting null arguments and traversal sequences. |
+| Interface                     | Direction | Description                                                       |
+|-------------------------------|-----------|-------------------------------------------------------------------|
+| `PathHelpers.SafePathCombine` | Outbound  | Combines paths, rejecting null inputs and traversal sequences.    |
 
 ## Interactions
 
@@ -37,7 +37,7 @@ class library types (`Path`, `ArgumentNullException`).
 
 | Exception                | Condition                                                                           |
 |--------------------------|-------------------------------------------------------------------------------------|
-| `ArgumentNullException`  | Either `basePath` or `relativePath` is `null`.                                     |
+| `ArgumentNullException`  | Either `basePath` or `relativePath` is `null`.                                      |
 | `ArgumentException`      | The combined path would escape the base directory (path traversal detected).        |
 | `NotSupportedException`  | A path component contains an unsupported character.                                 |
 | `PathTooLongException`   | The resulting path exceeds the system's maximum path length.                        |

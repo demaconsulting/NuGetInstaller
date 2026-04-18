@@ -206,7 +206,7 @@ public class ContextTests
     public void Context_Create_UnknownArgument_ThrowsArgumentException()
     {
         // Act & Assert
-        var exception = Assert.Throws<ArgumentException>(() => Context.Create(["--unknown"]));
+        var exception = Assert.ThrowsExactly<ArgumentException>(() => Context.Create(["--unknown"]));
         Assert.Contains("Unsupported argument", exception.Message);
     }
 
@@ -217,7 +217,7 @@ public class ContextTests
     public void Context_Create_LogFlag_WithoutValue_ThrowsArgumentException()
     {
         // Act & Assert
-        var exception = Assert.Throws<ArgumentException>(() => Context.Create(["--log"]));
+        var exception = Assert.ThrowsExactly<ArgumentException>(() => Context.Create(["--log"]));
         Assert.Contains("--log", exception.Message);
     }
 
@@ -228,7 +228,7 @@ public class ContextTests
     public void Context_Create_ResultsFlag_WithoutValue_ThrowsArgumentException()
     {
         // Act & Assert
-        var exception = Assert.Throws<ArgumentException>(() => Context.Create(["--results"]));
+        var exception = Assert.ThrowsExactly<ArgumentException>(() => Context.Create(["--results"]));
         Assert.Contains("--results", exception.Message);
     }
 
@@ -253,7 +253,7 @@ public class ContextTests
     public void Context_Create_ResultAliasFlag_WithoutValue_ThrowsArgumentException()
     {
         // Act & Assert
-        var exception = Assert.Throws<ArgumentException>(() => Context.Create(["--result"]));
+        var exception = Assert.ThrowsExactly<ArgumentException>(() => Context.Create(["--result"]));
         Assert.Contains("--result", exception.Message);
     }
 
@@ -292,7 +292,7 @@ public class ContextTests
     public void Context_Create_DepthFlag_WithoutValue_ThrowsArgumentException()
     {
         // Act & Assert
-        var exception = Assert.Throws<ArgumentException>(() => Context.Create(["--depth"]));
+        var exception = Assert.ThrowsExactly<ArgumentException>(() => Context.Create(["--depth"]));
         Assert.Contains("--depth", exception.Message);
     }
 
@@ -303,7 +303,7 @@ public class ContextTests
     public void Context_Create_DepthFlag_NonIntegerValue_ThrowsArgumentException()
     {
         // Act & Assert
-        var exception = Assert.Throws<ArgumentException>(() => Context.Create(["--depth", "abc"]));
+        var exception = Assert.ThrowsExactly<ArgumentException>(() => Context.Create(["--depth", "abc"]));
         Assert.Contains("--depth", exception.Message);
     }
 
@@ -314,7 +314,7 @@ public class ContextTests
     public void Context_Create_DepthFlag_ZeroValue_ThrowsArgumentException()
     {
         // Act & Assert
-        var exception = Assert.Throws<ArgumentException>(() => Context.Create(["--depth", "0"]));
+        var exception = Assert.ThrowsExactly<ArgumentException>(() => Context.Create(["--depth", "0"]));
         Assert.Contains("--depth", exception.Message);
     }
 
@@ -325,7 +325,7 @@ public class ContextTests
     public void Context_Create_DepthFlag_ExceedsMaxValue_ThrowsArgumentException()
     {
         // Act & Assert
-        var exception = Assert.Throws<ArgumentException>(() => Context.Create(["--depth", "7"]));
+        var exception = Assert.ThrowsExactly<ArgumentException>(() => Context.Create(["--depth", "7"]));
         Assert.Contains("--depth", exception.Message);
     }
 
@@ -571,7 +571,7 @@ public class ContextTests
     public void Context_Create_OutputDirectoryFlag_WithoutValue_ThrowsArgumentException()
     {
         // Act & Assert
-        var exception = Assert.Throws<ArgumentException>(() => Context.Create(["-o"]));
+        var exception = Assert.ThrowsExactly<ArgumentException>(() => Context.Create(["-o"]));
         Assert.Contains("-o", exception.Message);
     }
 

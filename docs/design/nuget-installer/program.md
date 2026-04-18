@@ -60,11 +60,11 @@ Reads `AssemblyInformationalVersionAttribute` from the executing assembly, falli
 
 ## Error Handling
 
-| Condition                                 | Behavior                                              |
-|-------------------------------------------|-------------------------------------------------------|
-| `packages.config` file not found          | Calls `context.WriteError` and sets exit code to 1.   |
-| Package installation fails                | Exception propagates; exit code reflects failure.     |
-| Unknown or malformed command-line argument | Caught in `Main`; written to stderr, exit code 1.    |
+| Condition                                  | Behavior                                              |
+|--------------------------------------------|-------------------------------------------------------|
+| `packages.config` file not found           | Calls `context.WriteError` and sets exit code to 1.   |
+| Package installation fails                 | Exception propagates; exit code reflects failure.     |
+| Unknown or malformed command-line argument | Caught in `Main`; written to stderr, exit code 1.     |
 
 ## Interactions
 

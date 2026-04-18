@@ -47,10 +47,10 @@ Reads and parses a packages.config file.
 
 `Read` throws the following exceptions:
 
-| Exception                  | Condition                                                           |
-|----------------------------|---------------------------------------------------------------------|
-| `InvalidOperationException` | The file is not found, or `id`/`version` attribute is missing.    |
-| `System.Xml.XmlException`  | The file contains malformed XML; propagated directly from `XDocument.Load`. |
+| Exception                    | Condition                                                             |
+|------------------------------|-----------------------------------------------------------------------|
+| `InvalidOperationException`  | The file is not found, or `id`/`version` attribute is missing.        |
+| `XmlException`               | The file contains malformed XML; propagated from `XDocument.Load`.    |
 
 The `XDocument.Load` call propagates `XmlException` for malformed XML without wrapping it,
 preserving the original diagnostic message (line number, position) for the caller.

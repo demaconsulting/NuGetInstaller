@@ -80,7 +80,7 @@ public class UtilitiesSubsystemTests
         // Act & Assert: attempt path traversal and verify exceptions are thrown
         foreach (var dangerousPath in dangerousPaths)
         {
-            var exception = Assert.Throws<ArgumentException>(() =>
+            var exception = Assert.ThrowsExactly<ArgumentException>(() =>
                 PathHelpers.SafePathCombine(basePath, dangerousPath));
             Assert.IsNotNull(exception, $"SafePathCombine should reject path traversal: {dangerousPath}");
         }
@@ -130,7 +130,7 @@ public class UtilitiesSubsystemTests
     public void UtilitiesSubsystem_SafePathCombine_NullBasePath_ThrowsArgumentNullException()
     {
         // Act & Assert: null basePath must throw ArgumentNullException
-        Assert.Throws<ArgumentNullException>(() =>
+        Assert.ThrowsExactly<ArgumentNullException>(() =>
             PathHelpers.SafePathCombine(null!, "file.txt"));
     }
 
@@ -141,7 +141,7 @@ public class UtilitiesSubsystemTests
     public void UtilitiesSubsystem_SafePathCombine_NullRelativePath_ThrowsArgumentNullException()
     {
         // Act & Assert: null relativePath must throw ArgumentNullException
-        Assert.Throws<ArgumentNullException>(() =>
+        Assert.ThrowsExactly<ArgumentNullException>(() =>
             PathHelpers.SafePathCombine(Path.GetTempPath(), null!));
     }
 
@@ -152,7 +152,7 @@ public class UtilitiesSubsystemTests
     public void UtilitiesSubsystem_SafePathCombine_RootedRelativePath_ThrowsArgumentException()
     {
         // Act & Assert: an absolute path as relativePath must be rejected
-        Assert.Throws<ArgumentException>(() =>
+        Assert.ThrowsExactly<ArgumentException>(() =>
             PathHelpers.SafePathCombine("/base", "/absolute/path"));
     }
 }

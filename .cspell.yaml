@@ -24,6 +24,7 @@ words:
   - doctitle
   - docversion
   - errorlevel
+  - excludeversion
   - MSTEST
   - nameof
   - pagetitle

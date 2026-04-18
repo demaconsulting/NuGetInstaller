@@ -42,12 +42,12 @@ The `NuGet` subsystem exposes the following interfaces to the rest of the tool:
 
 ## Error Handling
 
-| Component              | Exception                    | Condition                                                      |
-|------------------------|------------------------------|----------------------------------------------------------------|
-| `PackagesConfigReader` | `InvalidOperationException`  | File not found or required attribute (`id`/`version`) missing. |
-| `PackagesConfigReader` | `System.Xml.XmlException`    | File contains malformed XML.                                   |
-| `PackageExtractor`     | `InvalidOperationException`  | Zip-slip entry detected or total extracted size exceeds 1 GB.  |
-| `PackageInstaller`     | Propagates from above        | Any exception from `PackageExtractor` or `NuGetCache`.         |
+| Component              | Exception                   | Condition                                               |
+|------------------------|-----------------------------|-------------------------------------------------------- |
+| `PackagesConfigReader` | `InvalidOperationException` | File not found or missing `id`/`version` attribute.     |
+| `PackagesConfigReader` | `XmlException`              | File contains malformed XML.                            |
+| `PackageExtractor`     | `InvalidOperationException` | Zip-slip entry or decompressed size exceeds 1 GB.       |
+| `PackageInstaller`     | Propagates from above       | Any exception from `PackageExtractor` or `NuGetCache`.  |
 
 ## Security Algorithms
 

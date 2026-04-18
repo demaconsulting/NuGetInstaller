@@ -120,7 +120,7 @@ public class PackageExtractorTests
             }
 
             // Act & Assert: extraction must be rejected with the zip-slip message
-            var exception = Assert.Throws<InvalidOperationException>(() =>
+            var exception = Assert.ThrowsExactly<InvalidOperationException>(() =>
                 PackageExtractor.Extract(zipPath, destFolder));
             Assert.Contains("zip-slip", exception.Message);
         }
@@ -165,7 +165,7 @@ public class PackageExtractorTests
             }
 
             // Act & Assert: extraction must be aborted when the 1 GB limit is exceeded
-            Assert.Throws<InvalidOperationException>(() =>
+            Assert.ThrowsExactly<InvalidOperationException>(() =>
                 PackageExtractor.Extract(zipPath, destFolder));
         }
         finally

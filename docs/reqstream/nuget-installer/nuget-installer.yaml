@@ -75,8 +75,10 @@ sections:
           - IntegrationTest_UnknownArgument_ReturnsError
 
       - id: NuGetInstaller-System-OutputDirectory
-        title: The tool shall install NuGet packages into the directory specified by the output-directory flag, defaulting
-          to the current working directory when the flag is not provided.
+        title: >-
+          The tool shall install NuGet packages into the directory specified by the
+          output-directory flag, defaulting to the current working directory when
+          the flag is not provided.
         justification: |
           Users need control over where packages are installed. Defaulting to the
           current working directory provides a sensible convention while the flag
@@ -94,8 +96,9 @@ sections:
           - IntegrationTest_InstallPackages_ExcludeVersion_UsesFlatFolderNaming
 
       - id: NuGetInstaller-System-Depth
-        title: The tool shall control the Markdown heading depth of validation output using the depth flag (default heading
-          level 1).
+        title: >-
+          The tool shall control the Markdown heading depth of validation output
+          using the depth flag (default heading level 1).
         justification: |
           When embedding validation reports inside a larger document, the heading
           level must match the surrounding structure. The depth flag allows callers

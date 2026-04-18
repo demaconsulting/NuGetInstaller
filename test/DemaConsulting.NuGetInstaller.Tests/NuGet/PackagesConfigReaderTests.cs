@@ -210,7 +210,7 @@ public class PackagesConfigReaderTests
             File.WriteAllText(tempFile, "<packages><package id=\"test\" version=\"");
 
             // Act & Assert: XmlException is propagated directly from XDocument.Load
-            Assert.Throws<System.Xml.XmlException>(
+            Assert.ThrowsExactly<System.Xml.XmlException>(
                 () => PackagesConfigReader.Read(tempFile));
         }
         finally
