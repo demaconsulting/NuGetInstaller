@@ -224,4 +224,19 @@ public class NuGetSubsystemTests
             }
         }
     }
+
+    /// <summary>
+    ///     Test that the NuGet subsystem throws InvalidOperationException when packages.config does not exist.
+    /// </summary>
+    [TestMethod]
+    public void NuGetSubsystem_MissingFileWorkflow_NonexistentConfig_ThrowsInvalidOperationException()
+    {
+        // Arrange: use a path to a non-existent file
+        var nonExistentPath = Path.Combine(Path.GetTempPath(), $"nonexistent_{Guid.NewGuid()}.config");
+
+        // Act & Assert: verify the subsystem throws InvalidOperationException
+        var exception = Assert.ThrowsExactly<InvalidOperationException>(
+            () => PackagesConfigReader.Read(nonExistentPath));
+        Assert.Contains("not found", exception.Message);
+    }
 }

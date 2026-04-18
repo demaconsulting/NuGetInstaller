@@ -39,10 +39,19 @@ sections:
         tests:
           - NuGetSubsystem_ExtractionWorkflow_ExistingDestination_SkipsExtraction
 
+      - id: NuGetInstaller-NuGet-ExcludeVersion
+        title: The NuGet subsystem shall use version-less folder naming when excludeVersion is true.
+        justification: |
+          When excludeVersion is enabled, packages are extracted to folders named
+          by package Id only (without version suffix), supporting scenarios where
+          downstream consumers require stable folder paths across version upgrades.
+        tests:
+          - NuGetSubsystem_ReadAndInstallWorkflow_ExcludeVersion_UsesFlatFolderNaming
+
       - id: NuGetInstaller-NuGet-MissingFile
         title: The NuGet subsystem shall throw InvalidOperationException when packages.config is not found.
         justification: |
           A clear exception when the configuration file is absent prevents silent failures
           and gives callers actionable diagnostic information.
         tests:
-          - PackagesConfigReader_Read_FileNotFound_ThrowsInvalidOperationException
+          - NuGetSubsystem_MissingFileWorkflow_NonexistentConfig_ThrowsInvalidOperationException

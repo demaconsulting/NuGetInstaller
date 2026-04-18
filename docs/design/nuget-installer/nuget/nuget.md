@@ -38,7 +38,6 @@ The `NuGet` subsystem exposes the following interfaces to the rest of the tool:
 |----------------|-----------|-----------------------------------------------------------------------|
 | `Context`      | Uses      | Output channel for status messages during installation.               |
 | `NuGetCache`   | Uses      | OTS library for resolving packages in the NuGet global package cache. |
-| `PathHelpers`  | Uses      | Safe path combination for constructing file paths.                    |
 
 ## Error Handling
 
