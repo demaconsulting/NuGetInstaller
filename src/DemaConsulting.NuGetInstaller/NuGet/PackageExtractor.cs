@@ -81,7 +81,7 @@ internal static class PackageExtractor
             Directory.CreateDirectory(destDir);
 
             using var entryStream = entry.Open();
-            using var destStream = File.Create(destPath);
+            using var destStream = new FileStream(destPath, FileMode.CreateNew, FileAccess.Write, FileShare.None);
 
             int bytesRead;
             while ((bytesRead = entryStream.Read(buffer, 0, buffer.Length)) > 0)
