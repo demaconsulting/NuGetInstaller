@@ -22,7 +22,7 @@ using System.IO.Compression;
 using DemaConsulting.NuGetInstaller.Cli;
 using DemaConsulting.NuGetInstaller.NuGet;
 
-namespace DemaConsulting.NuGetInstaller.Tests;
+namespace DemaConsulting.NuGetInstaller.Tests.NuGet;
 
 /// <summary>
 ///     Subsystem tests for the NuGet subsystem covering PackagesConfigReader, PackageExtractor,

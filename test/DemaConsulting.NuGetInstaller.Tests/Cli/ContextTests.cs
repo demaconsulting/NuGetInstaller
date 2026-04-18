@@ -20,7 +20,7 @@
 
 using DemaConsulting.NuGetInstaller.Cli;
 
-namespace DemaConsulting.NuGetInstaller.Tests;
+namespace DemaConsulting.NuGetInstaller.Tests.Cli;
 
 /// <summary>
 ///     Unit tests for the Context class.

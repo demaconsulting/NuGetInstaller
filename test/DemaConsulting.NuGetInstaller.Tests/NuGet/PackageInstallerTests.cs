@@ -21,7 +21,7 @@
 using DemaConsulting.NuGetInstaller.Cli;
 using DemaConsulting.NuGetInstaller.NuGet;
 
-namespace DemaConsulting.NuGetInstaller.Tests;
+namespace DemaConsulting.NuGetInstaller.Tests.NuGet;
 
 /// <summary>
 ///     Unit tests for the PackageInstaller class.

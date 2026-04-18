@@ -21,7 +21,7 @@
 using System.IO.Compression;
 using DemaConsulting.NuGetInstaller.NuGet;
 
-namespace DemaConsulting.NuGetInstaller.Tests;
+namespace DemaConsulting.NuGetInstaller.Tests.NuGet;
 
 /// <summary>
 ///     Unit tests for the PackageExtractor class.
@@ -155,7 +155,7 @@ public class PackageExtractorTests
                 using var entryStream = entry.Open();
                 var buffer = new byte[1024 * 1024]; // 1 MB all zeros (compresses very well)
                 long bytesWritten = 0;
-                const long targetSize = 1_500_000_000L; // 1.5 GB — exceeds the 1 GB limit
+                const long targetSize = 1_181_116_006L; // ~1.1 GiB — exceeds the 1 GiB limit
                 while (bytesWritten < targetSize)
                 {
                     var toWrite = (int)Math.Min(buffer.Length, targetSize - bytesWritten);

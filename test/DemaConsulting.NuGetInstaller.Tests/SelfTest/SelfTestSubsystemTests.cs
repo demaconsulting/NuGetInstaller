@@ -21,7 +21,7 @@
 using DemaConsulting.NuGetInstaller.Cli;
 using DemaConsulting.NuGetInstaller.SelfTest;
 
-namespace DemaConsulting.NuGetInstaller.Tests;
+namespace DemaConsulting.NuGetInstaller.Tests.SelfTest;
 
 /// <summary>
 ///     Subsystem tests for the SelfTest subsystem covering Validation workflows.

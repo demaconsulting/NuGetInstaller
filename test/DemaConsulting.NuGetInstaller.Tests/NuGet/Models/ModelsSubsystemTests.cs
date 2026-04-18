@@ -20,7 +20,7 @@
 
 using DemaConsulting.NuGetInstaller.NuGet;
 
-namespace DemaConsulting.NuGetInstaller.Tests;
+namespace DemaConsulting.NuGetInstaller.Tests.NuGet.Models;
 
 /// <summary>
 ///     Subsystem tests for the NuGet Models subsystem covering PackageEntry data model workflows.

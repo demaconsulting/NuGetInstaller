@@ -20,7 +20,7 @@
 
 using DemaConsulting.NuGetInstaller.Utilities;
 
-namespace DemaConsulting.NuGetInstaller.Tests;
+namespace DemaConsulting.NuGetInstaller.Tests.Utilities;
 
 /// <summary>
 ///     Tests for the PathHelpers class.

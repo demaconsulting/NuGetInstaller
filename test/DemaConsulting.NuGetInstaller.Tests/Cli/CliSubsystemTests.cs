@@ -21,7 +21,7 @@
 using System.Reflection;
 using DemaConsulting.NuGetInstaller.Cli;
 
-namespace DemaConsulting.NuGetInstaller.Tests;
+namespace DemaConsulting.NuGetInstaller.Tests.Cli;
 
 /// <summary>
 ///     Subsystem tests for the CLI subsystem covering Context and Program integration.
