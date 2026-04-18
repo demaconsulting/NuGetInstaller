@@ -1,22 +1,16 @@
 # Program
 
-<!-- TODO: This is an example design section for the Program class. Replace with your own unit design. -->
-
 The `Program` class is the main entry point for the NuGet Installer. It creates a `Context`
 from command-line arguments, dispatches to the appropriate logic based on the flags, and returns
 the exit code.
 
 ## Overview
 
-<!-- TODO: Fill in for your project -->
-
 `Program` owns the top-level execution flow. It delegates all argument interpretation to `Context`
 and all validation logic to `Validation`. Its own responsibility is limited to reading the flags
 that `Context` exposes and calling the correct handler.
 
 ## Data Model
-
-<!-- TODO: Fill in for your project -->
 
 `Program` holds no instance state. Its single static property is:
 
@@ -25,8 +19,6 @@ that `Context` exposes and calling the correct handler.
 | `Version` | `string` | The tool version from `AssemblyInformationalVersionAttribute`. |
 
 ## Methods
-
-<!-- TODO: Fill in for your project -->
 
 ### Main(string[] args)
 
@@ -58,8 +50,6 @@ Reads `AssemblyInformationalVersionAttribute` from the executing assembly, falli
 `AssemblyVersion`, then `"0.0.0"`.
 
 ## Interactions
-
-<!-- TODO: Fill in for your project -->
 
 | Dependency              | Direction | Purpose                                             |
 |-------------------------|-----------|-----------------------------------------------------|

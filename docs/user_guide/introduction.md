@@ -141,9 +141,10 @@ Example validation report:
 
 ✓ NuGetInstaller_VersionDisplay - Passed
 ✓ NuGetInstaller_HelpDisplay - Passed
+✓ NuGetInstaller_InstallPackage - Passed
 
-Total Tests: 2
-Passed: 2
+Total Tests: 3
+Passed: 3
 Failed: 0
 ```
 

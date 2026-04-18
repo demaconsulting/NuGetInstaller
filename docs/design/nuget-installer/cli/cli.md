@@ -1,14 +1,10 @@
 # Cli Subsystem
 
-<!-- TODO: This is an example design section for the Cli subsystem. Replace with your own subsystem design. -->
-
 The `Cli` subsystem provides the command-line interface for the NuGet Installer.
 It is responsible for accepting user input from the command line and routing output to
 the console and an optional log file.
 
 ## Overview
-
-<!-- TODO: Fill in for your project -->
 
 The `Cli` subsystem acts as the primary boundary between the user's shell invocation and
 the tool's internal logic. It owns argument parsing, output formatting, and error tracking.
@@ -17,8 +13,6 @@ flags and write output.
 
 ## Units
 
-<!-- TODO: Fill in for your project -->
-
 The `Cli` subsystem contains the following software unit:
 
 | Unit      | File             | Responsibility                                    |
@@ -26,8 +20,6 @@ The `Cli` subsystem contains the following software unit:
 | `Context` | `Cli/Context.cs` | Argument parsing, output channels, and exit code. |
 
 ## Interfaces
-
-<!-- TODO: Fill in for your project -->
 
 The `Cli` subsystem exposes the following interface to the rest of the tool:
 
@@ -40,8 +32,6 @@ The `Cli` subsystem exposes the following interface to the rest of the tool:
 | `Context.HeadingDepth` | Outbound  | Heading depth for markdown output (default 1); supplied via `--depth`.  |
 
 ## Interactions
-
-<!-- TODO: Fill in for your project -->
 
 The `Cli` subsystem has no dependencies on other tool subsystems. It uses only .NET base
 class library types. The `Program` unit at system level creates the `Context` and passes it

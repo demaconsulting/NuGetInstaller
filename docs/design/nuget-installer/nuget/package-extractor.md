@@ -72,6 +72,9 @@ Two attack vectors are mitigated:
   and verified to start with the canonical destination folder (with a trailing directory separator)
   before any file is written. This follows the SonarQube S6096 / CodeQL `cs/zipslip`-recognized
   pattern and guards against path-traversal entries that would write outside `destFolder`.
+- **Partial-extraction on exception**: When a zip-slip or zip-bomb exception is thrown
+  mid-extraction, no cleanup of the partially created destination folder is performed.
+  The caller is responsible for cleaning up any partially populated folder if desired.
 
 ## Interactions
 

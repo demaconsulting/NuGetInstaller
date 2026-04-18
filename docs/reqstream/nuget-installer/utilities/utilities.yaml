@@ -9,7 +9,7 @@
 sections:
   - title: Utilities Subsystem Requirements
     requirements:
-      - id: Template-Utilities-SafePaths
+      - id: NuGetInstaller-Utilities-SafePaths
         title: The Utilities subsystem shall provide safe file path manipulation that prevents path traversal.
         justification: |
           The Utilities subsystem provides shared path utilities consumed by other subsystems.

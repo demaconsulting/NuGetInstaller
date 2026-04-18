@@ -8,7 +8,7 @@
 sections:
   - title: Context Unit Requirements
     requirements:
-      - id: Template-Context-ArgumentParsing
+      - id: NuGetInstaller-Context-ArgumentParsing
         title: The Context class shall parse command-line arguments into structured properties.
         justification: |
           Provides a standardized approach to command-line argument parsing and output
@@ -34,7 +34,7 @@ sections:
           - Context_Create_OutputDirectoryLongFlag_SetsOutputDirectory
           - Context_Create_AllNewArguments_SetsAllProperties
 
-      - id: Template-Context-InvalidArgs
+      - id: NuGetInstaller-Context-InvalidArgs
         title: The Context class shall reject unknown or malformed command-line arguments with a descriptive error.
         justification: |
           Providing clear feedback for invalid arguments helps users quickly correct
@@ -50,7 +50,7 @@ sections:
           - Context_Create_DepthFlag_ExceedsMaxValue_ThrowsArgumentException
           - Context_Create_OutputDirectoryFlag_WithoutValue_ThrowsArgumentException
 
-      - id: Template-Context-Output
+      - id: NuGetInstaller-Context-Output
         title: The Context class shall write output to the console and optionally to a log file.
         justification: |
           Provides persistent logging for debugging and audit trails, while also
@@ -60,7 +60,7 @@ sections:
           - Context_WriteLine_Silent_DoesNotWriteToConsole
           - Context_WriteError_WritesToLogFile
 
-      - id: Template-Context-Silent
+      - id: NuGetInstaller-Context-Silent
         title: The Context class shall suppress console output when the silent flag is set.
         justification: |
           Enables automated scripts and CI/CD pipelines to run the tool without
@@ -70,7 +70,7 @@ sections:
           - Context_WriteLine_Silent_DoesNotWriteToConsole
           - Context_WriteError_Silent_DoesNotWriteToConsole
 
-      - id: Template-Context-ErrorOutput
+      - id: NuGetInstaller-Context-ErrorOutput
         title: The Context class shall write error messages to stderr.
         justification: |
           Error messages must be written to stderr so they remain visible to the user
@@ -79,7 +79,7 @@ sections:
           - Context_WriteError_NotSilent_WritesToConsole
           - Context_WriteError_SetsErrorExitCode
 
-      - id: Template-Context-ExitCode
+      - id: NuGetInstaller-Context-ExitCode
         title: The Context class shall track errors and expose a non-zero exit code when errors have occurred.
         justification: |
           Callers (scripts, CI/CD pipelines) must be able to detect failure conditions

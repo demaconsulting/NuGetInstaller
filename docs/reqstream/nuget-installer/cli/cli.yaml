@@ -9,7 +9,7 @@
 sections:
   - title: Cli Subsystem Requirements
     requirements:
-      - id: Template-Cli-Context
+      - id: NuGetInstaller-Cli-Context
         title: The Cli subsystem shall implement a Context class for command-line argument handling.
         justification: |
           Provides a standardized approach to command-line argument parsing and output
@@ -24,7 +24,7 @@ sections:
           - CliSubsystem_ValidateFlow_ContextAndProgram_RunsValidationAndExits
           - CliSubsystem_SilentFlow_ContextAndProgram_SuppressesOutput
 
-      - id: Template-Cli-Version
+      - id: NuGetInstaller-Cli-Version
         title: The Cli subsystem shall support -v and --version flags to signal version display.
         justification: |
           Users need to quickly identify the version of the tool they are using for
@@ -32,7 +32,7 @@ sections:
         tests:
           - CliSubsystem_VersionFlow_ContextAndProgram_DisplaysVersionAndExits
 
-      - id: Template-Cli-Help
+      - id: NuGetInstaller-Cli-Help
         title: The Cli subsystem shall support -?, -h, and --help flags to signal help display.
         justification: |
           Users need access to command-line usage documentation without requiring
@@ -42,7 +42,7 @@ sections:
           - CliSubsystem_HelpFlow_ContextAndProgram_DisplaysHelpAndExits_WithShortQuestionFlag
           - CliSubsystem_HelpFlow_ContextAndProgram_DisplaysHelpAndExits_WithShortHFlag
 
-      - id: Template-Cli-Silent
+      - id: NuGetInstaller-Cli-Silent
         title: The Cli subsystem shall support --silent flag to suppress console output.
         justification: |
           Enables automated scripts and CI/CD pipelines to run the tool without
@@ -50,7 +50,7 @@ sections:
         tests:
           - CliSubsystem_SilentFlow_ContextAndProgram_SuppressesOutput
 
-      - id: Template-Cli-Validate
+      - id: NuGetInstaller-Cli-Validate
         title: The Cli subsystem shall support --validate flag to signal self-validation.
         justification: |
           Provides a built-in mechanism to verify the tool is functioning correctly
@@ -58,14 +58,14 @@ sections:
         tests:
           - CliSubsystem_ValidateFlow_ContextAndProgram_RunsValidationAndExits
 
-      - id: Template-Cli-Results
+      - id: NuGetInstaller-Cli-Results
         title: The Cli subsystem shall support --results flag to specify a test results output file.
         justification: |
           Enables integration with CI/CD systems that expect standard test result formats.
         tests:
           - CliSubsystem_ResultsFlow_ContextAndProgram_WritesResultsFile
 
-      - id: Template-Cli-Depth
+      - id: NuGetInstaller-Cli-Depth
         title: The Cli subsystem shall support --depth flag to control the heading depth of markdown output.
         justification: |
           Enables validation output to be embedded within larger markdown documents at
@@ -74,14 +74,14 @@ sections:
         tests:
           - CliSubsystem_DepthFlow_ContextAndProgram_AdjustsHeadingDepth
 
-      - id: Template-Cli-Log
+      - id: NuGetInstaller-Cli-Log
         title: The Cli subsystem shall support --log flag to write output to a log file.
         justification: |
           Provides persistent logging for debugging and audit trails.
         tests:
           - CliSubsystem_LogFlow_ContextAndProgram_WritesLogFile
 
-      - id: Template-Cli-ErrorOutput
+      - id: NuGetInstaller-Cli-ErrorOutput
         title: The Cli subsystem shall write error messages to stderr.
         justification: |
           Error messages must be written to stderr so they remain visible to the user
@@ -89,7 +89,7 @@ sections:
         tests:
           - CliSubsystem_ErrorOutput_ContextAndProgram_WritesErrorToStderr
 
-      - id: Template-Cli-InvalidArgs
+      - id: NuGetInstaller-Cli-InvalidArgs
         title: The Cli subsystem shall reject unknown or malformed command-line arguments with a descriptive error.
         justification: |
           Providing clear feedback for invalid arguments helps users quickly correct
@@ -97,7 +97,7 @@ sections:
         tests:
           - CliSubsystem_InvalidArgs_ContextAndProgram_RejectsUnknownArgumentsAndExitsNonZero
 
-      - id: Template-Cli-ExitCode
+      - id: NuGetInstaller-Cli-ExitCode
         title: The Cli subsystem shall return a non-zero exit code on failure.
         justification: |
           Callers (scripts, CI/CD pipelines) must be able to detect failure conditions

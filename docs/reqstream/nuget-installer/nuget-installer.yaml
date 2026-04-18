@@ -10,7 +10,7 @@
 sections:
   - title: System-Level Requirements
     requirements:
-      - id: Template-System-Version
+      - id: NuGetInstaller-System-Version
         title: The tool shall display version information when the version flag is provided.
         justification: |
           Users need to quickly identify the version of the tool they are using for
@@ -19,7 +19,7 @@ sections:
         tests:
           - IntegrationTest_VersionFlag_OutputsVersion
 
-      - id: Template-System-Help
+      - id: NuGetInstaller-System-Help
         title: The tool shall display usage information when the help flag is provided.
         justification: |
           Users need access to command-line usage documentation without requiring
@@ -28,7 +28,7 @@ sections:
         tests:
           - IntegrationTest_HelpFlag_OutputsUsageInformation
 
-      - id: Template-System-Validate
+      - id: NuGetInstaller-System-Validate
         title: The tool shall execute self-validation tests when the validate flag is provided.
         justification: |
           Regulated environments require tool qualification evidence to demonstrate
@@ -41,7 +41,7 @@ sections:
           - IntegrationTest_ValidateWithResults_GeneratesTrxFile
           - IntegrationTest_ValidateWithResults_GeneratesJUnitFile
 
-      - id: Template-System-Silent
+      - id: NuGetInstaller-System-Silent
         title: The tool shall suppress console output when the silent flag is provided.
         justification: |
           Enables automated scripts and CI/CD pipelines to run the tool without
@@ -49,7 +49,7 @@ sections:
         tests:
           - IntegrationTest_SilentFlag_SuppressesOutput
 
-      - id: Template-System-Log
+      - id: NuGetInstaller-System-Log
         title: The tool shall write output to a log file when the log flag is provided.
         justification: |
           Provides persistent logging for debugging and compliance audit trails.
@@ -58,7 +58,7 @@ sections:
         tests:
           - IntegrationTest_LogFlag_WritesOutputToFile
 
-      - id: Template-System-ErrorHandling
+      - id: NuGetInstaller-System-ErrorHandling
         title: The tool shall return a non-zero exit code and report an error for unrecognized arguments.
         justification: |
           Clear feedback for unrecognized arguments helps users quickly correct

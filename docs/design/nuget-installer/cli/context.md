@@ -1,14 +1,10 @@
 # Context
 
-<!-- TODO: This is an example design section for the Context class. Replace with your own unit design. -->
-
 The `Context` class handles command-line argument parsing and program output for the
 NuGet Installer. It is the primary interface between the user's command-line invocation
 and the tool's internal logic.
 
 ## Overview
-
-<!-- TODO: Fill in for your project -->
 
 `Context` is created once per tool invocation via the `Create` factory method. It parses
 the argument list, opens any requested log file, and exposes the parsed flags as read-only
@@ -16,8 +12,6 @@ properties. It also owns the two output channels — console and log file — th
 `WriteLine` and `WriteError` methods.
 
 ## Data Model
-
-<!-- TODO: Fill in for your project -->
 
 | Field                | Type            | Description                                                            |
 |----------------------|-----------------|------------------------------------------------------------------------|
@@ -36,14 +30,13 @@ properties. It also owns the two output channels — console and log file — th
 
 ## Methods
 
-<!-- TODO: Fill in for your project -->
-
 ### Create(string[] args)
 
 Factory method. Delegates to the private `ArgumentParser` helper and opens the log file if
 `--log` was supplied.
 
 **Throws:** `ArgumentException` — when an unknown argument or missing value is encountered.
+`InvalidOperationException` — when the log file specified by `--log` cannot be created or opened.
 
 ### WriteLine(string message)
 
@@ -59,8 +52,6 @@ and to `_logWriter` (if open).
 Disposes `_logWriter` and sets it to `null`.
 
 ## Interactions
-
-<!-- TODO: Fill in for your project -->
 
 `Context` has no dependencies on other tool units. It uses only .NET base class library types
 (`Console`, `StreamWriter`, `Path`).
