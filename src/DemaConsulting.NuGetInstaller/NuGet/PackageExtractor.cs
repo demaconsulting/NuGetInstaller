@@ -64,7 +64,7 @@ internal static class PackageExtractor
         // Resolve the canonical destination folder once and append a trailing separator.
         // Per SonarQube S6096, the base path must end with a directory separator before
         // the StartsWith check to prevent partial-path traversal attacks (e.g.
-        // /dest/dirmalicious must not be accepted as a child of /dest/dir).
+        // /dest/dir-sibling must not be accepted as a child of /dest/dir).
         var canonicalDestFolder = Path.GetFullPath(destFolder);
         var canonicalDestFolderWithSep = canonicalDestFolder.EndsWith(Path.DirectorySeparatorChar)
             ? canonicalDestFolder

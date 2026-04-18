@@ -25,6 +25,8 @@ sections:
           such entries before any file is written.
         tests:
           - PackageExtractor_Extract_ZipSlipEntry_ThrowsInvalidOperationException
+
+      - id: NuGetInstaller-PackageExtractor-SkipExisting
         title: The PackageExtractor class shall skip extraction when the destination folder already exists.
         justification: |
           Idempotent extraction prevents unnecessary I/O during incremental builds

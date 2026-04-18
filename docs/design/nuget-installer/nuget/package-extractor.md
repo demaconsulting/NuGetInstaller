@@ -70,7 +70,7 @@ Two attack vectors are mitigated:
   uncompressed sizes.
 - **Zip-slip**: The canonical destination path for each entry is resolved with `Path.GetFullPath`
   and verified to start with the canonical destination folder (with a trailing directory separator)
-  before any file is written. This follows the SonarQube S6096 / CodeQL `cs/zipslip`-recognized
+  before any file is written. This follows the SonarQube S6096 / CodeQL `cs/zip-slip`-recognized
   pattern and guards against path-traversal entries that would write outside `destFolder`.
 
 ## Interactions
