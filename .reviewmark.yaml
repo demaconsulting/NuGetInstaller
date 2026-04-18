@@ -170,3 +170,4 @@ reviews:
       - "docs/reqstream/nuget-installer/nuget/package-installer.yaml"
       - "docs/design/nuget-installer/nuget/package-installer.md"
       - "src/**/NuGet/PackageInstaller.cs"
+      - "test/**/NuGet/PackageInstallerTests.cs"

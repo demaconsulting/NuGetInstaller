@@ -165,8 +165,9 @@ public class PackageExtractorTests
             }
 
             // Act & Assert: extraction must be aborted when the 1 GB limit is exceeded
-            Assert.ThrowsExactly<InvalidOperationException>(() =>
+            var exception = Assert.ThrowsExactly<InvalidOperationException>(() =>
                 PackageExtractor.Extract(zipPath, destFolder));
+            Assert.Contains("zip-bomb", exception.Message);
         }
         finally
         {
