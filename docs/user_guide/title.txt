@@ -1,8 +1,8 @@
 ---
 title: NuGet Installer User Guide
-subtitle: A .NET Reference Implementation for CLI Tools
+subtitle: A .NET CLI Tool for NuGet Package Installation
 author: DEMA Consulting
-description: A .NET Reference Implementation for CLI Tools
+description: A .NET CLI Tool for NuGet Package Installation
 lang: en-US
 keywords:
   - NuGet Installer
