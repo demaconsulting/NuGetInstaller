@@ -48,7 +48,7 @@
 
   <!-- Runtime Dependencies -->
   <ItemGroup>
-    <PackageReference Include="DemaConsulting.NuGet.Caching" Version="1.0.0" />
+    <PackageReference Include="DemaConsulting.NuGet.Caching" Version="1.1.0" />
     <PackageReference Include="DemaConsulting.TestResults" Version="1.7.0" />
   </ItemGroup>
 
