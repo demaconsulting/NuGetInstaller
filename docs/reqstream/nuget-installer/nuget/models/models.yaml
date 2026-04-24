@@ -3,7 +3,6 @@
 #
 # PURPOSE:
 # - Define requirements for the NuGetInstaller NuGet Models subsystem
-# - The Models subsystem spans PackageEntry.cs (data model for package entries)
 # - Subsystem requirements describe the data representation for NuGet package metadata
 
 sections:

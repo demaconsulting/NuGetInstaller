@@ -1,8 +1,8 @@
 ---
-# Software Unit Requirements for the PackageExtractor Class
+# Software Unit Requirements for the PackageExtractor Unit
 #
-# The PackageExtractor class extracts NuGet package (.nupkg) contents to a
-# destination folder, skipping extraction when the destination already exists.
+# The PackageExtractor unit is responsible for extracting NuGet package
+# contents to a destination folder.
 
 sections:
   - title: PackageExtractor Unit Requirements
@@ -17,12 +17,13 @@ sections:
           - PackageExtractor_Extract_NewDestination_ExtractsAndReturnsTrue
 
       - id: NuGetInstaller-PackageExtractor-ZipSlip
-        title: The PackageExtractor class shall reject zip entries that would escape the destination folder (zip-slip).
+        title: The PackageExtractor unit shall reject archive entries that would write files outside the destination folder
+          (zip-slip).
         justification: |
           Malicious archives may contain entries with path-traversal sequences (e.g. ../evil.txt)
-          designed to write files outside the intended destination. Canonical-path validation
-          using Path.GetFullPath and a separator-terminated StartsWith check detects and rejects
-          such entries before any file is written.
+          designed to write files outside the intended destination. The extractor must detect
+          and reject such entries before any file is written to prevent unauthorized file-system
+          access.
         tests:
           - PackageExtractor_Extract_ZipSlipEntry_ThrowsInvalidOperationException
 

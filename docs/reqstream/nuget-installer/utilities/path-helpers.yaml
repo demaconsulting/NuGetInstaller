@@ -1,9 +1,8 @@
 ---
-# Software Unit Requirements for the PathHelpers Class
+# Software Unit Requirements for the PathHelpers Unit
 #
-# The PathHelpers class provides safe path-combination utilities that protect
-# against path-traversal attacks by rejecting relative paths containing ".."
-# or absolute paths when a relative path is expected.
+# The PathHelpers unit provides safe path-combination utilities that protect
+# against path-traversal attacks.
 
 sections:
   - title: PathHelpers Unit Requirements
@@ -25,7 +24,7 @@ sections:
           - PathHelpers_SafePathCombine_DotDotPrefixedName_CombinesCorrectly
 
       - id: NuGetInstaller-PathHelpers-NullInputRejection
-        title: The PathHelpers class shall throw ArgumentNullException when either path argument is null.
+        title: The PathHelpers unit shall reject null path arguments.
         justification: |
           Null arguments must be explicitly rejected to prevent null reference
           exceptions deeper in the call stack and to clearly communicate API

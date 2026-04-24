@@ -3,7 +3,6 @@
 #
 # PURPOSE:
 # - Define requirements for the NuGetInstaller Utilities subsystem
-# - The Utilities subsystem spans PathHelpers.cs (safe path-combination utilities)
 # - Subsystem requirements describe the shared utility behavior available to all other subsystems
 
 sections:
@@ -24,7 +23,7 @@ sections:
           - UtilitiesSubsystem_SafePathCombine_RootedRelativePath_ThrowsArgumentException
 
       - id: NuGetInstaller-Utilities-NullRejection
-        title: The Utilities subsystem shall reject null arguments to SafePathCombine with ArgumentNullException.
+        title: The Utilities subsystem shall reject null path arguments.
         justification: |
           Null arguments must be explicitly rejected to prevent null reference
           exceptions deeper in the call stack and to clearly communicate API

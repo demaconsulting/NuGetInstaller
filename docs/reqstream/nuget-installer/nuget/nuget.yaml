@@ -3,18 +3,16 @@
 #
 # PURPOSE:
 # - Define requirements for the NuGetInstaller NuGet subsystem
-# - The NuGet subsystem spans PackageEntry, PackagesConfigReader, PackageExtractor,
-#   and PackageInstaller units
 # - Subsystem requirements describe the package reading, caching, and extraction behavior
 
 sections:
   - title: NuGet Subsystem Requirements
     requirements:
       - id: NuGetInstaller-NuGet-ReadConfig
-        title: The NuGet subsystem shall read a packages.config XML file and return structured package entries.
+        title: The NuGet subsystem shall read the package configuration file and return the declared package dependencies.
         justification: |
-          The NuGet subsystem must parse the standard packages.config format to determine
-          which packages and versions to install. This XML format is the industry-standard
+          The NuGet subsystem must parse the package configuration to determine
+          which packages and versions to install. This format is the industry-standard
           way to declare NuGet package dependencies for project-level restore scenarios.
         tests:
           - NuGetSubsystem_ReadAndInstallWorkflow_ValidConfig_ReturnsAndInstallsPackages
@@ -49,9 +47,9 @@ sections:
           - NuGetSubsystem_ReadAndInstallWorkflow_ExcludeVersion_UsesFlatFolderNaming
 
       - id: NuGetInstaller-NuGet-MissingFile
-        title: The NuGet subsystem shall throw InvalidOperationException when packages.config is not found.
+        title: The NuGet subsystem shall report an error when the package configuration file is not found.
         justification: |
-          A clear exception when the configuration file is absent prevents silent failures
+          A clear error when the configuration file is absent prevents silent failures
           and gives callers actionable diagnostic information.
         tests:
           - NuGetSubsystem_MissingFileWorkflow_NonexistentConfig_ThrowsInvalidOperationException

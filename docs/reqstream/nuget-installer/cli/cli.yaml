@@ -3,19 +3,18 @@
 #
 # PURPOSE:
 # - Define requirements for the NuGetInstaller Cli subsystem
-# - The Cli subsystem spans Context.cs (command-line argument parsing and I/O)
 # - Subsystem requirements describe the externally visible command-line interface behavior
 
 sections:
   - title: Cli Subsystem Requirements
     requirements:
       - id: NuGetInstaller-Cli-Context
-        title: The Cli subsystem shall implement a Context class for command-line argument handling.
+        title: The Cli subsystem shall parse command-line arguments and manage tool output behavior.
         justification: |
           Provides a standardized approach to command-line argument parsing and output
-          handling across all DEMA Consulting DotNet Tools. The Context class encapsulates
-          all parsed flags and output channels so that the rest of the tool has a single,
-          consistent entry point for CLI interaction.
+          handling across all DEMA Consulting DotNet Tools. Parsed flags and output
+          channels are exposed through a single, consistent interface for the rest of
+          the tool to consume.
         tests:
           - CliSubsystem_VersionFlow_ContextAndProgram_DisplaysVersionAndExits
           - CliSubsystem_HelpFlow_ContextAndProgram_DisplaysHelpAndExits

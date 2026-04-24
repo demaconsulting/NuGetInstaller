@@ -1,9 +1,8 @@
 ---
-# Software Unit Requirements for the Program Class
+# Software Unit Requirements for the Program Unit
 #
-# The Program class is the main entry point for the tool. It creates a Context
-# from command-line arguments, dispatches to the appropriate logic based on the
-# flags, and returns the exit code.
+# The Program unit is the main entry point for the tool. It dispatches
+# to the appropriate behavior based on the command-line flags provided.
 
 sections:
   - title: Program Unit Requirements
@@ -45,9 +44,9 @@ sections:
           - NuGetInstaller_UnknownArgument_InvalidFlag_ReturnsNonZeroExitCode
 
       - id: NuGetInstaller-Program-Install
-        title: The Program class shall install packages from packages.config when no special flags are provided.
+        title: The Program unit shall install packages from the package configuration file when no special flags are provided.
         justification: |
-          The default execution path reads the packages.config file and installs all
+          The default execution path reads the package configuration file and installs all
           specified packages into the output directory. This is the core tool behavior
           that end users invoke without special flags.
         tests:

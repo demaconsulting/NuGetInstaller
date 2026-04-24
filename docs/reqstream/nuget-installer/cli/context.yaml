@@ -1,9 +1,8 @@
 ---
-# Software Unit Requirements for the Context Class
+# Software Unit Requirements for the Context Unit
 #
-# The Context class handles command-line argument parsing and program output.
-# It is the primary interface between the user's command-line invocation and
-# the tool's internal logic.
+# The Context unit is responsible for command-line argument parsing and
+# controlling tool output (console, log file, and silent mode).
 
 sections:
   - title: Context Unit Requirements
