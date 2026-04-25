@@ -9,13 +9,14 @@ sections:
   - title: Utilities Subsystem Requirements
     requirements:
       - id: NuGetInstaller-Utilities-SafePaths
-        title: The Utilities subsystem shall provide safe file path manipulation that prevents path traversal.
+        title: The Utilities subsystem shall provide safe file path manipulation that prevents path traversal and rooted-path
+          injection.
         justification: |
           The Utilities subsystem provides shared path utilities consumed by other subsystems.
           When constructing file paths from caller-supplied inputs, the subsystem must reject
-          path traversal sequences (such as '..') and absolute paths to prevent unintended
-          file system access. This requirement captures the subsystem-level safety guarantee
-          that all consumers of the Utilities subsystem can rely upon.
+          path traversal sequences (such as '..') and absolute or rooted paths to prevent
+          unintended file system access. This requirement captures the subsystem-level safety
+          guarantee that all consumers of the Utilities subsystem can rely upon.
         tests:
           - UtilitiesSubsystem_PathResolutionWorkflow_ValidPaths_ResolvesCorrectly
           - UtilitiesSubsystem_DirectoryCreationWorkflow_ValidPaths_CreatesDirectories

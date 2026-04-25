@@ -593,5 +593,65 @@ public class CliSubsystemTests
             Console.SetOut(originalOut);
         }
     }
+
+    /// <summary>
+    ///     Test that Context rejects an out-of-range --depth value (too low).
+    /// </summary>
+    [TestMethod]
+    public void CliSubsystem_InvalidArgs_DepthOutOfRangeLow_ThrowsArgumentException()
+    {
+        // Arrange: command line with --depth 0 (valid range is 1–6)
+        var args = new[] { "--depth", "0" };
+
+        // Act / Assert: Context.Create throws ArgumentException for out-of-range value
+        Assert.ThrowsExactly<ArgumentException>(
+            () => Context.Create(args),
+            "Context.Create should throw ArgumentException when --depth is below the valid range");
+    }
+
+    /// <summary>
+    ///     Test that Context rejects an out-of-range --depth value (too high).
+    /// </summary>
+    [TestMethod]
+    public void CliSubsystem_InvalidArgs_DepthOutOfRangeHigh_ThrowsArgumentException()
+    {
+        // Arrange: command line with --depth 7 (valid range is 1–6)
+        var args = new[] { "--depth", "7" };
+
+        // Act / Assert: Context.Create throws ArgumentException for out-of-range value
+        Assert.ThrowsExactly<ArgumentException>(
+            () => Context.Create(args),
+            "Context.Create should throw ArgumentException when --depth exceeds the valid range");
+    }
+
+    /// <summary>
+    ///     Test that Context rejects a non-integer --depth value.
+    /// </summary>
+    [TestMethod]
+    public void CliSubsystem_InvalidArgs_DepthNonInteger_ThrowsArgumentException()
+    {
+        // Arrange: command line with --depth abc (non-integer)
+        var args = new[] { "--depth", "abc" };
+
+        // Act / Assert: Context.Create throws ArgumentException for non-integer value
+        Assert.ThrowsExactly<ArgumentException>(
+            () => Context.Create(args),
+            "Context.Create should throw ArgumentException when --depth value is not an integer");
+    }
+
+    /// <summary>
+    ///     Test that Context rejects a flag provided as the final argument without a required value.
+    /// </summary>
+    [TestMethod]
+    public void CliSubsystem_InvalidArgs_ResultsFlagMissingValue_ThrowsArgumentException()
+    {
+        // Arrange: --results provided as the final argument without a following value
+        var args = new[] { "--results" };
+
+        // Act / Assert: Context.Create throws ArgumentException when the required value is absent
+        Assert.ThrowsExactly<ArgumentException>(
+            () => Context.Create(args),
+            "Context.Create should throw ArgumentException when --results has no value");
+    }
 }
 

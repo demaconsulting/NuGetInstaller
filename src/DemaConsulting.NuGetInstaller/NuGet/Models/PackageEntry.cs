@@ -22,6 +22,9 @@ namespace DemaConsulting.NuGetInstaller.NuGet.Models;
 
 /// <summary>
 ///     Represents a single package entry from a packages.config file.
+///     Acts as the strongly-typed data transfer object between <see cref="PackagesConfigReader" />
+///     (which creates instances) and <see cref="PackageInstaller" /> (which reads Id and Version
+///     to resolve and extract packages).
 /// </summary>
 internal sealed class PackageEntry
 {

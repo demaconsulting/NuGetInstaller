@@ -14,8 +14,8 @@ sections:
           troubleshooting and compatibility verification.
         tests:
           - Program_Run_WithVersionFlag_DisplaysVersionOnly
+          - Program_Run_WithShortVersionFlag_DisplaysVersion
           - Program_Version_ReturnsNonEmptyString
-          - NuGetInstaller_VersionFlag_FlagProvided_OutputsVersion
 
       - id: NuGetInstaller-Program-Help
         title: The Program class shall support -?, -h, and --help flags to display usage information.
@@ -24,7 +24,8 @@ sections:
           external resources.
         tests:
           - Program_Run_WithHelpFlag_DisplaysUsageInformation
-          - NuGetInstaller_HelpFlag_FlagProvided_OutputsUsageInformation
+          - Program_Run_WithShortHelpFlag_QuestionMark_DisplaysUsageInformation
+          - Program_Run_WithShortHelpFlag_H_DisplaysUsageInformation
 
       - id: NuGetInstaller-Program-Validate
         title: The Program class shall support --validate flag to invoke the self-validation framework.
@@ -33,7 +34,6 @@ sections:
           in the deployment environment.
         tests:
           - Program_Run_WithValidateFlag_RunsValidation
-          - NuGetInstaller_ValidateFlag_FlagProvided_RunsValidation
 
       - id: NuGetInstaller-Program-ExitCode
         title: The Program class shall return a non-zero exit code on failure.
@@ -41,7 +41,7 @@ sections:
           Callers (scripts, CI/CD pipelines) must be able to detect failure conditions
           programmatically via the process exit code.
         tests:
-          - NuGetInstaller_UnknownArgument_InvalidFlag_ReturnsNonZeroExitCode
+          - Program_Run_WithMissingPackagesConfig_ReturnsNonZeroExitCode
 
       - id: NuGetInstaller-Program-Install
         title: The Program unit shall install packages from the package configuration file when no special flags are provided.
@@ -50,5 +50,5 @@ sections:
           specified packages into the output directory. This is the core tool behavior
           that end users invoke without special flags.
         tests:
-          - Program_Run_NoArguments_DisplaysDefaultBehavior
-          - NuGetInstaller_InstallPackages_ValidConfig_ExtractsPackageToOutputDirectory
+          - Program_Run_WithValidPackagesConfig_InstallsPackages
+          - Program_Run_NoArguments_DisplaysBanner

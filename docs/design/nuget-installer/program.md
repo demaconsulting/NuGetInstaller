@@ -28,8 +28,9 @@ Entry point. Creates a `Context`, calls `Run`, and returns `context.ExitCode`.
 
 ### PrintBanner(Context context)
 
-Prints the tool name and version banner to the context output. Called at startup before
-dispatching to other handlers.
+Prints the tool name and version banner to the context output. Called by `Run` before
+dispatching to `PrintHelp`, `Validation.Run`, or `RunToolLogic`. Not called when the
+`Version` flag is set; `--version` returns early before reaching `PrintBanner`.
 
 ### PrintHelp(Context context)
 
@@ -63,8 +64,9 @@ Reads `AssemblyInformationalVersionAttribute` from the executing assembly, falli
 | Condition                                  | Behavior                                              |
 |--------------------------------------------|-------------------------------------------------------|
 | `packages.config` file not found           | Calls `context.WriteError` and sets exit code to 1.   |
-| Package installation fails                 | Exception propagates; exit code reflects failure.     |
-| Unknown or malformed command-line argument | Caught in `Main`; written to stderr, exit code 1.     |
+| Package installation fails                 | `IOException` or any unexpected exception propagates to `Main`; `Main` catches it, writes `Unexpected error: <message>` to stderr, and re-throws so the runtime produces an event log entry. The process exits with a non-zero code. |
+| Unknown or malformed command-line argument | `ArgumentException` caught in `Main`; written as `Error: <message>` to stderr, exit code 1. |
+| Log file cannot be opened                  | `InvalidOperationException` thrown by `Context.Create` is caught in `Main`; written as `Error: <message>` to stderr, exit code 1. |
 
 ## Interactions
 

@@ -25,7 +25,8 @@ Orchestrates the validation sequence:
    (default `1`, producing a `#` heading; `--depth 2` produces `##`, etc.).
 2. Constructs a `TestResults` object named `"NuGet Installer Self-Validation"`.
 3. Calls each test runner (`RunVersionTest`, `RunHelpTest`, `RunInstallPackageTest`).
-4. Prints a summary line for each test result.
+4. Prints three aggregate summary lines: `Total Tests: N`, `Passed: N`, `Failed: N`.
+   Failed count is written via `WriteError` (red) when non-zero; otherwise via `WriteLine`.
 5. Calls `WriteResultsFile` if `context.ResultsFile` is set.
 
 ### RunVersionTest / RunHelpTest
@@ -63,6 +64,7 @@ Writes `testResults` to `context.ResultsFile`. The format is determined by the f
 | `PathHelpers`           | Uses      | `SafePathCombine` for temp-dir file paths.      |
 | `PackagesConfigReader`  | Uses      | Reads packages.config in install test.          |
 | `PackageInstaller`      | Uses      | Installs packages in install test.              |
+| `DemaConsulting.TestResults` | Uses | Result model, TRX and JUnit serialization.      |
 
 ## Error Handling
 

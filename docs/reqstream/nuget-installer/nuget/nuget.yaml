@@ -53,3 +53,28 @@ sections:
           and gives callers actionable diagnostic information.
         tests:
           - NuGetSubsystem_MissingFileWorkflow_NonexistentConfig_ThrowsInvalidOperationException
+
+      - id: NuGetInstaller-NuGet-ZipSlipDefense
+        title: The NuGet subsystem shall reject archive entries that would escape the destination folder during extraction.
+        justification: |
+          Zip-slip attacks embed path-traversal sequences in archive entry names to
+          overwrite files outside the intended extraction directory. Rejecting such entries
+          prevents arbitrary file writes and protects the host file system.
+        tests:
+          - NuGetSubsystem_ExtractionWorkflow_ZipSlipEntry_ThrowsInvalidOperationException
+
+      - id: NuGetInstaller-NuGet-ZipBombDefense
+        title: The NuGet subsystem shall abort extraction when total decompressed bytes exceed 1 GB.
+        justification: |
+          Zip-bomb attacks use highly compressed archives that expand to enormous sizes.
+          Aborting extraction at 1 GB prevents denial-of-service through disk exhaustion.
+        tests:
+          - NuGetSubsystem_ExtractionWorkflow_ZipBombExceedsLimit_ThrowsInvalidOperationException
+
+      - id: NuGetInstaller-NuGet-MalformedXml
+        title: The NuGet subsystem shall report an error when the package configuration file contains malformed XML.
+        justification: |
+          A clear error for malformed XML helps users identify and fix configuration
+          file issues quickly, rather than encountering an opaque parse failure.
+        tests:
+          - NuGetSubsystem_MalformedXmlWorkflow_InvalidXml_ThrowsXmlException

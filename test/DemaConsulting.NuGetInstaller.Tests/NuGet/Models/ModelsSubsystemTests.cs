@@ -18,81 +18,51 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using DemaConsulting.NuGetInstaller.NuGet;
+using DemaConsulting.NuGetInstaller.NuGet.Models;
 
 namespace DemaConsulting.NuGetInstaller.Tests.NuGet.Models;
 
 /// <summary>
-///     Subsystem tests for the NuGet Models subsystem covering PackageEntry data model workflows.
+///     Subsystem tests for the NuGet Models subsystem covering PackageEntry data model.
 /// </summary>
 [TestClass]
 public class ModelsSubsystemTests
 {
     /// <summary>
-    ///     Test that the Models subsystem represents package metadata correctly through the
-    ///     PackagesConfigReader integration.
+    ///     Test that PackageEntry stores all properties correctly when constructed with all fields.
     /// </summary>
     [TestMethod]
-    public void ModelsSubsystem_PackageEntryWorkflow_ValidEntries_RepresentsPackageMetadata()
+    public void ModelsSubsystem_PackageEntry_AllProperties_StoresCorrectly()
     {
-        // Arrange: create a packages.config with entries exercising all PackageEntry fields
-        var tempFile = Path.GetTempFileName();
-
-        try
+        // Arrange: construct a PackageEntry with all fields populated
+        var entry = new PackageEntry
         {
-            File.WriteAllText(tempFile,
-                """
-                <?xml version="1.0" encoding="utf-8"?>
-                <packages>
-                  <package id="PackageA" version="1.0.0" />
-                  <package id="PackageB" version="2.0.0" targetFramework="net8.0" />
-                </packages>
-                """);
+            Id = "MyPackage",
+            Version = "1.2.3",
+            TargetFramework = "net8.0"
+        };
 
-            // Act: read packages through the reader to produce PackageEntry instances
-            var packages = PackagesConfigReader.Read(tempFile);
-
-            // Assert: verify PackageEntry data model represents all fields correctly
-            Assert.HasCount(2, packages);
-
-            Assert.AreEqual("PackageA", packages[0].Id);
-            Assert.AreEqual("1.0.0", packages[0].Version);
-            Assert.IsNull(packages[0].TargetFramework,
-                "TargetFramework should be null when not specified");
-
-            Assert.AreEqual("PackageB", packages[1].Id);
-            Assert.AreEqual("2.0.0", packages[1].Version);
-            Assert.AreEqual("net8.0", packages[1].TargetFramework,
-                "TargetFramework should be preserved when specified");
-        }
-        finally
-        {
-            File.Delete(tempFile);
-        }
+        // Assert: verify all properties are stored and accessible
+        Assert.AreEqual("MyPackage", entry.Id);
+        Assert.AreEqual("1.2.3", entry.Version);
+        Assert.AreEqual("net8.0", entry.TargetFramework);
     }
 
     /// <summary>
-    ///     Test that the Models subsystem returns an empty list for a self-closing packages element.
+    ///     Test that PackageEntry TargetFramework is null when not set.
     /// </summary>
     [TestMethod]
-    public void ModelsSubsystem_ReadPackages_EmptyPackagesElement_ReturnsEmptyList()
+    public void ModelsSubsystem_PackageEntry_OptionalTargetFramework_IsNullWhenNotSet()
     {
-        // Arrange: create a packages.config with a self-closing packages element
-        var tempFile = Path.GetTempFileName();
-
-        try
+        // Arrange: construct a PackageEntry without TargetFramework
+        var entry = new PackageEntry
         {
-            File.WriteAllText(tempFile, "<packages/>");
+            Id = "AnotherPackage",
+            Version = "2.0.0"
+        };
 
-            // Act: read packages through the reader
-            var packages = PackagesConfigReader.Read(tempFile);
-
-            // Assert: empty packages element returns an empty list
-            Assert.IsEmpty(packages, "Self-closing <packages/> element should return an empty list");
-        }
-        finally
-        {
-            File.Delete(tempFile);
-        }
+        // Assert: TargetFramework is null when not explicitly set
+        Assert.IsNull(entry.TargetFramework,
+            "TargetFramework should be null when not specified");
     }
 }

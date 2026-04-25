@@ -28,9 +28,25 @@ The `NuGet` subsystem exposes the following interfaces to the rest of the tool:
 
 | Interface                        | Direction | Description                                                           |
 |----------------------------------|-----------|-----------------------------------------------------------------------|
-| `PackagesConfigReader.Read`      | Outbound  | Parses a packages.config file and returns a list of `PackageEntry`.   |
-| `PackageInstaller.InstallAsync`  | Outbound  | Installs all packages into the output directory.                      |
-| `PackageExtractor.Extract`       | Internal  | Extracts a single .nupkg; used by `PackageInstaller`.                 |
+| `PackagesConfigReader.Read`      | Outbound  | Parses a packages.config file and returns a list of `PackageEntry`.                                                    |
+| `PackageInstaller.InstallAsync`  | Outbound  | Installs all packages into the output directory. The `excludeVersion` bool controls folder naming: `false` uses `{Id}.{Version}/`; `true` uses `{Id}/`. |
+| `PackageExtractor.Extract`       | Internal  | Extracts a single .nupkg into the output directory; returns `true` when extracted, `false` when the destination folder already existed and extraction was skipped. |
+
+## Normal Operation
+
+### Skip-Existing Behavior
+
+Before extracting a package, `PackageExtractor.Extract` checks whether the destination folder
+already exists. If it does, extraction is skipped and `false` is returned. `PackageInstaller`
+reports the package as skipped. This makes installation idempotent: re-running the tool
+against the same output directory does not re-extract or overwrite packages that have already
+been installed.
+
+### Version-less Folder Naming
+
+When `excludeVersion` is `true`, `PackageInstaller` constructs destination folder names using
+only the package `Id` (e.g., `Newtonsoft.Json/`). When `false` (the default), it uses
+`{Id}.{Version}/` (e.g., `Newtonsoft.Json.13.0.3/`).
 
 ## Interactions
 

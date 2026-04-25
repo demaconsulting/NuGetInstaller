@@ -64,6 +64,7 @@ sections:
           Provides persistent logging for debugging and audit trails when the
           --log flag is supplied.
         tests:
+          - Context_Create_LogFlag_OpensLogFile
           - Context_WriteError_WritesToLogFile
 
       - id: NuGetInstaller-Context-Silent

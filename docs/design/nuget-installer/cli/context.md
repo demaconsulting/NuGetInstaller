@@ -35,7 +35,8 @@ properties. It also owns the two output channels — console and log file — th
 Factory method. Delegates to the private `ArgumentParser` helper and opens the log file if
 `--log` was supplied.
 
-**Throws:** `ArgumentException` — when an unknown argument or missing value is encountered.
+**Throws:** `ArgumentNullException` — when `args` is `null`.
+`ArgumentException` — when an unknown argument or missing value is encountered.
 `InvalidOperationException` — when the log file specified by `--log` cannot be created or opened.
 
 ### WriteLine(string message)
@@ -54,4 +55,4 @@ Disposes `_logWriter` and sets it to `null`.
 ## Interactions
 
 `Context` has no dependencies on other tool units. It uses only .NET base class library types
-(`Console`, `StreamWriter`, `Path`).
+(`Console`, `StreamWriter`).

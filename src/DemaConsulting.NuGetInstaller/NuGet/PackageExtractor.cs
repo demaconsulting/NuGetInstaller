@@ -48,6 +48,11 @@ internal static class PackageExtractor
     ///     Thrown when an entry would escape the destination folder (zip-slip), or when the
     ///     total extracted size exceeds 1 GB (zip-bomb).
     /// </exception>
+    /// <remarks>
+    ///     When an exception is thrown mid-extraction, any partially created destination folder
+    ///     and its contents are left on disk. The caller is responsible for cleaning up the
+    ///     partially populated folder if desired.
+    /// </remarks>
     public static bool Extract(string nupkgPath, string destFolder)
     {
         // If destination already exists, skip extraction

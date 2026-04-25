@@ -135,9 +135,9 @@ internal static class Validation
                 // Read log content
                 var logContent = File.ReadAllText(logFile);
 
-                // Verify version string is in log (version contains dots like 0.0.0)
+                // Verify the actual version string appears in the log output
                 if (!string.IsNullOrWhiteSpace(logContent) &&
-                    logContent.Split('.').Length >= 3)
+                    logContent.Contains(Program.Version))
                 {
                     test.Outcome = DemaConsulting.TestResults.TestOutcome.Passed;
                     context.WriteLine($"✓ NuGetInstaller_VersionDisplay - Passed");

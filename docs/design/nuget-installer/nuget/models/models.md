@@ -25,6 +25,11 @@ The `Models` subsystem exposes the following interface to the rest of the tool:
 |----------------|-----------|-----------------------------------------------------------------|
 | `PackageEntry` | Outbound  | Immutable data class consumed by reader and installer units.    |
 
+## Error Handling
+
+The `Models` subsystem contains only immutable data classes with no executable logic.
+Error handling is not applicable at this subsystem level.
+
 ## Interactions
 
 The `Models` subsystem has no dependencies on other tool units or subsystems. It uses only

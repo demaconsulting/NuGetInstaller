@@ -60,7 +60,8 @@ the base directory.
 
 | Exception                 | Condition                                                                  |
 |---------------------------|----------------------------------------------------------------------------|
-| `ArgumentNullException`   | `basePath` or `relativePath` is null.                                      |
-| `ArgumentException`       | The resolved combined path escapes the base directory (path traversal).    |
-| `NotSupportedException`   | A supplied path contains an unsupported format (propagated from `Path`).   |
-| `PathTooLongException`    | The combined or resolved path exceeds the system-defined maximum length.   |
+| `ArgumentNullException`   | `basePath` or `relativePath` is null.                                                                    |
+| `ArgumentException`       | The resolved combined path escapes the base directory (path traversal or rooted relative path detected). |
+| `ArgumentException`       | A path component is invalid (propagated from `Path.Combine` or `Path.GetFullPath`).                     |
+| `NotSupportedException`   | A supplied path contains an unsupported format (propagated from `Path`).                                 |
+| `PathTooLongException`    | The combined or resolved path exceeds the system-defined maximum length.                                 |

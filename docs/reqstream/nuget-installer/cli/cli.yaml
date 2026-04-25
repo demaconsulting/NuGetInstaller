@@ -9,19 +9,27 @@ sections:
   - title: Cli Subsystem Requirements
     requirements:
       - id: NuGetInstaller-Cli-Context
-        title: The Cli subsystem shall parse command-line arguments and manage tool output behavior.
+        title: The Cli subsystem shall parse command-line arguments into the Context interface.
         justification: |
-          Provides a standardized approach to command-line argument parsing and output
-          handling across all DEMA Consulting DotNet Tools. Parsed flags and output
-          channels are exposed through a single, consistent interface for the rest of
-          the tool to consume.
+          Provides a standardized approach to command-line argument parsing across
+          all DEMA Consulting DotNet Tools. Parsed flags are exposed through a
+          single, consistent interface for the rest of the tool to consume.
         tests:
           - CliSubsystem_VersionFlow_ContextAndProgram_DisplaysVersionAndExits
           - CliSubsystem_HelpFlow_ContextAndProgram_DisplaysHelpAndExits
           - CliSubsystem_HelpFlow_ContextAndProgram_DisplaysHelpAndExits_WithShortQuestionFlag
           - CliSubsystem_HelpFlow_ContextAndProgram_DisplaysHelpAndExits_WithShortHFlag
           - CliSubsystem_ValidateFlow_ContextAndProgram_RunsValidationAndExits
+
+      - id: NuGetInstaller-Cli-OutputManagement
+        title: The Cli subsystem shall route tool output to the console and an optional log file.
+        justification: |
+          Output must be directed consistently across all DEMA Consulting DotNet Tools.
+          Routing through the Context interface allows silent mode and log file output
+          to be configured independently without affecting callers.
+        tests:
           - CliSubsystem_SilentFlow_ContextAndProgram_SuppressesOutput
+          - CliSubsystem_LogFlow_ContextAndProgram_WritesLogFile
 
       - id: NuGetInstaller-Cli-Version
         title: The Cli subsystem shall support -v and --version flags to signal version display.

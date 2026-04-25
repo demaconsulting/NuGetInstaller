@@ -37,12 +37,15 @@ internal static class PackageInstaller
     /// <param name="outputDirectory">The output directory for package extraction.</param>
     /// <param name="excludeVersion">When <see langword="true"/>, use {Id}/ folder naming instead of {Id}.{Version}/.</param>
     /// <returns>A task representing the asynchronous operation.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="outputDirectory"/> is <see langword="null"/> or empty.</exception>
     public static async Task InstallAsync(
         Context context,
         IReadOnlyList<PackageEntry> packages,
         string outputDirectory,
         bool excludeVersion)
     {
+        ArgumentNullException.ThrowIfNullOrEmpty(outputDirectory);
+
         // Ensure output directory exists
         Directory.CreateDirectory(outputDirectory);
 

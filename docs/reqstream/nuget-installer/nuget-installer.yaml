@@ -73,6 +73,7 @@ sections:
           mistakes without requiring external documentation.
         tests:
           - NuGetInstaller_UnknownArgument_InvalidFlag_ReturnsNonZeroExitCode
+          - NuGetInstaller_UnknownArgument_InvalidFlag_ReportsErrorMessage
 
       - id: NuGetInstaller-System-OutputDirectory
         title: >-
@@ -85,6 +86,7 @@ sections:
           allows scripts and CI pipelines to target an explicit path.
         tests:
           - NuGetInstaller_InstallPackages_ValidConfig_ExtractsPackageToOutputDirectory
+          - NuGetInstaller_InstallPackages_DefaultOutputDirectory_InstallsToCurrentDirectory
 
       - id: NuGetInstaller-System-ExcludeVersion
         title: The tool shall use {Id}/ folder naming (excluding the version) when the exclude-version flag is provided.

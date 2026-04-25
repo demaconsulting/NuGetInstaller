@@ -43,3 +43,12 @@ sections:
           during package extraction.
         tests:
           - PackageExtractor_Extract_ZipBombEntry_ThrowsInvalidOperationException
+
+      - id: NuGetInstaller-PackageExtractor-SkipDirectoryEntries
+        title: The PackageExtractor class shall skip archive entries that are directory markers (entries with an empty Name).
+        justification: |
+          NuGet packages often include directory-marker entries (entries whose Name component
+          after the last path separator is empty). Attempting to write such entries as files
+          would fail. Skipping them ensures only true file entries are extracted.
+        tests:
+          - PackageExtractor_Extract_ArchiveWithDirectoryEntries_SkipsDirectoriesAndReturnsTrue

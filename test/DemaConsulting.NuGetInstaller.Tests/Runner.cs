@@ -28,14 +28,15 @@ namespace DemaConsulting.NuGetInstaller.Tests;
 internal static class Runner
 {
     /// <summary>
-    ///     Runs the specified program and captures its output.
+    ///     Runs the specified program with an optional working directory and captures its output.
     /// </summary>
     /// <param name="output">Program output (stdout and stderr combined).</param>
+    /// <param name="workingDirectory">Working directory for the process, or null to inherit.</param>
     /// <param name="program">Program name or path.</param>
     /// <param name="arguments">Program arguments.</param>
     /// <returns>Program exit code.</returns>
     /// <exception cref="InvalidOperationException">Thrown when process fails to start.</exception>
-    public static int Run(out string output, string program, params string[] arguments)
+    public static int Run(out string output, string? workingDirectory, string program, params string[] arguments)
     {
         // Construct the start information
         var startInfo = new ProcessStartInfo(program)
@@ -45,6 +46,12 @@ internal static class Runner
             UseShellExecute = false,
             CreateNoWindow = true
         };
+
+        // Set working directory if specified
+        if (workingDirectory != null)
+        {
+            startInfo.WorkingDirectory = workingDirectory;
+        }
 
         // Add the arguments
         foreach (var argument in arguments)

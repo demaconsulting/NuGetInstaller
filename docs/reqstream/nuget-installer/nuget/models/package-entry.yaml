@@ -16,5 +16,5 @@ sections:
           mandatory to ensure every entry is complete, while the target framework
           remains optional to match the package configuration schema.
         tests:
-          - PackagesConfigReader_Read_SinglePackage_ReturnsSingleEntry
-          - PackagesConfigReader_Read_MultiplePackages_ReturnsAllEntries
+          - ModelsSubsystem_PackageEntry_AllProperties_StoresCorrectly
+          - ModelsSubsystem_PackageEntry_OptionalTargetFramework_IsNullWhenNotSet

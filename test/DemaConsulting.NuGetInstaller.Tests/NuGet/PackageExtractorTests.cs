@@ -134,6 +134,50 @@ public class PackageExtractorTests
     }
 
     /// <summary>
+    ///     Test that Extract skips directory-marker entries and returns true.
+    /// </summary>
+    [TestMethod]
+    public void PackageExtractor_Extract_ArchiveWithDirectoryEntries_SkipsDirectoriesAndReturnsTrue()
+    {
+        // Arrange: create a zip containing a directory-marker entry (empty Name) and a real file
+        var tempDir = Path.Combine(Path.GetTempPath(), $"extractor_test_{Guid.NewGuid()}");
+        var destFolder = Path.Combine(tempDir, "output");
+
+        try
+        {
+            Directory.CreateDirectory(tempDir);
+            var zipPath = Path.Combine(tempDir, "test.nupkg");
+
+            using (var archive = ZipFile.Open(zipPath, ZipArchiveMode.Create))
+            {
+                // Directory-marker entry: FullName ends with '/', Name is empty
+                archive.CreateEntry("subdir/");
+
+                // Real file entry to confirm the rest of extraction proceeds normally
+                var fileEntry = archive.CreateEntry("subdir/real.txt");
+                using var stream = fileEntry.Open();
+                using var writer = new StreamWriter(stream);
+                writer.Write("content");
+            }
+
+            // Act: extract archive containing a directory-marker entry
+            var result = PackageExtractor.Extract(zipPath, destFolder);
+
+            // Assert: extraction returned true and the real file is present
+            Assert.IsTrue(result, "Extract should return true when extraction was performed");
+            Assert.IsTrue(File.Exists(Path.Combine(destFolder, "subdir", "real.txt")),
+                "Real file entry should have been extracted");
+        }
+        finally
+        {
+            if (Directory.Exists(tempDir))
+            {
+                Directory.Delete(tempDir, true);
+            }
+        }
+    }
+
+    /// <summary>
     ///     Test that Extract throws InvalidOperationException when the total decompressed size exceeds 1 GB.
     /// </summary>
     [TestMethod]

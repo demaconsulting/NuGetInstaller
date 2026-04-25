@@ -14,7 +14,7 @@ sections:
           local output directory so that downstream build processes can reference
           the package files directly.
         tests:
-          - NuGetSubsystem_ReadAndInstallWorkflow_ValidConfig_ReturnsAndInstallsPackages
+          - PackageInstaller_InstallAsync_DefaultNaming_ExtractsPackageToVersionedFolder
 
       - id: NuGetInstaller-PackageInstaller-FolderNamingVersioned
         title: The PackageInstaller class shall use {Id}.{Version}/ folder naming by default.
@@ -23,7 +23,7 @@ sections:
           allows multiple versions of the same package to coexist side-by-side
           in the output directory.
         tests:
-          - NuGetSubsystem_ReadAndInstallWorkflow_ValidConfig_ReturnsAndInstallsPackages
+          - PackageInstaller_InstallAsync_DefaultNaming_ExtractsPackageToVersionedFolder
 
       - id: NuGetInstaller-PackageInstaller-FolderNamingExcludeVersion
         title: The PackageInstaller class shall use {Id}/ folder naming when the excludeVersion flag is true.
@@ -33,3 +33,22 @@ sections:
           {Id}/ convention to satisfy those consumers.
         tests:
           - PackageInstaller_InstallAsync_ExcludeVersion_UsesFlatFolderNaming
+
+      - id: NuGetInstaller-PackageInstaller-CreateOutputDirectory
+        title: The PackageInstaller class shall create the output directory if it does not already exist.
+        justification: |
+          Callers should not need to pre-create the output directory. Creating it
+          automatically reduces boilerplate in consuming code and makes the API
+          more convenient.
+        tests:
+          - PackageInstaller_InstallAsync_EmptyPackages_CreatesOutputDirectoryAndSucceeds
+
+      - id: NuGetInstaller-PackageInstaller-StatusMessages
+        title: The PackageInstaller class shall write a status message via the context after each package is installed or
+          skipped.
+        justification: |
+          Users and CI systems need feedback on which packages were newly installed and
+          which were skipped because they were already present. Status messages allow
+          consumers to distinguish first-time installs from cached-hit operations.
+        tests:
+          - PackageInstaller_InstallAsync_AlreadyExtracted_SkipsInstallation

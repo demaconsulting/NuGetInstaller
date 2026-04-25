@@ -239,4 +239,109 @@ public class NuGetSubsystemTests
             () => PackagesConfigReader.Read(nonExistentPath));
         Assert.Contains("not found", exception.Message);
     }
+
+    /// <summary>
+    ///     Test that the NuGet subsystem rejects a zip entry that would escape the destination folder (zip-slip).
+    /// </summary>
+    [TestMethod]
+    public void NuGetSubsystem_ExtractionWorkflow_ZipSlipEntry_ThrowsInvalidOperationException()
+    {
+        // Arrange: build a zip archive containing a zip-slip entry
+        var tempDir = Path.Combine(Path.GetTempPath(), $"nuget_zipslip_test_{Guid.NewGuid()}");
+
+        try
+        {
+            Directory.CreateDirectory(tempDir);
+            var zipPath = Path.Combine(tempDir, "malicious.nupkg");
+            var destFolder = Path.Combine(tempDir, "output");
+
+            // Create a zip with a path-traversal entry name
+            using (var archive = ZipFile.Open(zipPath, ZipArchiveMode.Create))
+            {
+                var entry = archive.CreateEntry("../../escaped.txt");
+                using var stream = entry.Open();
+                stream.WriteByte(0);
+            }
+
+            // Act & Assert: extraction must throw InvalidOperationException for the zip-slip entry
+            Assert.ThrowsExactly<InvalidOperationException>(
+                () => PackageExtractor.Extract(zipPath, destFolder));
+        }
+        finally
+        {
+            if (Directory.Exists(tempDir))
+            {
+                Directory.Delete(tempDir, true);
+            }
+        }
+    }
+
+    /// <summary>
+    ///     Test that the NuGet subsystem aborts extraction when decompressed bytes exceed 1 GB (zip-bomb).
+    /// </summary>
+    [TestMethod]
+    public void NuGetSubsystem_ExtractionWorkflow_ZipBombExceedsLimit_ThrowsInvalidOperationException()
+    {
+        // Arrange: create a zip with entries whose declared uncompressed sizes total more than 1 GB.
+        // We use many small entries that together claim to exceed the limit.
+        // The actual data is sparse (all zeros), which compresses extremely well,
+        // so the zip file itself is tiny; the size check fires on decompressed bytes written.
+        var tempDir = Path.Combine(Path.GetTempPath(), $"nuget_zipbomb_test_{Guid.NewGuid()}");
+
+        try
+        {
+            Directory.CreateDirectory(tempDir);
+            var zipPath = Path.Combine(tempDir, "bomb.nupkg");
+            var destFolder = Path.Combine(tempDir, "output");
+
+            // Build a zip with 1100 entries × 1 MiB each = ~1.1 GiB total uncompressed
+            const int entryCount = 1100;
+            const int entrySize = 1024 * 1024; // 1 MiB
+            using (var archive = ZipFile.Open(zipPath, ZipArchiveMode.Create))
+            {
+                var data = new byte[entrySize];
+                for (var i = 0; i < entryCount; i++)
+                {
+                    var entry = archive.CreateEntry($"entry{i:D4}.bin",
+                        CompressionLevel.Optimal);
+                    using var stream = entry.Open();
+                    stream.Write(data, 0, data.Length);
+                }
+            }
+
+            // Act & Assert: extraction must throw InvalidOperationException for zip-bomb
+            Assert.ThrowsExactly<InvalidOperationException>(
+                () => PackageExtractor.Extract(zipPath, destFolder));
+        }
+        finally
+        {
+            if (Directory.Exists(tempDir))
+            {
+                Directory.Delete(tempDir, true);
+            }
+        }
+    }
+
+    /// <summary>
+    ///     Test that the NuGet subsystem throws XmlException when packages.config contains malformed XML.
+    /// </summary>
+    [TestMethod]
+    public void NuGetSubsystem_MalformedXmlWorkflow_InvalidXml_ThrowsXmlException()
+    {
+        // Arrange: write a malformed XML file
+        var tempFile = Path.GetTempFileName();
+
+        try
+        {
+            File.WriteAllText(tempFile, "<packages><package id=\"A\" version=\"1.0\"</packages>");
+
+            // Act & Assert: malformed XML must throw XmlException
+            Assert.ThrowsExactly<System.Xml.XmlException>(
+                () => PackagesConfigReader.Read(tempFile));
+        }
+        finally
+        {
+            File.Delete(tempFile);
+        }
+    }
 }

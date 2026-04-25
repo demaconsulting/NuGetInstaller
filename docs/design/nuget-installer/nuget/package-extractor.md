@@ -45,9 +45,10 @@ Extracts all entries from a .nupkg file into the destination folder.
 2. Open the archive with `ZipFile.OpenRead(nupkgPath)`.
 3. Allocate a single reusable `CopyBufferSize` byte buffer and initialize
    `totalExtractedBytes` to zero.
-4. Resolve the canonical destination folder once with `Path.GetFullPath` and append a
-   trailing `Path.DirectorySeparatorChar` (stored as `canonicalDestFolderWithSep`) to prevent
-   partial-path prefix attacks.
+4. Resolve the canonical destination folder once with `Path.GetFullPath` (stored as
+   `canonicalDestFolder`). If the resolved path does not already end with
+   `Path.DirectorySeparatorChar`, append one (stored as `canonicalDestFolderWithSep`) to
+   prevent partial-path prefix attacks.
 5. For each `ZipArchiveEntry` in the archive:
    a. Skip entries that have an empty `Name` (directory markers).
    b. Resolve the canonical destination path: `destPath = Path.GetFullPath(Path.Combine(destFolder, entry.FullName))`.
