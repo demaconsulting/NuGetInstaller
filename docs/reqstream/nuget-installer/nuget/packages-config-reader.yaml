@@ -8,7 +8,8 @@ sections:
   - title: PackagesConfigReader Unit Requirements
     requirements:
       - id: NuGetInstaller-PackagesConfigReader-Parse
-        title: The PackagesConfigReader unit shall parse the package configuration file and return the declared package entries.
+        title: The PackagesConfigReader unit shall parse the package configuration file
+          and return the declared package entries.
         justification: |
           The package configuration format is the standard NuGet mechanism for declaring
           package dependencies. Parsing it into a structured list of entries enables
@@ -37,7 +38,8 @@ sections:
           - PackagesConfigReader_Read_MissingVersionAttribute_ThrowsInvalidOperationException
 
       - id: NuGetInstaller-PackagesConfigReader-MalformedXml
-        title: The PackagesConfigReader unit shall report an error when the configuration file contains malformed content.
+        title: The PackagesConfigReader unit shall report an error when the
+          configuration file contains malformed content.
         justification: |
           Callers need clear, actionable diagnostics when the configuration file cannot be
           parsed, so they can quickly identify and correct the problem.
