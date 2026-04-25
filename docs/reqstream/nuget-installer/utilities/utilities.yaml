@@ -18,6 +18,8 @@ sections:
           path traversal sequences (such as '..') and absolute or rooted paths to prevent
           unintended file system access. This requirement captures the subsystem-level safety
           guarantee that all consumers of the Utilities subsystem can rely upon.
+        children:
+          - NuGetInstaller-PathHelpers-SafeCombine
         tests:
           - UtilitiesSubsystem_PathResolutionWorkflow_ValidPaths_ResolvesCorrectly
           - UtilitiesSubsystem_DirectoryCreationWorkflow_ValidPaths_CreatesDirectories
@@ -30,6 +32,8 @@ sections:
           Null arguments must be explicitly rejected to prevent null reference
           exceptions deeper in the call stack and to clearly communicate API
           contract violations to callers.
+        children:
+          - NuGetInstaller-PathHelpers-NullInputRejection
         tests:
           - UtilitiesSubsystem_SafePathCombine_NullBasePath_ThrowsArgumentNullException
           - UtilitiesSubsystem_SafePathCombine_NullRelativePath_ThrowsArgumentNullException

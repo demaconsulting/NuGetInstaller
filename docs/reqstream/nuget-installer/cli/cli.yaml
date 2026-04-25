@@ -14,6 +14,8 @@ sections:
           Provides a standardized approach to command-line argument parsing across
           all DEMA Consulting DotNet Tools. Parsed flags are exposed through a
           single, consistent interface for the rest of the tool to consume.
+        children:
+          - NuGetInstaller-Context-ArgumentParsing
         tests:
           - CliSubsystem_VersionFlow_ContextAndProgram_DisplaysVersionAndExits
           - CliSubsystem_HelpFlow_ContextAndProgram_DisplaysHelpAndExits
@@ -27,6 +29,9 @@ sections:
           Output must be directed consistently across all DEMA Consulting DotNet Tools.
           Routing through the Context interface allows silent mode and log file output
           to be configured independently without affecting callers.
+        children:
+          - NuGetInstaller-Context-ConsoleOutput
+          - NuGetInstaller-Context-LogFileOutput
         tests:
           - CliSubsystem_SilentFlow_ContextAndProgram_SuppressesOutput
           - CliSubsystem_LogFlow_ContextAndProgram_WritesLogFile
@@ -36,6 +41,8 @@ sections:
         justification: |
           Users need to quickly identify the version of the tool they are using for
           troubleshooting and compatibility verification.
+        children:
+          - NuGetInstaller-Context-ArgumentParsing
         tests:
           - CliSubsystem_VersionFlow_ContextAndProgram_DisplaysVersionAndExits
           - CliSubsystem_VersionFlow_ContextAndProgram_DisplaysVersionAndExits_WithShortVFlag
@@ -45,6 +52,8 @@ sections:
         justification: |
           Users need access to command-line usage documentation without requiring
           external resources.
+        children:
+          - NuGetInstaller-Context-ArgumentParsing
         tests:
           - CliSubsystem_HelpFlow_ContextAndProgram_DisplaysHelpAndExits
           - CliSubsystem_HelpFlow_ContextAndProgram_DisplaysHelpAndExits_WithShortQuestionFlag
@@ -55,6 +64,8 @@ sections:
         justification: |
           Enables automated scripts and CI/CD pipelines to run the tool without
           cluttering output logs.
+        children:
+          - NuGetInstaller-Context-Silent
         tests:
           - CliSubsystem_SilentFlow_ContextAndProgram_SuppressesOutput
 
@@ -63,6 +74,8 @@ sections:
         justification: |
           Provides a built-in mechanism to verify the tool is functioning correctly
           in the deployment environment.
+        children:
+          - NuGetInstaller-Context-ArgumentParsing
         tests:
           - CliSubsystem_ValidateFlow_ContextAndProgram_RunsValidationAndExits
 
@@ -70,6 +83,8 @@ sections:
         title: The Cli subsystem shall support --results flag to specify a test results output file.
         justification: |
           Enables integration with CI/CD systems that expect standard test result formats.
+        children:
+          - NuGetInstaller-Context-ArgumentParsing
         tests:
           - CliSubsystem_ResultsFlow_ContextAndProgram_WritesResultsFile
 
@@ -78,6 +93,8 @@ sections:
         justification: |
           Provides a convenient short-form alias for the results flag, reducing
           typing in interactive use and script files.
+        children:
+          - NuGetInstaller-Context-ArgumentParsing
         tests:
           - CliSubsystem_ResultAliasFlow_ContextAndProgram_WritesResultsFile
 
@@ -87,6 +104,8 @@ sections:
           Enables validation output to be embedded within larger markdown documents at
           the appropriate heading level, supporting documentation workflows that combine
           multiple reports.
+        children:
+          - NuGetInstaller-Context-ArgumentParsing
         tests:
           - CliSubsystem_DepthFlow_ContextAndProgram_AdjustsHeadingDepth
 
@@ -94,6 +113,8 @@ sections:
         title: The Cli subsystem shall support --log flag to write output to a log file.
         justification: |
           Provides persistent logging for debugging and audit trails.
+        children:
+          - NuGetInstaller-Context-LogFileOutput
         tests:
           - CliSubsystem_LogFlow_ContextAndProgram_WritesLogFile
 
@@ -102,6 +123,8 @@ sections:
         justification: |
           Error messages must be written to stderr so they remain visible to the user
           without polluting stdout, which consumers may pipe or redirect for data capture.
+        children:
+          - NuGetInstaller-Context-ErrorOutput
         tests:
           - CliSubsystem_ErrorOutput_ContextAndProgram_WritesErrorToStderr
 
@@ -110,6 +133,8 @@ sections:
         justification: |
           Providing clear feedback for invalid arguments helps users quickly correct
           mistakes and prevents silent misconfiguration.
+        children:
+          - NuGetInstaller-Context-InvalidArgs
         tests:
           - CliSubsystem_InvalidArgs_ContextAndProgram_RejectsUnknownArgumentsAndExitsNonZero
 
@@ -118,6 +143,8 @@ sections:
         justification: |
           Callers (scripts, CI/CD pipelines) must be able to detect failure conditions
           programmatically via the process exit code.
+        children:
+          - NuGetInstaller-Context-ExitCode
         tests:
           - CliSubsystem_InvalidArgs_ContextAndProgram_RejectsUnknownArgumentsAndExitsNonZero
 
@@ -126,6 +153,8 @@ sections:
         justification: |
           Users need to specify the path to the packages.config file. A positional
           argument provides a natural and concise syntax matching NuGet.exe conventions.
+        children:
+          - NuGetInstaller-Context-ArgumentParsing
         tests:
           - CliSubsystem_PackagesConfigFlow_ContextAndProgram_AcceptsPositionalArgument
 
@@ -134,6 +163,8 @@ sections:
         justification: |
           Users need to control where packages are extracted. The output directory flag
           allows specifying a custom path, defaulting to the current directory.
+        children:
+          - NuGetInstaller-Context-ArgumentParsing
         tests:
           - CliSubsystem_OutputDirectoryFlow_ContextAndProgram_SetsOutputDirectory
           - CliSubsystem_OutputDirectoryFlow_ContextAndProgram_SetsOutputDirectory_WithLongFlag
@@ -143,6 +174,8 @@ sections:
         justification: |
           Users may prefer version-less folder naming for simpler path references.
           The exclude version flag changes folder naming from {Id}.{Version}/ to {Id}/.
+        children:
+          - NuGetInstaller-Context-ArgumentParsing
         tests:
           - CliSubsystem_ExcludeVersionFlow_ContextAndProgram_SetsExcludeVersion
           - CliSubsystem_ExcludeVersionFlow_ContextAndProgram_SetsExcludeVersion_WithLongFlag

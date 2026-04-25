@@ -32,6 +32,9 @@ sections:
           their contents to the user-specified output directory so that downstream
           build processes can reference the package files directly.
         children:
+          - NuGetInstaller-PackageInstaller-Install
+          - NuGetInstaller-PackageInstaller-FolderNamingVersioned
+          - NuGetInstaller-PackageInstaller-CreateOutputDirectory
           - NuGetInstaller-PackageExtractor-Extract
           - NuGetInstaller-PackageExtractor-ZipSlip
           - NuGetInstaller-PackageExtractor-ZipBomb
@@ -47,6 +50,7 @@ sections:
           Skipping existing folders avoids unnecessary I/O and supports idempotent
           installation for CI/CD pipelines that cache the output directory.
         children:
+          - NuGetInstaller-PackageInstaller-StatusMessages
           - NuGetInstaller-PackageExtractor-SkipExisting
         tests:
           - NuGetSubsystem_ExtractionWorkflow_ExistingDestination_SkipsExtraction
@@ -67,6 +71,8 @@ sections:
         justification: |
           A clear error when the configuration file is absent prevents silent failures
           and gives callers actionable diagnostic information.
+        children:
+          - NuGetInstaller-PackagesConfigReader-FileNotFound
         tests:
           - NuGetSubsystem_MissingFileWorkflow_NonexistentConfig_ThrowsInvalidOperationException
 
@@ -75,5 +81,7 @@ sections:
         justification: |
           A clear error for malformed XML helps users identify and fix configuration
           file issues quickly, rather than encountering an opaque parse failure.
+        children:
+          - NuGetInstaller-PackagesConfigReader-MalformedXml
         tests:
           - NuGetSubsystem_MalformedXmlWorkflow_InvalidXml_ThrowsXmlException

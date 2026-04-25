@@ -18,6 +18,11 @@ sections:
           self-validation suite that exercises core behaviors and produces a pass/fail
           summary, enabling quality assurance teams to obtain tool qualification evidence
           without requiring a separate test harness.
+        children:
+          - NuGetInstaller-Validation-Run
+          - NuGetInstaller-Validation-VersionTest
+          - NuGetInstaller-Validation-HelpTest
+          - NuGetInstaller-Validation-InstallPackage
         tests:
           - SelfTestSubsystem_ValidationWorkflow_NoResultFiles_CompletesSuccessfully
 
@@ -28,6 +33,8 @@ sections:
           TRX (MSTest) format test result files. TRX output enables self-validation results
           to be fed directly into pipeline tooling and traceability reports without additional
           conversion steps, satisfying audit trail requirements.
+        children:
+          - NuGetInstaller-Validation-TrxResults
         tests:
           - SelfTestSubsystem_ValidationWorkflow_WithTrxFile_GeneratesResults
 
@@ -37,6 +44,8 @@ sections:
           Many CI tools consume JUnit XML format test result files. JUnit output enables
           self-validation results to be fed directly into pipeline tooling and traceability
           reports without additional conversion steps, satisfying audit trail requirements.
+        children:
+          - NuGetInstaller-Validation-JUnitResults
         tests:
           - SelfTestSubsystem_ValidationWorkflow_WithJUnitFile_GeneratesResults
           - SelfTestSubsystem_ValidationWorkflow_WithBothResultFiles_GeneratesBothResults

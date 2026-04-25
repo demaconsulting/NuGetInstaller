@@ -16,6 +16,9 @@ sections:
           Users need to quickly identify the version of the tool they are using for
           troubleshooting and compatibility verification. The version display must
           work from a standard dotnet invocation without additional configuration.
+        children:
+          - NuGetInstaller-Cli-Version
+          - NuGetInstaller-Program-Version
         tests:
           - NuGetInstaller_VersionFlag_FlagProvided_OutputsVersion
 
@@ -25,6 +28,9 @@ sections:
           Users need access to command-line usage documentation without requiring
           external resources. Help output must be accessible from a standard dotnet
           invocation and must list the available options so that users can self-serve.
+        children:
+          - NuGetInstaller-Cli-Help
+          - NuGetInstaller-Program-Help
         tests:
           - NuGetInstaller_HelpFlag_FlagProvided_OutputsUsageInformation
 
@@ -36,6 +42,13 @@ sections:
           is used to generate compliance artifacts. The validation mode exercises
           core behaviors and produces a structured test result file, providing the
           qualification evidence required by quality management systems.
+        children:
+          - NuGetInstaller-Cli-Validate
+          - NuGetInstaller-Cli-Results
+          - NuGetInstaller-Cli-ResultAlias
+          - NuGetInstaller-SelfTest-Qualification
+          - NuGetInstaller-SelfTest-TrxOutput
+          - NuGetInstaller-SelfTest-JUnitOutput
         tests:
           - NuGetInstaller_ValidateFlag_FlagProvided_RunsValidation
           - NuGetInstaller_ValidateWithResults_TrxExtension_GeneratesTrxFile
@@ -46,6 +59,8 @@ sections:
         justification: |
           Enables automated scripts and CI/CD pipelines to run the tool without
           cluttering output logs when only the exit code is needed.
+        children:
+          - NuGetInstaller-Cli-Silent
         tests:
           - NuGetInstaller_SilentFlag_FlagProvided_SuppressesOutput
 
@@ -55,6 +70,8 @@ sections:
           Provides persistent logging for debugging and compliance audit trails.
           Log files enable post-run inspection of tool output without requiring
           console capture.
+        children:
+          - NuGetInstaller-Cli-Log
         tests:
           - NuGetInstaller_LogFlag_FlagProvided_WritesOutputToFile
 
@@ -63,6 +80,9 @@ sections:
         justification: |
           A non-zero exit code enables CI/CD pipelines to detect and surface
           misconfiguration failures automatically.
+        children:
+          - NuGetInstaller-Cli-ExitCode
+          - NuGetInstaller-Program-ExitCode
         tests:
           - NuGetInstaller_UnknownArgument_InvalidFlag_ReturnsNonZeroExitCode
 
@@ -71,6 +91,9 @@ sections:
         justification: |
           Clear feedback for unrecognized arguments helps users quickly correct
           mistakes without requiring external documentation.
+        children:
+          - NuGetInstaller-Cli-InvalidArgs
+          - NuGetInstaller-Cli-ErrorOutput
         tests:
           - NuGetInstaller_UnknownArgument_InvalidFlag_ReturnsNonZeroExitCode
           - NuGetInstaller_UnknownArgument_InvalidFlag_ReportsErrorMessage
@@ -84,16 +107,24 @@ sections:
           Users need control over where packages are installed. Defaulting to the
           current working directory provides a sensible convention while the flag
           allows scripts and CI pipelines to target an explicit path.
+        children:
+          - NuGetInstaller-Cli-OutputDirectory
+          - NuGetInstaller-NuGet-ExtractPackages
         tests:
           - NuGetInstaller_InstallPackages_ValidConfig_ExtractsPackageToOutputDirectory
           - NuGetInstaller_InstallPackages_DefaultOutputDirectory_InstallsToCurrentDirectory
 
       - id: NuGetInstaller-System-ExcludeVersion
-        title: The tool shall use {Id}/ folder naming (excluding the version) when the exclude-version flag is provided.
+        title: >-
+          The tool shall use {Id}/ folder naming (excluding the version) when the
+          exclude-version flag is provided.
         justification: |
           Some build systems reference packages by a version-less folder name.
           The exclude-version flag enables this naming convention, making it
           easier to update package versions without changing downstream references.
+        children:
+          - NuGetInstaller-Cli-ExcludeVersion
+          - NuGetInstaller-NuGet-ExcludeVersion
         tests:
           - NuGetInstaller_InstallPackages_ExcludeVersionFlag_UsesFlatFolderNaming
 
@@ -105,6 +136,8 @@ sections:
           When embedding validation reports inside a larger document, the heading
           level must match the surrounding structure. The depth flag allows callers
           to specify the desired level without post-processing the output.
+        children:
+          - NuGetInstaller-Cli-Depth
         tests:
           - NuGetInstaller_ValidateDepth_DepthFlagProvided_AdjustsHeadingDepth
 
@@ -114,15 +147,24 @@ sections:
           Incremental builds must not re-extract packages already present in the
           output directory. Skipping existing folders makes installation idempotent
           and reduces unnecessary I/O in CI/CD pipelines.
+        children:
+          - NuGetInstaller-NuGet-SkipExisting
         tests:
           - NuGetInstaller_InstallPackages_ExistingFolder_SkipsInstallation
 
       - id: NuGetInstaller-System-Install
-        title: The tool shall install NuGet packages from a packages.config file into the output directory.
+        title: >-
+          The tool shall install NuGet packages from a packages.config file into
+          the output directory.
         justification: |
           The core purpose of the tool is to read a packages.config file and install
           the specified NuGet packages into a local directory. This enables build
           systems and CI/CD pipelines to restore NuGet dependencies without requiring
           the full NuGet.exe or Visual Studio tooling.
+        children:
+          - NuGetInstaller-Cli-PackagesConfig
+          - NuGetInstaller-Program-Install
+          - NuGetInstaller-NuGet-ReadConfig
+          - NuGetInstaller-NuGet-ExtractPackages
         tests:
           - NuGetInstaller_InstallPackages_ValidConfig_ExtractsPackageToOutputDirectory
