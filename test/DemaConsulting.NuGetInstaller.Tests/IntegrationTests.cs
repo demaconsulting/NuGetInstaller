@@ -282,7 +282,7 @@ public class IntegrationTests
             var exitCode = Runner.Run(
                 out var output,
                 null,
-            "dotnet",
+                "dotnet",
                 _dllPath,
                 configPath,
                 "-o",
@@ -332,7 +332,7 @@ public class IntegrationTests
             var exitCode = Runner.Run(
                 out var output,
                 null,
-            "dotnet",
+                "dotnet",
                 _dllPath,
                 configPath,
                 "-o",
@@ -407,7 +407,7 @@ public class IntegrationTests
             var exitCode = Runner.Run(
                 out var output,
                 null,
-            "dotnet",
+                "dotnet",
                 _dllPath,
                 configPath,
                 "-o",
