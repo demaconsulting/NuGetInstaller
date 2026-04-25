@@ -28,9 +28,9 @@ The `NuGet` subsystem exposes the following interfaces to the rest of the tool:
 
 | Interface                        | Direction | Description                                                           |
 |----------------------------------|-----------|-----------------------------------------------------------------------|
-| `PackagesConfigReader.Read`      | Outbound  | Parses a packages.config file and returns a list of `PackageEntry`.                                                    |
-| `PackageInstaller.InstallAsync`  | Outbound  | Installs all packages into the output directory. The `excludeVersion` bool controls folder naming: `false` uses `{Id}.{Version}/`; `true` uses `{Id}/`. |
-| `PackageExtractor.Extract`       | Internal  | Extracts a single .nupkg into the output directory; returns `true` when extracted, `false` when the destination folder already existed and extraction was skipped. |
+| `PackagesConfigReader.Read`      | Outbound  | Parses a packages.config file and returns a list of `PackageEntry`.   |
+| `PackageInstaller.InstallAsync`  | Outbound  | Installs packages; `excludeVersion` controls versioned/flat naming.   |
+| `PackageExtractor.Extract`       | Internal  | Extracts a .nupkg; `true` if extracted, `false` if folder exists.     |
 
 ## Normal Operation
 

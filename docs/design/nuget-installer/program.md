@@ -64,9 +64,9 @@ Reads `AssemblyInformationalVersionAttribute` from the executing assembly, falli
 | Condition                                  | Behavior                                              |
 |--------------------------------------------|-------------------------------------------------------|
 | `packages.config` file not found           | Calls `context.WriteError` and sets exit code to 1.   |
-| Package installation fails                 | `IOException` or any unexpected exception propagates to `Main`; `Main` catches it, writes `Unexpected error: <message>` to stderr, and re-throws so the runtime produces an event log entry. The process exits with a non-zero code. |
-| Unknown or malformed command-line argument | `ArgumentException` caught in `Main`; written as `Error: <message>` to stderr, exit code 1. |
-| Log file cannot be opened                  | `InvalidOperationException` thrown by `Context.Create` is caught in `Main`; written as `Error: <message>` to stderr, exit code 1. |
+| Package installation fails                 | Propagates to `Main`; writes to stderr, re-throws.    |
+| Unknown or malformed command-line argument | Caught in `Main`; `Error: <message>` to stderr.       |
+| Log file cannot be opened                  | Caught in `Main`; `Error: <message>` to stderr.       |
 
 ## Interactions
 

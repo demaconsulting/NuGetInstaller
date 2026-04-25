@@ -37,25 +37,25 @@ The `Cli` subsystem exposes the following interface to the rest of the tool:
 | `Context.WriteLine`          | Outbound  | Writes a message to console and optional log file.                     |
 | `Context.WriteError`         | Outbound  | Writes an error to stderr and sets the error exit code.                |
 | `Context.ExitCode`           | Outbound  | Returns 0 for success or 1 when errors have been reported.             |
-| `Context.HeadingDepth`       | Outbound  | Heading depth for markdown output (default 1, valid range 1–6); supplied via `--depth`. |
+| `Context.HeadingDepth`       | Outbound  | Heading depth for markdown output (default 1, valid range 1–6).        |
 | `Context.Dispose`            | Outbound  | Releases resources held by the context (flushes and closes log file).  |
 
 ## Command-Line Flags
 
 The following table maps each command-line flag to its corresponding `Context` property:
 
-| Flag(s)                          | Context Property          | Notes                                    |
-|----------------------------------|---------------------------|------------------------------------------|
-| `-v`, `--version`                | `Context.Version`         | Boolean flag                             |
-| `-?`, `-h`, `--help`             | `Context.Help`            | Boolean flag                             |
-| `--silent`                       | `Context.Silent`          | Boolean flag                             |
-| `--validate`                     | `Context.Validate`        | Boolean flag                             |
-| `--log <file>`                   | *(log file path)*         | Opened internally; not exposed directly  |
-| `--results <file>`, `--result <file>` | `Context.ResultsFile` | `--result` is an alias for `--results`   |
-| `--depth <#>`                    | `Context.HeadingDepth`    | Integer 1–6, default 1                   |
-| `-o <dir>`, `-OutputDirectory <dir>` | `Context.OutputDirectory` | Null means current working directory |
-| `-x`, `-ExcludeVersion`          | `Context.ExcludeVersion`  | Boolean flag                             |
-| `[packages.config]`              | `Context.PackagesConfigFile` | Positional; default `packages.config` |
+| Flag(s)                               | Context Property             | Notes                                    |
+|---------------------------------------|------------------------------|------------------------------------------|
+| `-v`, `--version`                     | `Context.Version`            | Boolean flag                             |
+| `-?`, `-h`, `--help`                  | `Context.Help`               | Boolean flag                             |
+| `--silent`                            | `Context.Silent`             | Boolean flag                             |
+| `--validate`                          | `Context.Validate`           | Boolean flag                             |
+| `--log <file>`                        | *(log file path)*            | Opened internally; not exposed directly  |
+| `--results <file>`, `--result <file>` | `Context.ResultsFile`        | `--result` is an alias for `--results`   |
+| `--depth <#>`                         | `Context.HeadingDepth`       | Integer 1–6, default 1                   |
+| `-o <dir>`, `-OutputDirectory <dir>`  | `Context.OutputDirectory`    | Null means current working directory     |
+| `-x`, `-ExcludeVersion`               | `Context.ExcludeVersion`     | Boolean flag                             |
+| `[packages.config]`                   | `Context.PackagesConfigFile` | Positional; default `packages.config`    |
 
 ## Error Handling
 

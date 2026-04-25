@@ -14,6 +14,7 @@ language: en
 
 # Project-specific technical terms and tool names
 words:
+  - behaviour
   - Blockquotes
   - buildmark
   - buildtransitive
@@ -25,6 +26,7 @@ words:
   - docversion
   - errorlevel
   - excludeversion
+  - fileassert
   - MSTEST
   - nameof
   - pagetitle
@@ -37,9 +39,11 @@ words:
   - setlocal
   - snupkg
   - sonarmark
+  - Newtonsoft
   - NuGetInstaller
   - venv
   - versionmark
+  - zipbomb
   - zipslip
   - Weasyprint
   - yamlfix

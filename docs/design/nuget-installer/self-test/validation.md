@@ -57,14 +57,14 @@ Writes `testResults` to `context.ResultsFile`. The format is determined by the f
 
 ## Interactions
 
-| Dependency              | Direction | Purpose                                         |
-|-------------------------|-----------|-------------------------------------------------|
-| `Context`               | Uses      | Output channel for header and summary lines.    |
-| `Program`               | Uses      | `Program.Run` called to exercise the tool.      |
-| `PathHelpers`           | Uses      | `SafePathCombine` for temp-dir file paths.      |
-| `PackagesConfigReader`  | Uses      | Reads packages.config in install test.          |
-| `PackageInstaller`      | Uses      | Installs packages in install test.              |
-| `DemaConsulting.TestResults` | Uses | Result model, TRX and JUnit serialization.      |
+| Dependency                   | Direction | Purpose                                         |
+|------------------------------|-----------|-------------------------------------------------|
+| `Context`                    | Uses      | Output channel for header and summary lines.    |
+| `Program`                    | Uses      | `Program.Run` called to exercise the tool.      |
+| `PathHelpers`                | Uses      | `SafePathCombine` for temp-dir file paths.      |
+| `PackagesConfigReader`       | Uses      | Reads packages.config in install test.          |
+| `PackageInstaller`           | Uses      | Installs packages in install test.              |
+| `DemaConsulting.TestResults` | Uses      | Result model, TRX and JUnit serialization.      |
 
 ## Error Handling
 

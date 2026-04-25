@@ -8,7 +8,8 @@ sections:
   - title: Validation Unit Requirements
     requirements:
       - id: NuGetInstaller-Validation-Run
-        title: The Validation class shall run self-validation tests, print a summary, and exit with code zero on success.
+        title: The Validation class shall run self-validation tests, print a summary,
+          and exit with code zero on success.
         justification: |
           Provides a built-in mechanism to verify the tool is functioning correctly
           in the deployment environment. A summary is printed for human review and the
