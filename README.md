@@ -9,23 +9,40 @@
 [![Security][badge-security]][link-security]
 [![NuGet][badge-nuget]][link-nuget]
 
-DEMA Consulting NuGet package installer tool. Installs NuGet packages listed in a
-`packages.config` file into a local output directory, mirroring the behavior of
-`nuget.exe install`.
+NuGet Installer is a cross-platform .NET tool that installs NuGet packages listed in a
+`packages.config` file into a local output directory, mirroring the behavior of `nuget.exe install`.
 
 ## Features
 
-- **Package Installation**: Install NuGet packages from a `packages.config` file
-- **Output Directory Control**: Specify custom output directory with `-o`/`-OutputDirectory`
-- **Version-less Folders**: Use `-x`/`-ExcludeVersion` for `{Id}/` folder naming
-- **Skip Existing**: Re-running skips packages whose output folder already exists
-- **Standardized Command-Line Interface**: Shared argument parsing logic
-  (`--version`, `--help`, `--silent`, `--validate`, `--results`, `--depth`, `--log`)
-- **Self-Validation**: Built-in validation tests with TRX/JUnit output
-- **Multi-Platform Support**: Builds and runs on Windows, Linux, and macOS
-- **Multi-Runtime Support**: Targets .NET 8, 9, and 10
-- **Continuous Compliance**: Compliance evidence generated automatically on every CI run, following
-  the [Continuous Compliance][link-continuous-compliance] methodology
+- 📦 **Package Installation** — Install NuGet packages listed in a `packages.config` file
+- 📁 **Output Directory** — Specify a custom output directory with `-o`/`-OutputDirectory`
+- 🏷️ **Version-less Folders** — Optionally strip the version suffix from output folder names
+- ⏭️ **Skip Existing** — Re-running skips packages whose output folder already exists
+- ⚙️ **Standard CLI** — Shared options for help, version, validation, and logging
+- ✅ **Self-Validation** — Built-in qualification tests with TRX and JUnit output
+- 🌐 **Multi-Platform** — Runs on Windows, Linux, and macOS on .NET 8, 9, and 10
+- 🛡️ **Continuous Compliance** — Compliance evidence generated automatically on every CI run
+
+## Use Case
+
+NuGet packages are a convenient distribution mechanism for pre-built libraries, headers, native
+binaries, and other assets — not just for .NET projects. NuGetInstaller lets any build system
+consume NuGet packages by adding a simple pre-build step that resolves and extracts packages into
+a local directory.
+
+**Examples:**
+
+- **CMake / Make / Meson** — install C/C++ headers and native libraries from NuGet, then
+  reference `./packages/SomeLib/` in your build scripts
+- **Python or shell build scripts** — provision platform-specific binaries or assets from a
+  shared `packages.config` before invoking the main build
+- **CI/CD pipelines** — reproduce the same package layout on Windows, Linux, and macOS agents
+  from a single version-controlled `packages.config`
+
+```bash
+# Add as a pre-build step — works identically on Windows, Linux, and macOS
+nuget-installer packages.config -o ./packages -x
+```
 
 ## Installation
 
@@ -166,4 +183,3 @@ By contributing to this project, you agree that your contributions will be licen
 [link-security]: https://sonarcloud.io/dashboard?id=demaconsulting_NuGetInstaller
 [link-nuget]: https://www.nuget.org/packages/DemaConsulting.NuGetInstaller
 [link-guide]: https://github.com/demaconsulting/NuGetInstaller/blob/main/docs/user_guide/introduction.md
-[link-continuous-compliance]: https://github.com/demaconsulting/ContinuousCompliance
