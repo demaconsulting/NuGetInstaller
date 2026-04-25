@@ -78,16 +78,16 @@ public class PathHelpersTests
     }
 
     /// <summary>
-    ///     Test that SafePathCombine throws ArgumentException for a Unix-style rooted path passed as the relative path.
+    ///     Test that SafePathCombine throws ArgumentException for a slash-rooted path passed as the relative path.
     /// </summary>
     [TestMethod]
-    public void PathHelpers_SafePathCombine_UnixRootRelativePath_ThrowsArgumentException()
+    public void PathHelpers_SafePathCombine_SlashRootedRelativePath_ThrowsArgumentException()
     {
-        // Arrange: Unix absolute path passed as relative path
+        // Arrange: slash-rooted path passed as relative path
         var basePath = "/home/user/project";
         var relativePath = "/etc/passwd";
 
-        // Act & Assert: Unix absolute path must be rejected
+        // Act & Assert: slash-rooted path must be rejected
         var exception = Assert.ThrowsExactly<ArgumentException>(() =>
             PathHelpers.SafePathCombine(basePath, relativePath));
         Assert.Contains("Invalid path component", exception.Message);
