@@ -84,8 +84,6 @@ src/DemaConsulting.NuGetInstaller/
     └── PathHelpers.cs          — safe path combination utilities
 ```
 
-The test project mirrors the same layout under `test/DemaConsulting.NuGetInstaller.Tests/`.
-
 ## Document Conventions
 
 Throughout this document:

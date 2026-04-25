@@ -3,20 +3,23 @@
 #
 # PURPOSE:
 # - Define requirements for the NuGetInstaller Utilities subsystem
-# - The Utilities subsystem spans PathHelpers.cs (safe path-combination utilities)
 # - Subsystem requirements describe the shared utility behavior available to all other subsystems
 
 sections:
   - title: Utilities Subsystem Requirements
     requirements:
       - id: NuGetInstaller-Utilities-SafePaths
-        title: The Utilities subsystem shall provide safe file path manipulation that prevents path traversal.
+        title: >-
+          The Utilities subsystem shall provide safe file path manipulation
+          that prevents path traversal and rooted-path injection.
         justification: |
           The Utilities subsystem provides shared path utilities consumed by other subsystems.
           When constructing file paths from caller-supplied inputs, the subsystem must reject
-          path traversal sequences (such as '..') and absolute paths to prevent unintended
-          file system access. This requirement captures the subsystem-level safety guarantee
-          that all consumers of the Utilities subsystem can rely upon.
+          path traversal sequences (such as '..') and absolute or rooted paths to prevent
+          unintended file system access. This requirement captures the subsystem-level safety
+          guarantee that all consumers of the Utilities subsystem can rely upon.
+        children:
+          - NuGetInstaller-PathHelpers-SafeCombine
         tests:
           - UtilitiesSubsystem_PathResolutionWorkflow_ValidPaths_ResolvesCorrectly
           - UtilitiesSubsystem_DirectoryCreationWorkflow_ValidPaths_CreatesDirectories
@@ -24,11 +27,13 @@ sections:
           - UtilitiesSubsystem_SafePathCombine_RootedRelativePath_ThrowsArgumentException
 
       - id: NuGetInstaller-Utilities-NullRejection
-        title: The Utilities subsystem shall reject null arguments to SafePathCombine with ArgumentNullException.
+        title: The Utilities subsystem shall reject null path arguments.
         justification: |
           Null arguments must be explicitly rejected to prevent null reference
           exceptions deeper in the call stack and to clearly communicate API
           contract violations to callers.
+        children:
+          - NuGetInstaller-PathHelpers-NullInputRejection
         tests:
           - UtilitiesSubsystem_SafePathCombine_NullBasePath_ThrowsArgumentNullException
           - UtilitiesSubsystem_SafePathCombine_NullRelativePath_ThrowsArgumentNullException

@@ -3,19 +3,24 @@
 #
 # PURPOSE:
 # - Define requirements for the NuGetInstaller NuGet subsystem
-# - The NuGet subsystem spans PackageEntry, PackagesConfigReader, PackageExtractor,
-#   and PackageInstaller units
 # - Subsystem requirements describe the package reading, caching, and extraction behavior
 
 sections:
   - title: NuGet Subsystem Requirements
     requirements:
       - id: NuGetInstaller-NuGet-ReadConfig
-        title: The NuGet subsystem shall read a packages.config XML file and return structured package entries.
+        title: >-
+          The NuGet subsystem shall read the package configuration file
+          and return the declared package dependencies.
         justification: |
-          The NuGet subsystem must parse the standard packages.config format to determine
-          which packages and versions to install. This XML format is the industry-standard
+          The NuGet subsystem must parse the package configuration to determine
+          which packages and versions to install. This format is the industry-standard
           way to declare NuGet package dependencies for project-level restore scenarios.
+        children:
+          - NuGetInstaller-PackagesConfigReader-Parse
+          - NuGetInstaller-PackagesConfigReader-FileNotFound
+          - NuGetInstaller-PackagesConfigReader-MissingAttributes
+          - NuGetInstaller-PackagesConfigReader-MalformedXml
         tests:
           - NuGetSubsystem_ReadAndInstallWorkflow_ValidConfig_ReturnsAndInstallsPackages
           - NuGetSubsystem_ConfigReadingWorkflow_ValidPackagesConfig_ReturnsEntries
@@ -26,6 +31,14 @@ sections:
           After resolving packages from the NuGet cache, the subsystem must extract
           their contents to the user-specified output directory so that downstream
           build processes can reference the package files directly.
+        children:
+          - NuGetInstaller-PackageInstaller-Install
+          - NuGetInstaller-PackageInstaller-FolderNamingVersioned
+          - NuGetInstaller-PackageInstaller-CreateOutputDirectory
+          - NuGetInstaller-PackageExtractor-Extract
+          - NuGetInstaller-PackageExtractor-ZipSlip
+          - NuGetInstaller-PackageExtractor-ZipBomb
+          - NuGetInstaller-PackageExtractor-SkipDirectoryEntries
         tests:
           - NuGetSubsystem_ReadAndInstallWorkflow_ValidConfig_ReturnsAndInstallsPackages
           - NuGetSubsystem_ExtractionWorkflow_ValidPackage_ExtractsToDirectory
@@ -36,6 +49,9 @@ sections:
           Incremental builds should not re-extract packages that are already present.
           Skipping existing folders avoids unnecessary I/O and supports idempotent
           installation for CI/CD pipelines that cache the output directory.
+        children:
+          - NuGetInstaller-PackageInstaller-StatusMessages
+          - NuGetInstaller-PackageExtractor-SkipExisting
         tests:
           - NuGetSubsystem_ExtractionWorkflow_ExistingDestination_SkipsExtraction
 
@@ -45,13 +61,27 @@ sections:
           When excludeVersion is enabled, packages are extracted to folders named
           by package Id only (without version suffix), supporting scenarios where
           downstream consumers require stable folder paths across version upgrades.
+        children:
+          - NuGetInstaller-PackageInstaller-FolderNamingExcludeVersion
         tests:
           - NuGetSubsystem_ReadAndInstallWorkflow_ExcludeVersion_UsesFlatFolderNaming
 
       - id: NuGetInstaller-NuGet-MissingFile
-        title: The NuGet subsystem shall throw InvalidOperationException when packages.config is not found.
+        title: The NuGet subsystem shall report an error when the package configuration file is not found.
         justification: |
-          A clear exception when the configuration file is absent prevents silent failures
+          A clear error when the configuration file is absent prevents silent failures
           and gives callers actionable diagnostic information.
+        children:
+          - NuGetInstaller-PackagesConfigReader-FileNotFound
         tests:
           - NuGetSubsystem_MissingFileWorkflow_NonexistentConfig_ThrowsInvalidOperationException
+
+      - id: NuGetInstaller-NuGet-MalformedXml
+        title: The NuGet subsystem shall report an error when the package configuration file contains malformed XML.
+        justification: |
+          A clear error for malformed XML helps users identify and fix configuration
+          file issues quickly, rather than encountering an opaque parse failure.
+        children:
+          - NuGetInstaller-PackagesConfigReader-MalformedXml
+        tests:
+          - NuGetSubsystem_MalformedXmlWorkflow_InvalidXml_ThrowsXmlException

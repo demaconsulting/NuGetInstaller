@@ -239,4 +239,27 @@ public class NuGetSubsystemTests
             () => PackagesConfigReader.Read(nonExistentPath));
         Assert.Contains("not found", exception.Message);
     }
+
+    /// <summary>
+    ///     Test that the NuGet subsystem throws XmlException when packages.config contains malformed XML.
+    /// </summary>
+    [TestMethod]
+    public void NuGetSubsystem_MalformedXmlWorkflow_InvalidXml_ThrowsXmlException()
+    {
+        // Arrange: write a malformed XML file
+        var tempFile = Path.GetTempFileName();
+
+        try
+        {
+            File.WriteAllText(tempFile, "<packages><package id=\"A\" version=\"1.0\"</packages>");
+
+            // Act & Assert: malformed XML must throw XmlException
+            Assert.ThrowsExactly<System.Xml.XmlException>(
+                () => PackagesConfigReader.Read(tempFile));
+        }
+        finally
+        {
+            File.Delete(tempFile);
+        }
+    }
 }

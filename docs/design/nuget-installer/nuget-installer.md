@@ -47,7 +47,7 @@ The system accepts command-line arguments following standard conventions:
 - **Help Display**: `-?`, `-h`, `--help` — Show usage information
 - **Silent Mode**: `--silent` — Suppress console output
 - **Self-Validation**: `--validate` — Run internal test suite
-- **Results Output**: `--results <file>` — Write test results to TRX or XML file
+- **Results Output**: `--results`/`--result <file>` — Write test results to TRX or JUnit format
 - **Heading Depth**: `--depth <#>` — Set heading depth for Markdown output (default: 1)
 - **Logging**: `--log <file>` — Write all output to log file
 - **Output Directory**: `-o`, `-OutputDirectory <dir>` — Output directory for package installation
@@ -156,6 +156,25 @@ The system design supports compliance and audit requirements:
 - **ReqStream integration** — Test output format compatible with requirements management
 - **Documentation generation** — Design documents provide implementation traceability
 - **Review evidence** — Structured design enables formal code review processes
+
+## Cross-Platform Design
+
+The NuGet Installer targets Windows, Linux, and macOS as required by the platform
+requirements. Cross-platform compatibility is achieved by relying exclusively on
+.NET platform-independent APIs:
+
+- **File system operations** — Use `System.IO` APIs (`Path`, `File`, `Directory`,
+  `StreamWriter`) that abstract OS-specific path separators and file semantics.
+- **Process model** — The tool is a single-process application with no platform
+  native code calls or P/Invoke dependencies.
+- **NuGet package cache** — The `DemaConsulting.NuGet.Caching` library handles
+  platform-specific cache directory resolution internally, keeping the installer
+  free of OS-conditional logic.
+- **Console I/O** — Standard input/output streams provided by the .NET runtime
+  handle platform encoding and line-ending differences transparently.
+- **Multi-target compilation** — The project file targets `net8.0`, `net9.0`, and
+  `net10.0`, and the CI pipeline builds and tests on all three target platforms,
+  providing continuous verification of cross-platform behavior.
 
 ## Performance Characteristics
 

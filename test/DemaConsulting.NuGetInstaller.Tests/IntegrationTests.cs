@@ -53,6 +53,7 @@ public class IntegrationTests
         // Act: run the tool with version flag
         var exitCode = Runner.Run(
             out var output,
+            null,
             "dotnet",
             _dllPath,
             "--version");
@@ -73,6 +74,7 @@ public class IntegrationTests
         // Act: run the tool with the --help flag
         var exitCode = Runner.Run(
             out var output,
+            null,
             "dotnet",
             _dllPath,
             "--help");
@@ -93,6 +95,7 @@ public class IntegrationTests
         // Act: run the tool with the --validate flag
         var exitCode = Runner.Run(
             out var output,
+            null,
             "dotnet",
             _dllPath,
             "--validate");
@@ -117,6 +120,7 @@ public class IntegrationTests
             // Act: run the tool with --validate and --results flags (TRX file)
             var exitCode = Runner.Run(
                 out var _,
+                null,
                 "dotnet",
                 _dllPath,
                 "--validate",
@@ -149,6 +153,7 @@ public class IntegrationTests
         // Act: run the tool with --silent and --version flags
         var exitCode = Runner.Run(
             out var output,
+            null,
             "dotnet",
             _dllPath,
             "--silent",
@@ -173,6 +178,7 @@ public class IntegrationTests
             // Act: execute the operation being tested (with --version to produce known output)
             var exitCode = Runner.Run(
                 out var _,
+                null,
                 "dotnet",
                 _dllPath,
                 "--log",
@@ -209,6 +215,7 @@ public class IntegrationTests
             // Act: run the tool with --validate and --results flags (JUnit XML file)
             var exitCode = Runner.Run(
                 out var _,
+                null,
                 "dotnet",
                 _dllPath,
                 "--validate",
@@ -240,6 +247,7 @@ public class IntegrationTests
         // Act: run the tool with an unknown --unknown flag
         var exitCode = Runner.Run(
             out var output,
+            null,
             "dotnet",
             _dllPath,
             "--unknown");
@@ -273,6 +281,7 @@ public class IntegrationTests
             // Act: run the tool to install packages into the temp directory
             var exitCode = Runner.Run(
                 out var output,
+                null,
                 "dotnet",
                 _dllPath,
                 configPath,
@@ -322,6 +331,7 @@ public class IntegrationTests
             // Act: run the tool with -x (exclude version) flag
             var exitCode = Runner.Run(
                 out var output,
+                null,
                 "dotnet",
                 _dllPath,
                 configPath,
@@ -356,6 +366,7 @@ public class IntegrationTests
         // Act: run with --validate and --depth 2
         var exitCode = Runner.Run(
             out var output,
+            null,
             "dotnet",
             _dllPath,
             "--validate",
@@ -395,6 +406,7 @@ public class IntegrationTests
             // Act: run the tool - it should skip the already-existing folder
             var exitCode = Runner.Run(
                 out var output,
+                null,
                 "dotnet",
                 _dllPath,
                 configPath,
@@ -403,6 +415,7 @@ public class IntegrationTests
 
             // Assert: exit code is 0 and the tool reports skipping
             Assert.AreEqual(0, exitCode, $"Tool should succeed even when skipping. Output: {output}");
+            Assert.Contains("Skipping", output, "Tool should report that the package was skipped");
         }
         finally
         {
@@ -412,4 +425,68 @@ public class IntegrationTests
             }
         }
     }
+
+    /// <summary>
+    ///     Test that the tool installs packages into the current working directory when no -o flag is given.
+    /// </summary>
+    [TestMethod]
+    public void NuGetInstaller_InstallPackages_DefaultOutputDirectory_InstallsToCurrentDirectory()
+    {
+        // Arrange: create a temporary directory to act as the working directory
+        var tempDir = Path.Combine(Path.GetTempPath(), $"integration_cwd_test_{Guid.NewGuid()}");
+
+        try
+        {
+            Directory.CreateDirectory(tempDir);
+            var configPath = Path.Combine(tempDir, "packages.config");
+            File.WriteAllText(configPath,
+                """
+                <?xml version="1.0" encoding="utf-8"?>
+                <packages>
+                  <package id="DemaConsulting.NuGet.Caching" version="1.0.0" />
+                </packages>
+                """);
+
+            // Act: run with tempDir as the working directory so the tool defaults output there
+            var exitCode = Runner.Run(
+                out var output,
+                tempDir,
+                "dotnet",
+                _dllPath,
+                configPath);
+
+            // Assert: tool exits successfully and the package is extracted to the working directory
+            Assert.AreEqual(0, exitCode, $"Tool should succeed. Output: {output}");
+            var expectedFolder = Path.Combine(tempDir, "DemaConsulting.NuGet.Caching.1.0.0");
+            Assert.IsTrue(Directory.Exists(expectedFolder),
+                $"Package folder should exist in the working directory at {expectedFolder}");
+        }
+        finally
+        {
+            if (Directory.Exists(tempDir))
+            {
+                Directory.Delete(tempDir, true);
+            }
+        }
+    }
+
+    /// <summary>
+    ///     Test that the tool reports an error message for unrecognized arguments.
+    /// </summary>
+    [TestMethod]
+    public void NuGetInstaller_UnknownArgument_InvalidFlag_ReportsErrorMessage()
+    {
+        // Act: run the tool with an unknown --unknown flag
+        var exitCode = Runner.Run(
+            out var output,
+            null,
+            "dotnet",
+            _dllPath,
+            "--unknown");
+
+        // Assert: tool reports an error message identifying the unrecognized flag
+        Assert.AreNotEqual(0, exitCode, "Tool should return non-zero exit code for unknown flag");
+        Assert.Contains("--unknown", output, "Error message should identify the unrecognized flag");
+    }
 }
+

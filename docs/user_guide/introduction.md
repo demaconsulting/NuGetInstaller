@@ -164,6 +164,18 @@ Suppress console output:
 nuget-installer --silent
 ```
 
+## Skip Existing Packages
+
+NuGet Installer is idempotent. If the output folder for a package already exists, the tool
+skips that package and reports it in the output:
+
+```text
+Skipping DemaConsulting.NuGet.Caching 1.0.0 (already exists)
+```
+
+Re-running the tool against the same output directory is safe and will not re-extract or
+overwrite packages that have already been installed.
+
 ## Error Handling
 
 When unrecognized arguments are provided, the tool prints an error message to stderr and

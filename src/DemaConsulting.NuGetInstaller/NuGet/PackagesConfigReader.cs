@@ -24,12 +24,16 @@ using DemaConsulting.NuGetInstaller.NuGet.Models;
 namespace DemaConsulting.NuGetInstaller.NuGet;
 
 /// <summary>
-///     Reads and parses packages.config XML files.
+///     Reads and parses packages.config XML files into strongly-typed <see cref="PackageEntry" /> instances.
+///     Exists because the NuGet subsystem needs a lightweight, dependency-free parser for the
+///     packages.config format without pulling in the full NuGet client SDK.
 /// </summary>
 internal static class PackagesConfigReader
 {
     /// <summary>
     ///     Reads a packages.config file and returns the list of package entries.
+    ///     Provides the bridge from on-disk XML configuration to the strongly-typed model
+    ///     consumed by <see cref="PackageInstaller" />.
     /// </summary>
     /// <param name="filePath">Path to the packages.config file.</param>
     /// <returns>A read-only list of package entries.</returns>
@@ -37,14 +41,20 @@ internal static class PackagesConfigReader
     /// <exception cref="System.Xml.XmlException">Thrown when the file contains malformed XML.</exception>
     public static IReadOnlyList<PackageEntry> Read(string filePath)
     {
+        // Step 1: Guard against missing file before attempting XML parse
         if (!File.Exists(filePath))
         {
             throw new InvalidOperationException($"packages.config not found: {filePath}");
         }
 
+        // Step 2: Parse the XML document (throws XmlException for malformed content)
         var doc = XDocument.Load(filePath);
+
+        // Step 3: Select <package> child elements; null-coalesce to empty sequence when root is absent
         var packages = doc.Root?.Elements("package") ?? [];
 
+        // Steps 4-6: Extract required id/version and optional targetFramework attributes,
+        // throwing InvalidOperationException for any missing required attribute
         return packages
             .Select(element => new PackageEntry
             {

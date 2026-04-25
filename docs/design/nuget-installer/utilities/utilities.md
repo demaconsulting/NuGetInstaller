@@ -39,6 +39,7 @@ class library types (`Path`, `ArgumentNullException`).
 |--------------------------|-------------------------------------------------------------------------------------|
 | `ArgumentNullException`  | Either `basePath` or `relativePath` is `null`.                                      |
 | `ArgumentException`      | The combined path would escape the base directory (path traversal detected).        |
+| `ArgumentException`      | The resolved relative path is rooted (e.g., cross-drive reference on Windows).      |
 | `NotSupportedException`  | A path component contains an unsupported character.                                 |
 | `PathTooLongException`   | The resulting path exceeds the system's maximum path length.                        |
 

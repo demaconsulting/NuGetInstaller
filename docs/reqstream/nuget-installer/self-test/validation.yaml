@@ -1,21 +1,39 @@
 ---
-# Software Unit Requirements for the Validation Class
+# Software Unit Requirements for the Validation Unit
 #
-# The Validation class provides the self-validation framework, running tests
-# that demonstrate the tool is functioning correctly in the deployment environment.
-# It supports writing results to TRX (MSTest) or JUnit XML format.
+# The Validation unit is responsible for running the self-validation tests
+# and producing a pass/fail summary and optional structured results output.
 
 sections:
   - title: Validation Unit Requirements
     requirements:
       - id: NuGetInstaller-Validation-Run
-        title: The Validation class shall run self-validation tests and print a summary.
+        title: >-
+          The Validation class shall run self-validation tests, print a summary,
+          and exit with code zero on success.
         justification: |
           Provides a built-in mechanism to verify the tool is functioning correctly
-          in the deployment environment. A summary is printed for human review.
+          in the deployment environment. A summary is printed for human review and the
+          exit code signals overall pass/fail to calling scripts.
         tests:
           - Validation_Run_WithSilentContext_PrintsSummary
           - Validation_Run_WithSilentContext_ExitCodeIsZero
+
+      - id: NuGetInstaller-Validation-VersionTest
+        title: The Validation class shall include a self-test that verifies version display functionality.
+        justification: |
+          The self-validation suite must demonstrate that the tool can display its own
+          version string, providing qualification evidence for the version-display feature.
+        tests:
+          - Validation_Run_WithSilentContext_PrintsSummary
+
+      - id: NuGetInstaller-Validation-HelpTest
+        title: The Validation class shall include a self-test that verifies help display functionality.
+        justification: |
+          The self-validation suite must demonstrate that the tool can display help
+          information, providing qualification evidence for the help-display feature.
+        tests:
+          - Validation_Run_WithSilentContext_PrintsSummary
 
       - id: NuGetInstaller-Validation-TrxResults
         title: The Validation class shall write test results to a TRX file when the results file has a .trx extension.
@@ -42,5 +60,4 @@ sections:
           functionality to provide qualification evidence that the tool can
           resolve, cache, and extract NuGet packages in the deployment environment.
         tests:
-          - Validation_Run_WithSilentContext_PrintsSummary
-          - Validation_Run_WithSilentContext_ExitCodeIsZero
+          - Validation_Run_WithSilentContext_PrintsInstallPackageTestResult

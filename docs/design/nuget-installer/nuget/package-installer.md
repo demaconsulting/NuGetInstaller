@@ -39,6 +39,15 @@ Installs all specified packages into the output directory.
 
 Installs a single package.
 
+**Parameters:**
+
+| Parameter         | Type           | Description                                      |
+|-------------------|----------------|--------------------------------------------------|
+| `context`         | `Context`      | Output channel for status messages.              |
+| `entry`           | `PackageEntry` | The package entry to install.                    |
+| `outputDirectory` | `string`       | The output directory for package extraction.     |
+| `excludeVersion`  | `bool`         | Use `{Id}/` naming instead of `{Id}.{Version}/`. |
+
 **Algorithm:**
 
 1. Call `NuGetCache.EnsureCachedAsync(entry.Id, entry.Version)` to get the cache folder.
@@ -58,6 +67,9 @@ Installs a single package.
 | `NuGetCache`       | Uses      | OTS library for resolving packages in the global cache.    |
 
 ## Error Handling
+
+`InstallAsync` throws `ArgumentNullException` if `outputDirectory` is `null`, and
+`ArgumentException` if `outputDirectory` is empty.
 
 `InstallPackageAsync` does not catch exceptions. All exceptions thrown by
 `NuGetCache.EnsureCachedAsync` or `PackageExtractor.Extract` propagate to the caller.

@@ -19,7 +19,7 @@ DEMA Consulting NuGet package installer tool. Installs NuGet packages listed in 
 - **Output Directory Control**: Specify custom output directory with `-o`/`-OutputDirectory`
 - **Version-less Folders**: Use `-x`/`-ExcludeVersion` for `{Id}/` folder naming
 - **Skip Existing**: Re-running skips packages whose output folder already exists
-- **Standardized Command-Line Interface**: Context class handling common arguments
+- **Standardized Command-Line Interface**: Shared argument parsing logic
   (`--version`, `--help`, `--silent`, `--validate`, `--results`, `--depth`, `--log`)
 - **Self-Validation**: Built-in validation tests with TRX/JUnit output
 - **Multi-Platform Support**: Builds and runs on Windows, Linux, and macOS

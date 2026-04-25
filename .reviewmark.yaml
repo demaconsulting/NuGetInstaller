@@ -27,7 +27,7 @@ evidence-source:
 reviews:
   # Purpose Review (only one per repository)
   - id: Purpose
-    title: Review of user-facing capabilities and system promises
+    title: Review that Advertised Features Match System Design
     paths:
       - "README.md"
       - "docs/user_guide/**/*.md"
@@ -37,7 +37,7 @@ reviews:
 
   # NuGetInstaller-Architecture Review (one per system)
   - id: NuGetInstaller-Architecture
-    title: Review of NuGet Installer system architecture and operational validation
+    title: Review that NuGet Installer Architecture Satisfies Requirements
     paths:
       - "docs/reqstream/nuget-installer/nuget-installer.yaml"
       - "docs/design/introduction.md"
@@ -46,7 +46,7 @@ reviews:
 
   # NuGetInstaller-Design Review (one per system)
   - id: NuGetInstaller-Design
-    title: Review of NuGet Installer architectural and design consistency
+    title: Review that NuGet Installer Design is Consistent and Complete
     paths:
       - "docs/reqstream/nuget-installer/nuget-installer.yaml"
       - "docs/reqstream/nuget-installer/platform-requirements.yaml"
@@ -55,7 +55,7 @@ reviews:
 
   # NuGetInstaller-AllRequirements Review (one per system)
   - id: NuGetInstaller-AllRequirements
-    title: Review of NuGet Installer requirements quality and traceability
+    title: Review that All NuGet Installer Requirements are Complete
     paths:
       - "requirements.yaml"
       - "docs/reqstream/nuget-installer/**/*.yaml"
@@ -63,7 +63,7 @@ reviews:
 
   # NuGetInstaller-Cli Review (one per subsystem)
   - id: NuGetInstaller-Cli
-    title: Review of NuGet Installer Cli subsystem architecture and interfaces
+    title: Review that NuGet Installer Cli Satisfies Subsystem Requirements
     paths:
       - "docs/reqstream/nuget-installer/cli/cli.yaml"
       - "docs/design/nuget-installer/cli/cli.md"
@@ -71,7 +71,7 @@ reviews:
 
   # NuGetInstaller-SelfTest Review (one per subsystem)
   - id: NuGetInstaller-SelfTest
-    title: Review of NuGet Installer SelfTest subsystem architecture and interfaces
+    title: Review that NuGet Installer SelfTest Satisfies Subsystem Requirements
     paths:
       - "docs/reqstream/nuget-installer/self-test/self-test.yaml"
       - "docs/design/nuget-installer/self-test/self-test.md"
@@ -79,7 +79,7 @@ reviews:
 
   # NuGetInstaller-Utilities Review (one per subsystem)
   - id: NuGetInstaller-Utilities
-    title: Review of NuGet Installer Utilities subsystem architecture and interfaces
+    title: Review that NuGet Installer Utilities Satisfies Subsystem Requirements
     paths:
       - "docs/reqstream/nuget-installer/utilities/utilities.yaml"
       - "docs/design/nuget-installer/utilities/utilities.md"
@@ -87,7 +87,7 @@ reviews:
 
   # NuGetInstaller-Cli-Context Review (one per unit)
   - id: NuGetInstaller-Cli-Context
-    title: Review of NuGet Installer Context unit implementation
+    title: Review that NuGet Installer Cli Context Implementation is Correct
     paths:
       - "docs/reqstream/nuget-installer/cli/context.yaml"
       - "docs/design/nuget-installer/cli/context.md"
@@ -96,7 +96,7 @@ reviews:
 
   # NuGetInstaller-Program Review (one per unit)
   - id: NuGetInstaller-Program
-    title: Review of NuGet Installer Program unit implementation
+    title: Review that NuGet Installer Program Implementation is Correct
     paths:
       - "docs/reqstream/nuget-installer/program.yaml"
       - "docs/design/nuget-installer/program.md"
@@ -105,7 +105,7 @@ reviews:
 
   # NuGetInstaller-SelfTest-Validation Review (one per unit)
   - id: NuGetInstaller-SelfTest-Validation
-    title: Review of NuGet Installer Validation unit implementation
+    title: Review that NuGet Installer SelfTest Validation Implementation is Correct
     paths:
       - "docs/reqstream/nuget-installer/self-test/validation.yaml"
       - "docs/design/nuget-installer/self-test/validation.md"
@@ -114,7 +114,7 @@ reviews:
 
   # NuGetInstaller-Utilities-PathHelpers Review (one per unit)
   - id: NuGetInstaller-Utilities-PathHelpers
-    title: Review of NuGet Installer PathHelpers unit implementation
+    title: Review that NuGet Installer Utilities PathHelpers Implementation is Correct
     paths:
       - "docs/reqstream/nuget-installer/utilities/path-helpers.yaml"
       - "docs/design/nuget-installer/utilities/path-helpers.md"
@@ -123,7 +123,7 @@ reviews:
 
   # NuGetInstaller-NuGet Review (one per subsystem)
   - id: NuGetInstaller-NuGet
-    title: Review of NuGet Installer NuGet subsystem architecture and interfaces
+    title: Review that NuGet Installer NuGet Satisfies Subsystem Requirements
     paths:
       - "docs/reqstream/nuget-installer/nuget/nuget.yaml"
       - "docs/design/nuget-installer/nuget/nuget.md"
@@ -131,7 +131,7 @@ reviews:
 
   # NuGetInstaller-NuGet-PackageEntry Review (one per unit)
   - id: NuGetInstaller-NuGet-Models-PackageEntry
-    title: Review of NuGet Installer PackageEntry unit implementation
+    title: Review that NuGet Installer NuGet Models PackageEntry Implementation is Correct
     paths:
       - "docs/reqstream/nuget-installer/nuget/models/package-entry.yaml"
       - "docs/design/nuget-installer/nuget/models/package-entry.md"
@@ -139,7 +139,7 @@ reviews:
 
   # NuGetInstaller-NuGet-Models Review (one per subsystem)
   - id: NuGetInstaller-NuGet-Models
-    title: Review of NuGet Installer Models subsystem architecture and interfaces
+    title: Review that NuGet Installer NuGet Models Satisfies Subsystem Requirements
     paths:
       - "docs/reqstream/nuget-installer/nuget/models/models.yaml"
       - "docs/design/nuget-installer/nuget/models/models.md"
@@ -147,7 +147,7 @@ reviews:
 
   # NuGetInstaller-NuGet-PackagesConfigReader Review (one per unit)
   - id: NuGetInstaller-NuGet-PackagesConfigReader
-    title: Review of NuGet Installer PackagesConfigReader unit implementation
+    title: Review that NuGet Installer NuGet PackagesConfigReader Implementation is Correct
     paths:
       - "docs/reqstream/nuget-installer/nuget/packages-config-reader.yaml"
       - "docs/design/nuget-installer/nuget/packages-config-reader.md"
@@ -156,7 +156,7 @@ reviews:
 
   # NuGetInstaller-NuGet-PackageExtractor Review (one per unit)
   - id: NuGetInstaller-NuGet-PackageExtractor
-    title: Review of NuGet Installer PackageExtractor unit implementation
+    title: Review that NuGet Installer NuGet PackageExtractor Implementation is Correct
     paths:
       - "docs/reqstream/nuget-installer/nuget/package-extractor.yaml"
       - "docs/design/nuget-installer/nuget/package-extractor.md"
@@ -165,7 +165,7 @@ reviews:
 
   # NuGetInstaller-NuGet-PackageInstaller Review (one per unit)
   - id: NuGetInstaller-NuGet-PackageInstaller
-    title: Review of NuGet Installer PackageInstaller unit implementation
+    title: Review that NuGet Installer NuGet PackageInstaller Implementation is Correct
     paths:
       - "docs/reqstream/nuget-installer/nuget/package-installer.yaml"
       - "docs/design/nuget-installer/nuget/package-installer.md"

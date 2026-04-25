@@ -1,20 +1,21 @@
 ---
-# Software Unit Requirements for the PackageEntry Class
+# Software Unit Requirements for the PackageEntry Unit
 #
-# The PackageEntry class is a data model representing a single package entry
-# from a packages.config file. It holds the package id, version, and optional
-# target framework.
+# The PackageEntry unit represents a single package dependency declared in the
+# package configuration file.
 
 sections:
   - title: PackageEntry Unit Requirements
     requirements:
       - id: NuGetInstaller-PackageEntry-DataModel
-        title: The PackageEntry class shall hold Id, Version, and optional TargetFramework properties.
+        title: >-
+          The PackageEntry unit shall represent a single NuGet package dependency
+          with its identifier, version, and optional target framework.
         justification: |
           A strongly typed model is required to pass package metadata between the
-          configuration reader and the installer. Required properties (Id, Version)
-          enforce that every entry is complete, while TargetFramework remains optional
-          to match the packages.config schema.
+          configuration reader and the installer. The identifier and version are
+          mandatory to ensure every entry is complete, while the target framework
+          remains optional to match the package configuration schema.
         tests:
-          - PackagesConfigReader_Read_SinglePackage_ReturnsSingleEntry
-          - PackagesConfigReader_Read_MultiplePackages_ReturnsAllEntries
+          - ModelsSubsystem_PackageEntry_AllProperties_StoresCorrectly
+          - ModelsSubsystem_PackageEntry_OptionalTargetFramework_IsNullWhenNotSet

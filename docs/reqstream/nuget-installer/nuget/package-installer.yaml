@@ -1,21 +1,22 @@
 ---
-# Software Unit Requirements for the PackageInstaller Class
+# Software Unit Requirements for the PackageInstaller Unit
 #
-# The PackageInstaller class orchestrates the installation of NuGet packages
-# by caching them via NuGetCache and extracting to the output directory.
+# The PackageInstaller unit is responsible for coordinating the installation
+# of NuGet packages into the output directory.
 
 sections:
   - title: PackageInstaller Unit Requirements
     requirements:
       - id: NuGetInstaller-PackageInstaller-Install
-        title: The PackageInstaller class shall install packages by caching and extracting them.
+        title: >-
+          The PackageInstaller unit shall install packages from the package
+          configuration into the output directory.
         justification: |
-          The installer must coordinate between the NuGet global package cache
-          and the local output directory, ensuring each package is resolved from
-          the cache before extraction. This two-step process leverages the shared
-          NuGet cache to avoid redundant downloads.
+          The installer must resolve each package and place its contents in the
+          local output directory so that downstream build processes can reference
+          the package files directly.
         tests:
-          - NuGetSubsystem_ReadAndInstallWorkflow_ValidConfig_ReturnsAndInstallsPackages
+          - PackageInstaller_InstallAsync_DefaultNaming_ExtractsPackageToVersionedFolder
 
       - id: NuGetInstaller-PackageInstaller-FolderNamingVersioned
         title: The PackageInstaller class shall use {Id}.{Version}/ folder naming by default.
@@ -24,7 +25,7 @@ sections:
           allows multiple versions of the same package to coexist side-by-side
           in the output directory.
         tests:
-          - NuGetSubsystem_ReadAndInstallWorkflow_ValidConfig_ReturnsAndInstallsPackages
+          - PackageInstaller_InstallAsync_DefaultNaming_ExtractsPackageToVersionedFolder
 
       - id: NuGetInstaller-PackageInstaller-FolderNamingExcludeVersion
         title: The PackageInstaller class shall use {Id}/ folder naming when the excludeVersion flag is true.
@@ -34,3 +35,23 @@ sections:
           {Id}/ convention to satisfy those consumers.
         tests:
           - PackageInstaller_InstallAsync_ExcludeVersion_UsesFlatFolderNaming
+
+      - id: NuGetInstaller-PackageInstaller-CreateOutputDirectory
+        title: The PackageInstaller class shall create the output directory if it does not already exist.
+        justification: |
+          Callers should not need to pre-create the output directory. Creating it
+          automatically reduces boilerplate in consuming code and makes the API
+          more convenient.
+        tests:
+          - PackageInstaller_InstallAsync_EmptyPackages_CreatesOutputDirectoryAndSucceeds
+
+      - id: NuGetInstaller-PackageInstaller-StatusMessages
+        title: >-
+          The PackageInstaller class shall write a status message via the
+          context after each package is installed or skipped.
+        justification: |
+          Users and CI systems need feedback on which packages were newly installed and
+          which were skipped because they were already present. Status messages allow
+          consumers to distinguish first-time installs from cached-hit operations.
+        tests:
+          - PackageInstaller_InstallAsync_AlreadyExtracted_SkipsInstallation
