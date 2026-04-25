@@ -12,6 +12,17 @@
 NuGet Installer is a cross-platform .NET tool that installs NuGet packages listed in a
 `packages.config` file into a local output directory, mirroring the behavior of `nuget.exe install`.
 
+## Features
+
+- 📦 **Package Installation** — Install NuGet packages listed in a `packages.config` file
+- 📁 **Output Directory** — Specify a custom output directory with `-o`/`-OutputDirectory`
+- 🏷️ **Version-less Folders** — Optionally strip the version suffix from output folder names
+- ⏭️ **Skip Existing** — Re-running skips packages whose output folder already exists
+- ⚙️ **Standard CLI** — Shared options for help, version, validation, and logging
+- ✅ **Self-Validation** — Built-in qualification tests with TRX and JUnit output
+- 🌐 **Multi-Platform** — Runs on Windows, Linux, and macOS on .NET 8, 9, and 10
+- 🛡️ **Continuous Compliance** — Compliance evidence generated automatically on every CI run
+
 ## Use Case
 
 NuGet packages are a convenient distribution mechanism for pre-built libraries, headers, native
@@ -32,17 +43,6 @@ a local directory.
 # Add as a pre-build step — works identically on Windows, Linux, and macOS
 nuget-installer packages.config -o ./packages -x
 ```
-
-## Features
-
-- 📦 **Package Installation** — Install NuGet packages listed in a `packages.config` file
-- 📁 **Output Directory** — Specify a custom output directory with `-o`/`-OutputDirectory`
-- 🏷️ **Version-less Folders** — Optionally strip the version suffix from output folder names
-- ⏭️ **Skip Existing** — Re-running skips packages whose output folder already exists
-- ⚙️ **Standard CLI** — Shared options for help, version, validation, and logging
-- ✅ **Self-Validation** — Built-in qualification tests with TRX and JUnit output
-- 🌐 **Multi-Platform** — Runs on Windows, Linux, and macOS on .NET 8, 9, and 10
-- 🛡️ **Continuous Compliance** — Compliance evidence generated automatically on every CI run
 
 ## Installation
 
