@@ -174,7 +174,7 @@ requirements. Cross-platform compatibility is achieved by relying exclusively on
   handle platform encoding and line-ending differences transparently.
 - **Multi-target compilation** — The project file targets `net8.0`, `net9.0`, and
   `net10.0`, and the CI pipeline builds and tests on all three target platforms,
-  providing continuous verification of cross-platform behaviour.
+  providing continuous verification of cross-platform behavior.
 
 ## Performance Characteristics
 
