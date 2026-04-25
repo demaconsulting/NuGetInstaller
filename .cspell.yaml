@@ -23,29 +23,32 @@ words:
   - Dema
   - doctitle
   - docversion
-  - errorlevel
   - excludeversion
   - fileassert
-  - MSTEST
-  - nameof
+  - GHSA
+  - LASTEXITCODE
+  - mstest
+  - Newtonsoft
+  - pandoc
   - pagetitle
-  - Pandoc
   - Qube
   - reqstream
   - reviewmark
   - SARIF
+  - Sarif
   - sarifmark
-  - setlocal
+  - slnx
   - snupkg
   - sonarmark
-  - Newtonsoft
-  - NuGetInstaller
+  - thirdparty
   - venv
   - versionmark
+  - Weasy
+  - Weasyprint
+  - Werror
+  - yamlfix
   - zipbomb
   - zipslip
-  - Weasyprint
-  - yamlfix
 
 # Exclude common build artifacts, dependencies, and vendored third-party code
 ignorePaths:

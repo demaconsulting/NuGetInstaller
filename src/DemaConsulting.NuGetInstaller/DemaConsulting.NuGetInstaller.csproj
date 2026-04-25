@@ -53,7 +53,8 @@
   </ItemGroup>
 
   <!-- Transitive Dependency Overrides - resolve known vulnerability in NuGet.Packaging/Protocol 7.3.0
-       (GHSA-g4vj-cjjj-v7hg) pulled transitively by DemaConsulting.NuGet.Caching 1.0.0 -->
+       pulled transitively by DemaConsulting.NuGet.Caching 1.0.0 -->
+  <!-- (GHSA-g4vj-cjjj-v7hg) cspell:disable-line -->
   <ItemGroup>
     <PackageReference Include="NuGet.Packaging" Version="7.3.1" />
     <PackageReference Include="NuGet.Protocol" Version="7.3.1" />
