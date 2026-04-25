@@ -121,7 +121,7 @@ public class IntegrationTests
             var exitCode = Runner.Run(
                 out var _,
                 null,
-            "dotnet",
+                "dotnet",
                 _dllPath,
                 "--validate",
                 "--results",
@@ -179,7 +179,7 @@ public class IntegrationTests
             var exitCode = Runner.Run(
                 out var _,
                 null,
-            "dotnet",
+                "dotnet",
                 _dllPath,
                 "--log",
                 logFile,
@@ -216,7 +216,7 @@ public class IntegrationTests
             var exitCode = Runner.Run(
                 out var _,
                 null,
-            "dotnet",
+                "dotnet",
                 _dllPath,
                 "--validate",
                 "--results",

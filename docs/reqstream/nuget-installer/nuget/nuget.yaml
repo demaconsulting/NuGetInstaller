@@ -9,12 +9,18 @@ sections:
   - title: NuGet Subsystem Requirements
     requirements:
       - id: NuGetInstaller-NuGet-ReadConfig
-        title: The NuGet subsystem shall read the package configuration file
+        title: >-
+          The NuGet subsystem shall read the package configuration file
           and return the declared package dependencies.
         justification: |
           The NuGet subsystem must parse the package configuration to determine
           which packages and versions to install. This format is the industry-standard
           way to declare NuGet package dependencies for project-level restore scenarios.
+        children:
+          - NuGetInstaller-PackagesConfigReader-Parse
+          - NuGetInstaller-PackagesConfigReader-FileNotFound
+          - NuGetInstaller-PackagesConfigReader-MissingAttributes
+          - NuGetInstaller-PackagesConfigReader-MalformedXml
         tests:
           - NuGetSubsystem_ReadAndInstallWorkflow_ValidConfig_ReturnsAndInstallsPackages
           - NuGetSubsystem_ConfigReadingWorkflow_ValidPackagesConfig_ReturnsEntries
@@ -25,6 +31,11 @@ sections:
           After resolving packages from the NuGet cache, the subsystem must extract
           their contents to the user-specified output directory so that downstream
           build processes can reference the package files directly.
+        children:
+          - NuGetInstaller-PackageExtractor-Extract
+          - NuGetInstaller-PackageExtractor-ZipSlip
+          - NuGetInstaller-PackageExtractor-ZipBomb
+          - NuGetInstaller-PackageExtractor-SkipDirectoryEntries
         tests:
           - NuGetSubsystem_ReadAndInstallWorkflow_ValidConfig_ReturnsAndInstallsPackages
           - NuGetSubsystem_ExtractionWorkflow_ValidPackage_ExtractsToDirectory
@@ -35,6 +46,8 @@ sections:
           Incremental builds should not re-extract packages that are already present.
           Skipping existing folders avoids unnecessary I/O and supports idempotent
           installation for CI/CD pipelines that cache the output directory.
+        children:
+          - NuGetInstaller-PackageExtractor-SkipExisting
         tests:
           - NuGetSubsystem_ExtractionWorkflow_ExistingDestination_SkipsExtraction
 
@@ -44,6 +57,8 @@ sections:
           When excludeVersion is enabled, packages are extracted to folders named
           by package Id only (without version suffix), supporting scenarios where
           downstream consumers require stable folder paths across version upgrades.
+        children:
+          - NuGetInstaller-PackageInstaller-FolderNamingExcludeVersion
         tests:
           - NuGetSubsystem_ReadAndInstallWorkflow_ExcludeVersion_UsesFlatFolderNaming
 
@@ -54,24 +69,6 @@ sections:
           and gives callers actionable diagnostic information.
         tests:
           - NuGetSubsystem_MissingFileWorkflow_NonexistentConfig_ThrowsInvalidOperationException
-
-      - id: NuGetInstaller-NuGet-ZipSlipDefense
-        title: The NuGet subsystem shall reject archive entries that would escape the
-          destination folder during extraction.
-        justification: |
-          Zip-slip attacks embed path-traversal sequences in archive entry names to
-          overwrite files outside the intended extraction directory. Rejecting such entries
-          prevents arbitrary file writes and protects the host file system.
-        tests:
-          - NuGetSubsystem_ExtractionWorkflow_ZipSlipEntry_ThrowsInvalidOperationException
-
-      - id: NuGetInstaller-NuGet-ZipBombDefense
-        title: The NuGet subsystem shall abort extraction when total decompressed bytes exceed 1 GB.
-        justification: |
-          Zip-bomb attacks use highly compressed archives that expand to enormous sizes.
-          Aborting extraction at 1 GB prevents denial-of-service through disk exhaustion.
-        tests:
-          - NuGetSubsystem_ExtractionWorkflow_ZipBombExceedsLimit_ThrowsInvalidOperationException
 
       - id: NuGetInstaller-NuGet-MalformedXml
         title: The NuGet subsystem shall report an error when the package configuration file contains malformed XML.

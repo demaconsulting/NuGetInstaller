@@ -78,7 +78,7 @@ public class PathHelpersTests
     }
 
     /// <summary>
-    ///     Test that SafePathCombine throws ArgumentException for a Unix-style absolute relative path.
+    ///     Test that SafePathCombine throws ArgumentException for a Unix-style rooted path passed as the relative path.
     /// </summary>
     [TestMethod]
     public void PathHelpers_SafePathCombine_UnixRootRelativePath_ThrowsArgumentException()
