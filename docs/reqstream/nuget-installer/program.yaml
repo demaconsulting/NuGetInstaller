@@ -44,8 +44,7 @@ sections:
           - Program_Run_WithMissingPackagesConfig_ReturnsNonZeroExitCode
 
       - id: NuGetInstaller-Program-Install
-        title: The Program unit shall install packages from the package configuration file
-          when no special flags are provided.
+        title: The Program unit shall install packages from the package configuration file when no special flags are provided.
         justification: |
           The default execution path reads the package configuration file and installs all
           specified packages into the output directory. This is the core tool behavior

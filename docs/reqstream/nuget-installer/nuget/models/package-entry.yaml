@@ -8,8 +8,8 @@ sections:
   - title: PackageEntry Unit Requirements
     requirements:
       - id: NuGetInstaller-PackageEntry-DataModel
-        title: The PackageEntry unit shall represent a single NuGet package dependency
-          with its identifier, version, and optional target framework.
+        title: The PackageEntry unit shall represent a single NuGet package dependency with its identifier, version, and optional
+          target framework.
         justification: |
           A strongly typed model is required to pass package metadata between the
           configuration reader and the installer. The identifier and version are

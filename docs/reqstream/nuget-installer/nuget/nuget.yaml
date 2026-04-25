@@ -9,8 +9,7 @@ sections:
   - title: NuGet Subsystem Requirements
     requirements:
       - id: NuGetInstaller-NuGet-ReadConfig
-        title: The NuGet subsystem shall read the package configuration file
-          and return the declared package dependencies.
+        title: The NuGet subsystem shall read the package configuration file and return the declared package dependencies.
         justification: |
           The NuGet subsystem must parse the package configuration to determine
           which packages and versions to install. This format is the industry-standard
@@ -56,8 +55,7 @@ sections:
           - NuGetSubsystem_MissingFileWorkflow_NonexistentConfig_ThrowsInvalidOperationException
 
       - id: NuGetInstaller-NuGet-ZipSlipDefense
-        title: The NuGet subsystem shall reject archive entries that would escape
-          the destination folder during extraction.
+        title: The NuGet subsystem shall reject archive entries that would escape the destination folder during extraction.
         justification: |
           Zip-slip attacks embed path-traversal sequences in archive entry names to
           overwrite files outside the intended extraction directory. Rejecting such entries

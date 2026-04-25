@@ -68,7 +68,8 @@ Installs a single package.
 
 ## Error Handling
 
-`InstallAsync` throws `ArgumentNullException` if `outputDirectory` is `null` or empty.
+`InstallAsync` throws `ArgumentNullException` if `outputDirectory` is `null`, and
+`ArgumentException` if `outputDirectory` is empty.
 
 `InstallPackageAsync` does not catch exceptions. All exceptions thrown by
 `NuGetCache.EnsureCachedAsync` or `PackageExtractor.Extract` propagate to the caller.

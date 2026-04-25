@@ -434,7 +434,6 @@ public class IntegrationTests
     {
         // Arrange: create a temporary directory to act as the working directory
         var tempDir = Path.Combine(Path.GetTempPath(), $"integration_cwd_test_{Guid.NewGuid()}");
-        var previousDirectory = Directory.GetCurrentDirectory();
 
         try
         {
@@ -448,11 +447,10 @@ public class IntegrationTests
                 </packages>
                 """);
 
-            // Act: change to tempDir so the tool defaults output there, then run without -o
-            Directory.SetCurrentDirectory(tempDir);
+            // Act: run with tempDir as the working directory so the tool defaults output there
             var exitCode = Runner.Run(
                 out var output,
-                null,
+                tempDir,
                 "dotnet",
                 _dllPath,
                 configPath);
@@ -465,7 +463,6 @@ public class IntegrationTests
         }
         finally
         {
-            Directory.SetCurrentDirectory(previousDirectory);
             if (Directory.Exists(tempDir))
             {
                 Directory.Delete(tempDir, true);

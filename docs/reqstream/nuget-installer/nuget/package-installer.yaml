@@ -8,8 +8,7 @@ sections:
   - title: PackageInstaller Unit Requirements
     requirements:
       - id: NuGetInstaller-PackageInstaller-Install
-        title: The PackageInstaller unit shall install packages from the package
-          configuration into the output directory.
+        title: The PackageInstaller unit shall install packages from the package configuration into the output directory.
         justification: |
           The installer must resolve each package and place its contents in the
           local output directory so that downstream build processes can reference
@@ -45,8 +44,8 @@ sections:
           - PackageInstaller_InstallAsync_EmptyPackages_CreatesOutputDirectoryAndSucceeds
 
       - id: NuGetInstaller-PackageInstaller-StatusMessages
-        title: The PackageInstaller class shall write a status message via the context
-          after each package is installed or skipped.
+        title: The PackageInstaller class shall write a status message via the context after each package is installed or
+          skipped.
         justification: |
           Users and CI systems need feedback on which packages were newly installed and
           which were skipped because they were already present. Status messages allow
