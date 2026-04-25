@@ -14,13 +14,13 @@
     <Version>0.0.0</Version>
     <Authors>DEMA Consulting</Authors>
     <Company>DEMA Consulting</Company>
-    <Description>Template project for DEMA Consulting DotNet Tools</Description>
+    <Description>Cross-platform .NET tool that installs NuGet packages listed in a packages.config file into a local output directory</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/demaconsulting/NuGetInstaller</PackageProjectUrl>
     <RepositoryUrl>https://github.com/demaconsulting/NuGetInstaller</RepositoryUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageIcon>Icon.png</PackageIcon>
-    <PackageTags>template;dotnet-tool</PackageTags>
+    <PackageTags>nuget;packages.config;dotnet-tool;installer</PackageTags>
     <Copyright>Copyright DEMA Consulting</Copyright>
     <Title>NuGet Installer</Title>
     <Product>DemaConsulting.NuGetInstaller</Product>
@@ -50,14 +50,6 @@
   <ItemGroup>
     <PackageReference Include="DemaConsulting.NuGet.Caching" Version="1.1.0" />
     <PackageReference Include="DemaConsulting.TestResults" Version="1.7.0" />
-  </ItemGroup>
-
-  <!-- Transitive Dependency Overrides - resolve known vulnerability in NuGet.Packaging/Protocol 7.3.0
-       pulled transitively by DemaConsulting.NuGet.Caching 1.0.0 -->
-  <!-- (GHSA-g4vj-cjjj-v7hg) cspell:disable-line -->
-  <ItemGroup>
-    <PackageReference Include="NuGet.Packaging" Version="7.3.1" />
-    <PackageReference Include="NuGet.Protocol" Version="7.3.1" />
   </ItemGroup>
 
   <!-- Build Tool Dependencies -->
