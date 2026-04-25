@@ -45,7 +45,8 @@ internal static class PackageInstaller
         string outputDirectory,
         bool excludeVersion)
     {
-        ArgumentNullException.ThrowIfNullOrEmpty(outputDirectory);
+        ArgumentNullException.ThrowIfNull(outputDirectory);
+        ArgumentException.ThrowIfNullOrEmpty(outputDirectory);
 
         // Ensure output directory exists
         Directory.CreateDirectory(outputDirectory);
