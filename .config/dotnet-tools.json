@@ -27,13 +27,13 @@
       ]
     },
     "demaconsulting.sonarmark": {
-      "version": "1.4.0",
+      "version": "1.5.0",
       "commands": [
         "sonarmark"
       ]
     },
     "demaconsulting.reqstream": {
-      "version": "1.8.0",
+      "version": "1.9.0",
       "commands": [
         "reqstream"
       ]
