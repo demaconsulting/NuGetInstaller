@@ -30,8 +30,11 @@ config:
     indent: 2
 
   # Allow longer lines for URLs and technical content
+  # Tables are excluded because pipe-table cells are single-line constructs
+  # that cannot be wrapped without breaking the table structure
   MD013:
     line_length: 120
+    tables: false
 
   # Allow multiple top-level headers per document
   MD025: false
@@ -50,5 +53,6 @@ ignores:
   - "**/thirdparty/**"
   - "**/third-party/**"
   - "**/3rd-party/**"
+  - "**/generated/**"
   - "**/AGENT_REPORT_*.md"
   - "**/.agent-logs/**"

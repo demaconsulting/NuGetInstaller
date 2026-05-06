@@ -1,16 +1,16 @@
-# Program
+## Program
 
 The `Program` class is the main entry point for the NuGet Installer. It creates a `Context`
 from command-line arguments, dispatches to the appropriate logic based on the flags, and returns
 the exit code.
 
-## Overview
+### Overview
 
 `Program` owns the top-level execution flow. It delegates all argument interpretation to `Context`
 and all validation logic to `Validation`. Its own responsibility is limited to reading the flags
 that `Context` exposes and calling the correct handler.
 
-## Data Model
+### Data Model
 
 `Program` holds no instance state. Its single static property is:
 
@@ -18,25 +18,25 @@ that `Context` exposes and calling the correct handler.
 |-----------|----------|----------------------------------------------------------------|
 | `Version` | `string` | The tool version from `AssemblyInformationalVersionAttribute`. |
 
-## Methods
+### Methods
 
-### Main(string[] args)
+#### Main(string[] args)
 
 Entry point. Creates a `Context`, calls `Run`, and returns `context.ExitCode`.
 
 **Returns:** `int` — 0 for success, non-zero for failure.
 
-### PrintBanner(Context context)
+#### PrintBanner(Context context)
 
 Prints the tool name and version banner to the context output. Called by `Run` before
 dispatching to `PrintHelp`, `Validation.Run`, or `RunToolLogic`. Not called when the
 `Version` flag is set; `--version` returns early before reaching `PrintBanner`.
 
-### PrintHelp(Context context)
+#### PrintHelp(Context context)
 
 Prints the usage information and available options to the context output.
 
-### Run(Context context)
+#### Run(Context context)
 
 Inspects the flags on `context` and dispatches:
 
@@ -45,7 +45,7 @@ Inspects the flags on `context` and dispatches:
 - `Validate` flag → calls `Validation.Run(context)`.
 - Otherwise → calls `RunToolLogic(context)` to install packages.
 
-### RunToolLogic(Context context)
+#### RunToolLogic(Context context)
 
 Executes the package installation workflow:
 
@@ -54,12 +54,12 @@ Executes the package installation workflow:
 3. Resolves the output directory from `context.OutputDirectory` (defaults to cwd).
 4. Calls `PackageInstaller.InstallAsync` to install all packages.
 
-### Version (property)
+#### Version (property)
 
 Reads `AssemblyInformationalVersionAttribute` from the executing assembly, falling back to
 `AssemblyVersion`, then `"0.0.0"`.
 
-## Error Handling
+### Error Handling
 
 | Condition                                  | Behavior                                              |
 |--------------------------------------------|-------------------------------------------------------|
@@ -68,7 +68,7 @@ Reads `AssemblyInformationalVersionAttribute` from the executing assembly, falli
 | Unknown or malformed command-line argument | Caught in `Main`; `Error: <message>` to stderr.       |
 | Log file cannot be opened                  | Caught in `Main`; `Error: <message>` to stderr.       |
 
-## Interactions
+### Interactions
 
 | Dependency              | Direction | Purpose                                             |
 |-------------------------|-----------|-----------------------------------------------------|

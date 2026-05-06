@@ -26,26 +26,25 @@ namespace DemaConsulting.NuGetInstaller.Tests.SelfTest;
 /// <summary>
 ///     Unit tests for the Validation class.
 /// </summary>
-[TestClass]
 public class ValidationTests
 {
     /// <summary>
     ///     Test that Run throws ArgumentNullException when context is null.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void Validation_Run_NullContext_ThrowsArgumentNullException()
     {
         // Arrange: setup test conditions
         // No setup required — null is the input under test.
 
         // Act & Assert: invoke Run with null context and verify ArgumentNullException is thrown
-        Assert.ThrowsExactly<ArgumentNullException>(() => Validation.Run(null!));
+        Assert.Throws<ArgumentNullException>(() => Validation.Run(null!));
     }
 
     /// <summary>
     ///     Test that Run prints a summary containing total, passed, and failed counts.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void Validation_Run_WithSilentContext_PrintsSummary()
     {
         // Arrange: setup unique log file path to capture silent context output
@@ -76,7 +75,7 @@ public class ValidationTests
     /// <summary>
     ///     Test that Run exits with code zero when all self-validation tests pass.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void Validation_Run_WithSilentContext_ExitCodeIsZero()
     {
         // Arrange: create silent context for validation run
@@ -86,13 +85,13 @@ public class ValidationTests
         Validation.Run(context);
 
         // Assert: verify exit code is zero indicating successful validation
-        Assert.AreEqual(0, context.ExitCode);
+        Assert.Equal(0, context.ExitCode);
     }
 
     /// <summary>
     ///     Test that Run writes a valid TRX file when the results path ends with .trx.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void Validation_Run_WithTrxResultsFile_WritesTrxFile()
     {
         // Arrange: setup TRX file path for test results output
@@ -105,7 +104,7 @@ public class ValidationTests
             Validation.Run(context);
 
             // Assert: verify TRX file is created with expected content
-            Assert.IsTrue(File.Exists(trxFile));
+            Assert.True(File.Exists(trxFile));
             var content = File.ReadAllText(trxFile);
             Assert.Contains("<TestRun", content);
         }
@@ -121,7 +120,7 @@ public class ValidationTests
     /// <summary>
     ///     Test that Run writes a valid JUnit XML file when the results path ends with .xml.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void Validation_Run_WithXmlResultsFile_WritesXmlFile()
     {
         // Arrange: setup XML file path for JUnit results output
@@ -134,7 +133,7 @@ public class ValidationTests
             Validation.Run(context);
 
             // Assert: verify XML file is created with JUnit format content
-            Assert.IsTrue(File.Exists(xmlFile));
+            Assert.True(File.Exists(xmlFile));
             var content = File.ReadAllText(xmlFile);
             Assert.Contains("<testsuites", content);
         }
@@ -150,7 +149,7 @@ public class ValidationTests
     /// <summary>
     ///     Test that Run does not write a results file when the extension is unsupported.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void Validation_Run_WithUnsupportedResultsFormat_DoesNotWriteFile()
     {
         // Arrange: setup unsupported file extension for results output
@@ -163,7 +162,7 @@ public class ValidationTests
             Validation.Run(context);
 
             // Assert: verify no file is created for unsupported format
-            Assert.IsFalse(File.Exists(jsonFile));
+            Assert.False(File.Exists(jsonFile));
         }
         finally
         {
@@ -177,7 +176,7 @@ public class ValidationTests
     /// <summary>
     ///     Test that Run writes output containing the install-package self-test result.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void Validation_Run_WithSilentContext_PrintsInstallPackageTestResult()
     {
         // Arrange: setup unique log file path to capture silent context output
@@ -192,8 +191,7 @@ public class ValidationTests
 
             // Assert: verify install-package test result is written to log file
             var logContent = File.ReadAllText(logFile);
-            Assert.Contains("NuGetInstaller_InstallPackage", logContent,
-                "Validation output should include the install-package self-test result");
+            Assert.Contains("NuGetInstaller_InstallPackage", logContent);
         }
         finally
         {

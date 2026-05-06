@@ -96,10 +96,6 @@ Throughout this document:
 
 ## References
 
-- [NuGet Installer System Requirements][system-requirements]
-- [NuGet Installer User Guide][user-guide]
-- [NuGet Installer Repository][repo]
-
-[system-requirements]: ../reqstream/nuget-installer/nuget-installer.yaml
-[user-guide]: ../user_guide/introduction.md
-[repo]: https://github.com/demaconsulting/NuGetInstaller
+- NuGet Installer System Requirements (`docs/reqstream/nuget-installer.yaml`)
+- NuGet Installer User Guide
+- NuGet Installer Repository: <https://github.com/demaconsulting/NuGetInstaller>

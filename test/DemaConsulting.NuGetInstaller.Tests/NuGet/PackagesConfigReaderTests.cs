@@ -25,17 +25,16 @@ namespace DemaConsulting.NuGetInstaller.Tests.NuGet;
 /// <summary>
 ///     Unit tests for the PackagesConfigReader class.
 /// </summary>
-[TestClass]
 public class PackagesConfigReaderTests
 {
     /// <summary>
     ///     Test that Read throws InvalidOperationException when file does not exist.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void PackagesConfigReader_Read_FileNotFound_ThrowsInvalidOperationException()
     {
         // Act & Assert
-        var exception = Assert.ThrowsExactly<InvalidOperationException>(
+        var exception = Assert.Throws<InvalidOperationException>(
             () => PackagesConfigReader.Read("nonexistent.config"));
         Assert.Contains("not found", exception.Message);
     }
@@ -43,7 +42,7 @@ public class PackagesConfigReaderTests
     /// <summary>
     ///     Test that Read parses a valid packages.config with one package.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void PackagesConfigReader_Read_SinglePackage_ReturnsSingleEntry()
     {
         // Arrange: write a packages.config with one package
@@ -62,10 +61,10 @@ public class PackagesConfigReaderTests
             var packages = PackagesConfigReader.Read(tempFile);
 
             // Assert: verify the single package entry
-            Assert.HasCount(1, packages);
-            Assert.AreEqual("TestPackage", packages[0].Id);
-            Assert.AreEqual("1.2.3", packages[0].Version);
-            Assert.AreEqual("net8.0", packages[0].TargetFramework);
+            Assert.Single(packages);
+            Assert.Equal("TestPackage", packages[0].Id);
+            Assert.Equal("1.2.3", packages[0].Version);
+            Assert.Equal("net8.0", packages[0].TargetFramework);
         }
         finally
         {
@@ -76,7 +75,7 @@ public class PackagesConfigReaderTests
     /// <summary>
     ///     Test that Read parses a valid packages.config with multiple packages.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void PackagesConfigReader_Read_MultiplePackages_ReturnsAllEntries()
     {
         // Arrange: write a packages.config with multiple packages
@@ -96,13 +95,13 @@ public class PackagesConfigReaderTests
             var packages = PackagesConfigReader.Read(tempFile);
 
             // Assert: verify both entries
-            Assert.HasCount(2, packages);
-            Assert.AreEqual("PackageA", packages[0].Id);
-            Assert.AreEqual("1.0.0", packages[0].Version);
-            Assert.IsNull(packages[0].TargetFramework);
-            Assert.AreEqual("PackageB", packages[1].Id);
-            Assert.AreEqual("2.0.0", packages[1].Version);
-            Assert.AreEqual("net9.0", packages[1].TargetFramework);
+            Assert.Equal(2, packages.Count);
+            Assert.Equal("PackageA", packages[0].Id);
+            Assert.Equal("1.0.0", packages[0].Version);
+            Assert.Null(packages[0].TargetFramework);
+            Assert.Equal("PackageB", packages[1].Id);
+            Assert.Equal("2.0.0", packages[1].Version);
+            Assert.Equal("net9.0", packages[1].TargetFramework);
         }
         finally
         {
@@ -113,7 +112,7 @@ public class PackagesConfigReaderTests
     /// <summary>
     ///     Test that Read returns an empty list for an empty packages element.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void PackagesConfigReader_Read_EmptyPackages_ReturnsEmptyList()
     {
         // Arrange: write a packages.config with empty packages element
@@ -131,7 +130,7 @@ public class PackagesConfigReaderTests
             var packages = PackagesConfigReader.Read(tempFile);
 
             // Assert: verify empty result
-            Assert.IsEmpty(packages);
+            Assert.Empty(packages);
         }
         finally
         {
@@ -142,7 +141,7 @@ public class PackagesConfigReaderTests
     /// <summary>
     ///     Test that Read throws InvalidOperationException when package element is missing id attribute.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void PackagesConfigReader_Read_MissingIdAttribute_ThrowsInvalidOperationException()
     {
         // Arrange: write a packages.config with missing id attribute
@@ -158,7 +157,7 @@ public class PackagesConfigReaderTests
                 """);
 
             // Act & Assert
-            var exception = Assert.ThrowsExactly<InvalidOperationException>(
+            var exception = Assert.Throws<InvalidOperationException>(
                 () => PackagesConfigReader.Read(tempFile));
             Assert.Contains("id", exception.Message);
         }
@@ -171,7 +170,7 @@ public class PackagesConfigReaderTests
     /// <summary>
     ///     Test that Read throws InvalidOperationException when package element is missing version attribute.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void PackagesConfigReader_Read_MissingVersionAttribute_ThrowsInvalidOperationException()
     {
         // Arrange: write a packages.config with missing version attribute
@@ -187,7 +186,7 @@ public class PackagesConfigReaderTests
                 """);
 
             // Act & Assert
-            var exception = Assert.ThrowsExactly<InvalidOperationException>(
+            var exception = Assert.Throws<InvalidOperationException>(
                 () => PackagesConfigReader.Read(tempFile));
             Assert.Contains("version", exception.Message);
         }
@@ -200,7 +199,7 @@ public class PackagesConfigReaderTests
     /// <summary>
     ///     Test that Read propagates XmlException when the file contains malformed XML.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void PackagesConfigReader_Read_MalformedXml_ThrowsXmlException()
     {
         // Arrange: write a file with malformed/incomplete XML
@@ -210,7 +209,7 @@ public class PackagesConfigReaderTests
             File.WriteAllText(tempFile, "<packages><package id=\"test\" version=\"");
 
             // Act & Assert: XmlException is propagated directly from XDocument.Load
-            Assert.ThrowsExactly<System.Xml.XmlException>(
+            Assert.Throws<System.Xml.XmlException>(
                 () => PackagesConfigReader.Read(tempFile));
         }
         finally

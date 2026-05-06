@@ -26,13 +26,12 @@ namespace DemaConsulting.NuGetInstaller.Tests.NuGet;
 /// <summary>
 ///     Unit tests for the PackageExtractor class.
 /// </summary>
-[TestClass]
 public class PackageExtractorTests
 {
     /// <summary>
     ///     Test that Extract returns false when destination folder already exists.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void PackageExtractor_Extract_DestinationExists_ReturnsFalse()
     {
         // Arrange: create a temporary zip file and a destination folder
@@ -49,7 +48,7 @@ public class PackageExtractorTests
             var result = PackageExtractor.Extract(zipPath, destFolder);
 
             // Assert: should return false (skipped)
-            Assert.IsFalse(result);
+            Assert.False(result);
         }
         finally
         {
@@ -63,7 +62,7 @@ public class PackageExtractorTests
     /// <summary>
     ///     Test that Extract returns true and extracts content when destination folder does not exist.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void PackageExtractor_Extract_NewDestination_ExtractsAndReturnsTrue()
     {
         // Arrange: create a temporary zip file with a test file inside
@@ -83,9 +82,9 @@ public class PackageExtractorTests
             var result = PackageExtractor.Extract(zipPath, destFolder);
 
             // Assert: should return true (extracted) and contain the file
-            Assert.IsTrue(result);
-            Assert.IsTrue(Directory.Exists(destFolder));
-            Assert.IsTrue(File.Exists(Path.Combine(destFolder, "test.txt")));
+            Assert.True(result);
+            Assert.True(Directory.Exists(destFolder));
+            Assert.True(File.Exists(Path.Combine(destFolder, "test.txt")));
         }
         finally
         {
@@ -99,7 +98,7 @@ public class PackageExtractorTests
     /// <summary>
     ///     Test that Extract throws InvalidOperationException when a zip entry would escape the destination folder (zip-slip).
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void PackageExtractor_Extract_ZipSlipEntry_ThrowsInvalidOperationException()
     {
         // Arrange: create a zip containing a traversal entry (../evil.txt)
@@ -120,7 +119,7 @@ public class PackageExtractorTests
             }
 
             // Act & Assert: extraction must be rejected with the zip-slip message
-            var exception = Assert.ThrowsExactly<InvalidOperationException>(() =>
+            var exception = Assert.Throws<InvalidOperationException>(() =>
                 PackageExtractor.Extract(zipPath, destFolder));
             Assert.Contains("zip-slip", exception.Message);
         }
@@ -136,7 +135,7 @@ public class PackageExtractorTests
     /// <summary>
     ///     Test that Extract skips directory-marker entries and returns true.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void PackageExtractor_Extract_ArchiveWithDirectoryEntries_SkipsDirectoriesAndReturnsTrue()
     {
         // Arrange: create a zip containing a directory-marker entry (empty Name) and a real file
@@ -164,8 +163,8 @@ public class PackageExtractorTests
             var result = PackageExtractor.Extract(zipPath, destFolder);
 
             // Assert: extraction returned true and the real file is present
-            Assert.IsTrue(result, "Extract should return true when extraction was performed");
-            Assert.IsTrue(File.Exists(Path.Combine(destFolder, "subdir", "real.txt")),
+            Assert.True(result, "Extract should return true when extraction was performed");
+            Assert.True(File.Exists(Path.Combine(destFolder, "subdir", "real.txt")),
                 "Real file entry should have been extracted");
         }
         finally
@@ -180,7 +179,7 @@ public class PackageExtractorTests
     /// <summary>
     ///     Test that Extract throws InvalidOperationException when the total decompressed size exceeds 1 GB.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void PackageExtractor_Extract_ZipBombEntry_ThrowsInvalidOperationException()
     {
         // Arrange: create a zip archive whose entries total more than 1 GB uncompressed
@@ -209,7 +208,7 @@ public class PackageExtractorTests
             }
 
             // Act & Assert: extraction must be aborted when the 1 GB limit is exceeded
-            var exception = Assert.ThrowsExactly<InvalidOperationException>(() =>
+            var exception = Assert.Throws<InvalidOperationException>(() =>
                 PackageExtractor.Extract(zipPath, destFolder));
             Assert.Contains("zip-bomb", exception.Message);
         }

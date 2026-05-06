@@ -25,13 +25,12 @@ namespace DemaConsulting.NuGetInstaller.Tests;
 /// <summary>
 ///     Unit tests for the Program class.
 /// </summary>
-[TestClass]
 public class ProgramTests
 {
     /// <summary>
     ///     Test that Run with version flag displays version only.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void Program_Run_WithVersionFlag_DisplaysVersionOnly()
     {
         // Arrange: setup test conditions
@@ -60,7 +59,7 @@ public class ProgramTests
     /// <summary>
     ///     Test that Run with help flag displays usage information.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void Program_Run_WithHelpFlag_DisplaysUsageInformation()
     {
         // Arrange: setup test conditions
@@ -90,7 +89,7 @@ public class ProgramTests
     /// <summary>
     ///     Test that Run with validate flag runs validation.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void Program_Run_WithValidateFlag_RunsValidation()
     {
         // Arrange: setup test conditions
@@ -117,7 +116,7 @@ public class ProgramTests
     /// <summary>
     ///     Test that Run with no arguments prints the application banner.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void Program_Run_NoArguments_DisplaysBanner()
     {
         // Arrange: setup test conditions
@@ -145,7 +144,7 @@ public class ProgramTests
     /// <summary>
     ///     Test that Run with the -v short version flag displays version only.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void Program_Run_WithShortVersionFlag_DisplaysVersion()
     {
         // Arrange: capture console output
@@ -171,7 +170,7 @@ public class ProgramTests
     /// <summary>
     ///     Test that Run with the -? short help flag displays usage information.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void Program_Run_WithShortHelpFlag_QuestionMark_DisplaysUsageInformation()
     {
         // Arrange: capture console output
@@ -199,7 +198,7 @@ public class ProgramTests
     /// <summary>
     ///     Test that Run with the -h short help flag displays usage information.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void Program_Run_WithShortHelpFlag_H_DisplaysUsageInformation()
     {
         // Arrange: capture console output
@@ -227,7 +226,7 @@ public class ProgramTests
     /// <summary>
     ///     Test that Run installs packages when a valid packages.config is provided.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void Program_Run_WithValidPackagesConfig_InstallsPackages()
     {
         // Arrange: create a temporary directory with a packages.config file
@@ -255,9 +254,9 @@ public class ProgramTests
                 Program.Run(context);
 
                 // Assert: exit code is success and the package folder was extracted
-                Assert.AreEqual(0, context.ExitCode, $"Program should succeed. Output: {outWriter}");
+                Assert.True(context.ExitCode == 0, $"Program should succeed. Output: {outWriter}");
                 var expectedFolder = Path.Combine(tempDir, "DemaConsulting.NuGet.Caching.1.0.0");
-                Assert.IsTrue(Directory.Exists(expectedFolder),
+                Assert.True(Directory.Exists(expectedFolder),
                     $"Package folder should exist at {expectedFolder}");
             }
             finally
@@ -277,20 +276,20 @@ public class ProgramTests
     /// <summary>
     ///     Test that version property returns non-empty version string.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void Program_Version_ReturnsNonEmptyString()
     {
         // Act: execute the operation being tested
         var version = Program.Version;
 
         // Assert: verify expected behavior
-        Assert.IsFalse(string.IsNullOrWhiteSpace(version));
+        Assert.False(string.IsNullOrWhiteSpace(version));
     }
 
     /// <summary>
     ///     Test that Run with a missing packages.config sets a non-zero exit code.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void Program_Run_WithMissingPackagesConfig_ReturnsNonZeroExitCode()
     {
         // Arrange: context pointing to a packages.config that does not exist
@@ -300,7 +299,6 @@ public class ProgramTests
         Program.Run(context);
 
         // Assert: exit code is non-zero when packages.config is missing
-        Assert.AreEqual(1, context.ExitCode, "Exit code should be 1 when packages.config is missing");
+        Assert.True(context.ExitCode == 1, "Exit code should be 1 when packages.config is missing");
     }
 }
-

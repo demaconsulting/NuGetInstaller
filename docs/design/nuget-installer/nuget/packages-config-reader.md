@@ -1,21 +1,21 @@
-# PackagesConfigReader
+### PackagesConfigReader
 
 The `PackagesConfigReader` class reads and parses packages.config XML files, returning a
 list of `PackageEntry` objects.
 
-## Overview
+#### Overview
 
 `PackagesConfigReader` is a static utility class with a single `Read` method. It loads the
 XML document, iterates over `<package>` elements, and constructs `PackageEntry` objects from
 the `id`, `version`, and optional `targetFramework` attributes.
 
-## Data Model
+#### Data Model
 
 `PackagesConfigReader` holds no instance state. All state is local to the `Read` method.
 
-## Methods
+#### Methods
 
-### Read(string filePath)
+##### Read(string filePath)
 
 Reads and parses a packages.config file.
 
@@ -37,13 +37,13 @@ Reads and parses a packages.config file.
 5. Throw `InvalidOperationException` if `id` or `version` is missing.
 6. Return a read-only list of `PackageEntry` objects.
 
-## Interactions
+#### Interactions
 
 | Dependency     | Direction | Purpose                                          |
 |----------------|-----------|--------------------------------------------------|
 | `PackageEntry` | Creates   | Constructs `PackageEntry` instances from XML.    |
 
-## Error Handling
+#### Error Handling
 
 `Read` throws the following exceptions:
 

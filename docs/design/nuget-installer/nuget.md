@@ -1,17 +1,17 @@
-# NuGet Subsystem
+## NuGet Subsystem
 
 The `NuGet` subsystem provides the package management functionality for the NuGet Installer.
 It is responsible for reading package configuration, resolving packages from the NuGet global
 cache, and extracting them into the output directory.
 
-## Overview
+### Overview
 
 The `NuGet` subsystem implements the core value proposition of the tool: installing NuGet
 packages from a `packages.config` file into a local directory. It owns the entire pipeline
 from XML parsing through cache resolution to ZIP extraction. All other subsystems interact
 with `NuGet` only through the `PackageInstaller` orchestrator.
 
-## Units and Child Subsystems
+### Units and Child Subsystems
 
 The `NuGet` subsystem contains the following child subsystem and units:
 
@@ -22,7 +22,7 @@ The `NuGet` subsystem contains the following child subsystem and units:
 | `PackageExtractor`     | Unit      | ZIP extraction wrapper for .nupkg.      |
 | `PackageInstaller`     | Unit      | Parallel install orchestrator.          |
 
-## Interfaces
+### Interfaces
 
 The `NuGet` subsystem exposes the following interfaces to the rest of the tool:
 
@@ -32,9 +32,9 @@ The `NuGet` subsystem exposes the following interfaces to the rest of the tool:
 | `PackageInstaller.InstallAsync`  | Outbound  | Installs packages; `excludeVersion` controls versioned/flat naming.   |
 | `PackageExtractor.Extract`       | Internal  | Extracts a .nupkg; `true` if extracted, `false` if folder exists.     |
 
-## Normal Operation
+### Normal Operation
 
-### Skip-Existing Behavior
+#### Skip-Existing Behavior
 
 Before extracting a package, `PackageExtractor.Extract` checks whether the destination folder
 already exists. If it does, extraction is skipped and `false` is returned. `PackageInstaller`
@@ -42,20 +42,20 @@ reports the package as skipped. This makes installation idempotent: re-running t
 against the same output directory does not re-extract or overwrite packages that have already
 been installed.
 
-### Version-less Folder Naming
+#### Version-less Folder Naming
 
 When `excludeVersion` is `true`, `PackageInstaller` constructs destination folder names using
 only the package `Id` (e.g., `Newtonsoft.Json/`). When `false` (the default), it uses
 `{Id}.{Version}/` (e.g., `Newtonsoft.Json.13.0.3/`).
 
-## Interactions
+### Interactions
 
 | Dependency     | Direction | Purpose                                                               |
 |----------------|-----------|-----------------------------------------------------------------------|
 | `Context`      | Uses      | Output channel for status messages during installation.               |
 | `NuGetCache`   | Uses      | OTS library for resolving packages in the NuGet global package cache. |
 
-## Error Handling
+### Error Handling
 
 | Component              | Exception                   | Condition                                               |
 |------------------------|-----------------------------|-------------------------------------------------------- |
@@ -64,22 +64,22 @@ only the package `Id` (e.g., `Newtonsoft.Json/`). When `false` (the default), it
 | `PackageExtractor`     | `InvalidOperationException` | Zip-slip entry or decompressed size exceeds 1 GB.       |
 | `PackageInstaller`     | Propagates from above       | Any exception from `PackageExtractor` or `NuGetCache`.  |
 
-## Security Algorithms
+### Security Algorithms
 
-### Zip-Slip Defense
+#### Zip-Slip Defense
 
 Before writing each archive entry, `PackageExtractor` resolves the canonical destination
 path via `Path.GetFullPath` and verifies it starts with the canonical destination folder
 (with a trailing separator). Entries that would escape the destination folder are rejected
 with `InvalidOperationException`.
 
-### Zip-Bomb Defense
+#### Zip-Bomb Defense
 
 `PackageExtractor` tracks the total number of decompressed bytes written during extraction.
 If the running total exceeds 1 GB (`1_073_741_824` bytes), extraction is aborted with
 `InvalidOperationException`.
 
-### Parallel Installation
+#### Parallel Installation
 
 `PackageInstaller` installs packages using `Task.WhenAll`, so multiple packages are cached
 and extracted concurrently. Each package is processed independently with no shared mutable

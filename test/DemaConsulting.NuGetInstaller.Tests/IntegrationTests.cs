@@ -25,29 +25,27 @@ namespace DemaConsulting.NuGetInstaller.Tests;
 /// <summary>
 ///     Integration tests that run the NuGet Installer application through dotnet.
 /// </summary>
-[TestClass]
 public class IntegrationTests
 {
-    private string _dllPath = string.Empty;
+    private readonly string _dllPath;
 
     /// <summary>
     ///     Initialize test by locating the NuGet Installer DLL.
     /// </summary>
-    [TestInitialize]
-    public void TestInitialize()
+    public IntegrationTests()
     {
         // The DLL should be in the same directory as the test assembly
         // because the test project references the main project
         var baseDir = AppContext.BaseDirectory;
         _dllPath = PathHelpers.SafePathCombine(baseDir, "DemaConsulting.NuGetInstaller.dll");
 
-        Assert.IsTrue(File.Exists(_dllPath), $"Could not find NuGet Installer DLL at {_dllPath}");
+        Assert.True(File.Exists(_dllPath), $"Could not find NuGet Installer DLL at {_dllPath}");
     }
 
     /// <summary>
     ///     Test that version flag outputs version information.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void NuGetInstaller_VersionFlag_FlagProvided_OutputsVersion()
     {
         // Act: run the tool with version flag
@@ -59,8 +57,8 @@ public class IntegrationTests
             "--version");
 
         // Assert: verify version output and success exit code
-        Assert.AreEqual(0, exitCode);
-        Assert.IsFalse(string.IsNullOrWhiteSpace(output));
+        Assert.Equal(0, exitCode);
+        Assert.False(string.IsNullOrWhiteSpace(output));
         Assert.DoesNotContain("Error", output);
         Assert.DoesNotContain("Copyright", output);
     }
@@ -68,7 +66,7 @@ public class IntegrationTests
     /// <summary>
     ///     Test that help flag outputs usage information.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void NuGetInstaller_HelpFlag_FlagProvided_OutputsUsageInformation()
     {
         // Act: run the tool with the --help flag
@@ -80,7 +78,7 @@ public class IntegrationTests
             "--help");
 
         // Assert: verify expected behavior
-        Assert.AreEqual(0, exitCode);
+        Assert.Equal(0, exitCode);
         Assert.Contains("Usage:", output);
         Assert.Contains("Options:", output);
         Assert.Contains("--version", output);
@@ -89,7 +87,7 @@ public class IntegrationTests
     /// <summary>
     ///     Test that validate flag runs self-validation.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void NuGetInstaller_ValidateFlag_FlagProvided_RunsValidation()
     {
         // Act: run the tool with the --validate flag
@@ -101,7 +99,7 @@ public class IntegrationTests
             "--validate");
 
         // Assert: verify expected behavior
-        Assert.AreEqual(0, exitCode);
+        Assert.Equal(0, exitCode);
         Assert.Contains("Total Tests:", output);
         Assert.Contains("Passed:", output);
     }
@@ -109,7 +107,7 @@ public class IntegrationTests
     /// <summary>
     ///     Test that validate with results flag generates TRX file.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void NuGetInstaller_ValidateWithResults_TrxExtension_GeneratesTrxFile()
     {
         // Arrange: setup test conditions
@@ -128,8 +126,8 @@ public class IntegrationTests
                 resultsFile);
 
             // Assert: verify expected behavior
-            Assert.AreEqual(0, exitCode);
-            Assert.IsTrue(File.Exists(resultsFile), "Results file was not created");
+            Assert.Equal(0, exitCode);
+            Assert.True(File.Exists(resultsFile), "Results file was not created");
 
             var trxContent = File.ReadAllText(resultsFile);
             Assert.Contains("<TestRun", trxContent);
@@ -147,7 +145,7 @@ public class IntegrationTests
     /// <summary>
     ///     Test that silent flag suppresses output.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void NuGetInstaller_SilentFlag_FlagProvided_SuppressesOutput()
     {
         // Act: run the tool with --silent and --version flags
@@ -160,14 +158,14 @@ public class IntegrationTests
             "--version");
 
         // Assert: verify expected behavior
-        Assert.AreEqual(0, exitCode);
-        Assert.IsTrue(string.IsNullOrWhiteSpace(output), $"Expected no output but got: {output}");
+        Assert.Equal(0, exitCode);
+        Assert.True(string.IsNullOrWhiteSpace(output), $"Expected no output but got: {output}");
     }
 
     /// <summary>
     ///     Test that log flag writes output to file.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void NuGetInstaller_LogFlag_FlagProvided_WritesOutputToFile()
     {
         // Arrange: setup test conditions
@@ -186,11 +184,11 @@ public class IntegrationTests
                 "--version");
 
             // Assert: verify expected behavior
-            Assert.AreEqual(0, exitCode);
-            Assert.IsTrue(File.Exists(logFile), "Log file was not created");
+            Assert.Equal(0, exitCode);
+            Assert.True(File.Exists(logFile), "Log file was not created");
 
             var logContent = File.ReadAllText(logFile);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(logContent), "Log file should contain output");
+            Assert.False(string.IsNullOrWhiteSpace(logContent), "Log file should contain output");
         }
         finally
         {
@@ -204,7 +202,7 @@ public class IntegrationTests
     /// <summary>
     ///     Test that validate with results flag generates JUnit XML file.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void NuGetInstaller_ValidateWithResults_XmlExtension_GeneratesJUnitFile()
     {
         // Arrange: setup test conditions
@@ -223,8 +221,8 @@ public class IntegrationTests
                 resultsFile);
 
             // Assert: verify expected behavior
-            Assert.AreEqual(0, exitCode);
-            Assert.IsTrue(File.Exists(resultsFile), "Results file was not created");
+            Assert.Equal(0, exitCode);
+            Assert.True(File.Exists(resultsFile), "Results file was not created");
 
             var xmlContent = File.ReadAllText(resultsFile);
             Assert.Contains("<testsuites", xmlContent);
@@ -241,7 +239,7 @@ public class IntegrationTests
     /// <summary>
     ///     Test that unknown argument returns error.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void NuGetInstaller_UnknownArgument_InvalidFlag_ReturnsNonZeroExitCode()
     {
         // Act: run the tool with an unknown --unknown flag
@@ -253,14 +251,14 @@ public class IntegrationTests
             "--unknown");
 
         // Assert: verify expected behavior
-        Assert.AreNotEqual(0, exitCode);
+        Assert.NotEqual(0, exitCode);
         Assert.Contains("Error", output);
     }
 
     /// <summary>
     ///     Test that the tool installs NuGet packages from a packages.config file into the output directory.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void NuGetInstaller_InstallPackages_ValidConfig_ExtractsPackageToOutputDirectory()
     {
         // Arrange: create a temporary directory with a packages.config file
@@ -289,14 +287,13 @@ public class IntegrationTests
                 tempDir);
 
             // Assert: verify the tool exits successfully and the package is extracted
-            Assert.AreEqual(0, exitCode, $"Tool should succeed. Output: {output}");
-            Assert.Contains("Installed", output, "Output should confirm package installation");
+            Assert.True(exitCode == 0, $"Tool should succeed. Output: {output}");
+            Assert.Contains("Installed", output);
 
             var expectedFolder = Path.Combine(tempDir, "DemaConsulting.NuGet.Caching.1.0.0");
-            Assert.IsTrue(Directory.Exists(expectedFolder),
+            Assert.True(Directory.Exists(expectedFolder),
                 $"Package folder should exist at {expectedFolder}");
-            Assert.IsNotEmpty(Directory.GetFileSystemEntries(expectedFolder),
-                "Package folder should contain extracted files");
+            Assert.NotEmpty(Directory.GetFileSystemEntries(expectedFolder));
         }
         finally
         {
@@ -310,7 +307,7 @@ public class IntegrationTests
     /// <summary>
     ///     Test that the tool uses {Id}/ folder naming when exclude-version flag is provided.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void NuGetInstaller_InstallPackages_ExcludeVersionFlag_UsesFlatFolderNaming()
     {
         // Arrange: create a temporary directory with a packages.config file
@@ -340,12 +337,12 @@ public class IntegrationTests
                 "-x");
 
             // Assert: package folder uses {Id}/ naming, not {Id}.{Version}/
-            Assert.AreEqual(0, exitCode, $"Tool should succeed. Output: {output}");
+            Assert.True(exitCode == 0, $"Tool should succeed. Output: {output}");
             var expectedFolder = Path.Combine(tempDir, "DemaConsulting.NuGet.Caching");
-            Assert.IsTrue(Directory.Exists(expectedFolder),
+            Assert.True(Directory.Exists(expectedFolder),
                 $"Version-less package folder should exist at {expectedFolder}");
             var versionedFolder = Path.Combine(tempDir, "DemaConsulting.NuGet.Caching.1.0.0");
-            Assert.IsFalse(Directory.Exists(versionedFolder),
+            Assert.False(Directory.Exists(versionedFolder),
                 "Versioned package folder should not exist when -x flag is used");
         }
         finally
@@ -360,7 +357,7 @@ public class IntegrationTests
     /// <summary>
     ///     Test that validate with depth flag adjusts heading depth of output.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void NuGetInstaller_ValidateDepth_DepthFlagProvided_AdjustsHeadingDepth()
     {
         // Act: run with --validate and --depth 2
@@ -374,14 +371,14 @@ public class IntegrationTests
             "2");
 
         // Assert: output contains level-2 heading
-        Assert.AreEqual(0, exitCode, $"Tool should succeed. Output: {output}");
-        Assert.Contains("## ", output, "Validation output should use depth-2 heading");
+        Assert.True(exitCode == 0, $"Tool should succeed. Output: {output}");
+        Assert.Contains("## ", output);
     }
 
     /// <summary>
     ///     Test that the tool skips packages whose output folder already exists.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void NuGetInstaller_InstallPackages_ExistingFolder_SkipsInstallation()
     {
         // Arrange: create a temporary directory, pre-create the package output folder
@@ -414,8 +411,8 @@ public class IntegrationTests
                 tempDir);
 
             // Assert: exit code is 0 and the tool reports skipping
-            Assert.AreEqual(0, exitCode, $"Tool should succeed even when skipping. Output: {output}");
-            Assert.Contains("Skipping", output, "Tool should report that the package was skipped");
+            Assert.True(exitCode == 0, $"Tool should succeed even when skipping. Output: {output}");
+            Assert.Contains("Skipping", output);
         }
         finally
         {
@@ -429,7 +426,7 @@ public class IntegrationTests
     /// <summary>
     ///     Test that the tool installs packages into the current working directory when no -o flag is given.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void NuGetInstaller_InstallPackages_DefaultOutputDirectory_InstallsToCurrentDirectory()
     {
         // Arrange: create a temporary directory to act as the working directory
@@ -456,9 +453,9 @@ public class IntegrationTests
                 configPath);
 
             // Assert: tool exits successfully and the package is extracted to the working directory
-            Assert.AreEqual(0, exitCode, $"Tool should succeed. Output: {output}");
+            Assert.True(exitCode == 0, $"Tool should succeed. Output: {output}");
             var expectedFolder = Path.Combine(tempDir, "DemaConsulting.NuGet.Caching.1.0.0");
-            Assert.IsTrue(Directory.Exists(expectedFolder),
+            Assert.True(Directory.Exists(expectedFolder),
                 $"Package folder should exist in the working directory at {expectedFolder}");
         }
         finally
@@ -473,7 +470,7 @@ public class IntegrationTests
     /// <summary>
     ///     Test that the tool reports an error message for unrecognized arguments.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void NuGetInstaller_UnknownArgument_InvalidFlag_ReportsErrorMessage()
     {
         // Act: run the tool with an unknown --unknown flag
@@ -485,8 +482,7 @@ public class IntegrationTests
             "--unknown");
 
         // Assert: tool reports an error message identifying the unrecognized flag
-        Assert.AreNotEqual(0, exitCode, "Tool should return non-zero exit code for unknown flag");
-        Assert.Contains("--unknown", output, "Error message should identify the unrecognized flag");
+        Assert.True(exitCode != 0, "Tool should return non-zero exit code for unknown flag");
+        Assert.Contains("--unknown", output);
     }
 }
-
