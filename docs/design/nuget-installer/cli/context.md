@@ -32,8 +32,8 @@ properties. It also owns the two output channels — console and log file — th
 
 ##### Create(string[] args)
 
-Factory method. Delegates to the private `ArgumentParser` helper and opens the log file if
-`--log` was supplied.
+Factory method. Parses the argument list using an internal implementation and opens the log
+file if `--log` was supplied.
 
 **Throws:** `ArgumentNullException` — when `args` is `null`.
 `ArgumentException` — when an unknown argument or missing value is encountered.

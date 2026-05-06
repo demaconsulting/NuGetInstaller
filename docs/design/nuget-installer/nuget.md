@@ -62,6 +62,8 @@ only the package `Id` (e.g., `Newtonsoft.Json/`). When `false` (the default), it
 | `PackagesConfigReader` | `InvalidOperationException` | File not found or missing `id`/`version` attribute.     |
 | `PackagesConfigReader` | `XmlException`              | File contains malformed XML.                            |
 | `PackageExtractor`     | `InvalidOperationException` | Zip-slip entry or decompressed size exceeds 1 GB.       |
+| `PackageInstaller`     | `ArgumentNullException`     | `outputDirectory` is `null`.                            |
+| `PackageInstaller`     | `ArgumentException`         | `outputDirectory` is empty.                             |
 | `PackageInstaller`     | Propagates from above       | Any exception from `PackageExtractor` or `NuGetCache`.  |
 
 ### Security Algorithms

@@ -51,6 +51,7 @@ The system accepts command-line arguments following standard conventions:
 - **Heading Depth**: `--depth <#>` — Set heading depth for Markdown output (default: 1)
 - **Logging**: `--log <file>` — Write all output to log file
 - **Output Directory**: `-o`, `-OutputDirectory <dir>` — Output directory for package installation
+  (default: current working directory)
 - **Exclude Version**: `-x`, `-ExcludeVersion` — Use `{Id}/` folder naming instead of `{Id}.{Version}/`
 
 ### File System Interface
@@ -79,6 +80,16 @@ The system uses standard console I/O streams:
 1. **Command-line arguments** → CLI subsystem parses into Context object
 2. **Context object** → Program uses to determine execution path
 3. **User input validation** → Context throws typed exceptions for invalid arguments
+
+### Package Installation Flow
+
+1. **packages.config** → PackagesConfigReader parses into a list of PackageEntry objects
+2. **PackageEntry list** → PackageInstaller resolves each package from the NuGet global cache
+3. **Skip-existing check** → PackageInstaller checks whether the output folder already exists
+   for each package; if it does, the package is skipped and a skip message is written to output
+4. **Package extraction** → PackageExtractor extracts the .nupkg archive for each new package
+   into the output directory using either `{Id}.{Version}/` or `{Id}/` naming depending on the
+   exclude-version flag
 
 ### Output Processing Flow
 

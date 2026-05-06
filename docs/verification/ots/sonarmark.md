@@ -8,20 +8,22 @@ renders it as a Markdown document included in the release artifacts.
 
 ### Verification Approach
 
-SonarMark is verified by CI pipeline step evidence. The tool runs in the same CI pipeline
-that produces the TRX test results. A successful pipeline run demonstrates that SonarMark
-connected to SonarCloud, retrieved quality data, and generated the Markdown quality report
-without error.
+SonarMark is verified by CI pipeline step evidence. The tool's built-in `--validate`
+command is executed in the CI pipeline and writes test method results to a TRX file.
+The TRX file is consumed by ReqStream to satisfy the OTS requirement.
 
-Test evidence names:
+Test evidence names (test methods written to the TRX file by `dotnet sonarmark --validate`):
 
-- `SonarMark_QualityGateRetrieval` — linked to the CI step that fetches the quality gate
-- `SonarMark_IssuesRetrieval` — linked to the CI step that fetches issue counts
-- `SonarMark_HotSpotsRetrieval` — linked to the CI step that fetches hotspot data
-- `SonarMark_MarkdownReportGeneration` — linked to the CI step that writes the Markdown report
+- `SonarMark_QualityGateRetrieval` — validates that SonarMark can retrieve quality gate data
+- `SonarMark_IssuesRetrieval` — validates that SonarMark can retrieve issue counts
+- `SonarMark_HotSpotsRetrieval` — validates that SonarMark can retrieve hotspot data
+- `SonarMark_MarkdownReportGeneration` — validates that SonarMark can generate a Markdown report
 
 ### Coverage Summary
 
 | Requirement ID | Test Method(s) |
 | --- | --- |
-| `NuGetInstaller-OTS-SonarMark` | `SonarMark_QualityGateRetrieval`, `SonarMark_IssuesRetrieval`, `SonarMark_HotSpotsRetrieval`, `SonarMark_MarkdownReportGeneration` |
+| `NuGetInstaller-OTS-SonarMark` | `SonarMark_QualityGateRetrieval` |
+| `NuGetInstaller-OTS-SonarMark` | `SonarMark_IssuesRetrieval` |
+| `NuGetInstaller-OTS-SonarMark` | `SonarMark_HotSpotsRetrieval` |
+| `NuGetInstaller-OTS-SonarMark` | `SonarMark_MarkdownReportGeneration` |

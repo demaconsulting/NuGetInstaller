@@ -9,14 +9,14 @@ release artifacts.
 
 ### Verification Approach
 
-VersionMark is verified by CI pipeline step evidence. The tool runs in the same CI pipeline
-that produces the TRX test results. A successful pipeline run demonstrates that VersionMark
-captured the tool versions and generated the Markdown versions report without error.
+VersionMark is verified by CI pipeline step evidence. The tool's built-in `--validate`
+command is executed in the CI pipeline and writes test method results to a TRX file.
+The TRX file is consumed by ReqStream to satisfy the OTS requirement.
 
-Test evidence names:
+Test evidence names (test methods written to the TRX file by `dotnet versionmark --validate`):
 
-- `VersionMark_CapturesVersions` — linked to the CI step that collects tool version metadata
-- `VersionMark_GeneratesMarkdownReport` — linked to the CI step that writes the versions report
+- `VersionMark_CapturesVersions` — validates that VersionMark can capture tool version metadata
+- `VersionMark_GeneratesMarkdownReport` — validates that VersionMark can generate a Markdown report
 
 ### Coverage Summary
 

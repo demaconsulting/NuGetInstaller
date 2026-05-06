@@ -28,4 +28,9 @@ Test evidence names:
 
 | Requirement ID | Test Method(s) |
 | --- | --- |
-| `NuGetInstaller-OTS-Pandoc` | `Pandoc_BuildNotesHtml`, `Pandoc_CodeQualityHtml`, `Pandoc_ReviewPlanHtml`, `Pandoc_ReviewReportHtml`, `Pandoc_DesignHtml`, `Pandoc_UserGuideHtml` |
+| `NuGetInstaller-OTS-Pandoc` | `Pandoc_BuildNotesHtml` |
+| `NuGetInstaller-OTS-Pandoc` | `Pandoc_CodeQualityHtml` |
+| `NuGetInstaller-OTS-Pandoc` | `Pandoc_ReviewPlanHtml` |
+| `NuGetInstaller-OTS-Pandoc` | `Pandoc_ReviewReportHtml` |
+| `NuGetInstaller-OTS-Pandoc` | `Pandoc_DesignHtml` |
+| `NuGetInstaller-OTS-Pandoc` | `Pandoc_UserGuideHtml` |

@@ -28,4 +28,9 @@ Test evidence names:
 
 | Requirement ID | Test Method(s) |
 | --- | --- |
-| `NuGetInstaller-OTS-WeasyPrint` | `WeasyPrint_BuildNotesPdf`, `WeasyPrint_CodeQualityPdf`, `WeasyPrint_ReviewPlanPdf`, `WeasyPrint_ReviewReportPdf`, `WeasyPrint_DesignPdf`, `WeasyPrint_UserGuidePdf` |
+| `NuGetInstaller-OTS-WeasyPrint` | `WeasyPrint_BuildNotesPdf` |
+| `NuGetInstaller-OTS-WeasyPrint` | `WeasyPrint_CodeQualityPdf` |
+| `NuGetInstaller-OTS-WeasyPrint` | `WeasyPrint_ReviewPlanPdf` |
+| `NuGetInstaller-OTS-WeasyPrint` | `WeasyPrint_ReviewReportPdf` |
+| `NuGetInstaller-OTS-WeasyPrint` | `WeasyPrint_DesignPdf` |
+| `NuGetInstaller-OTS-WeasyPrint` | `WeasyPrint_UserGuidePdf` |

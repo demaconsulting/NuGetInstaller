@@ -169,6 +169,7 @@ Test methods: `dotnet10.x@NuGetInstaller_VersionDisplay`, `dotnet10.x@NuGetInsta
 | `NuGetInstaller-System-Depth` | `NuGetInstaller_ValidateDepth_DepthFlagProvided_AdjustsHeadingDepth` |
 | `NuGetInstaller-System-SkipExisting` | `NuGetInstaller_InstallPackages_ExistingFolder_SkipsInstallation` |
 | `NuGetInstaller-System-Install` | `NuGetInstaller_InstallPackages_ValidConfig_ExtractsPackageToOutputDirectory` |
+| `NuGetInstaller-System-CrossPlatform` | `windows@NuGetInstaller_VersionDisplay`, `ubuntu@NuGetInstaller_VersionDisplay`, `macos@NuGetInstaller_VersionDisplay` |
 | `NuGetInstaller-Platform-Windows` | `windows@NuGetInstaller_VersionDisplay`, `windows@NuGetInstaller_HelpDisplay` |
 | `NuGetInstaller-Platform-Linux` | `ubuntu@NuGetInstaller_VersionDisplay`, `ubuntu@NuGetInstaller_HelpDisplay` |
 | `NuGetInstaller-Platform-MacOS` | `macos@NuGetInstaller_VersionDisplay`, `macos@NuGetInstaller_HelpDisplay` |

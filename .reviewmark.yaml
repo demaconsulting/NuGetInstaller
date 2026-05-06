@@ -28,8 +28,7 @@ evidence-source:
 
 # Review sets following standardized patterns for hierarchical compliance coverage
 reviews:
-  # NuGetInstaller - Specials
-  # Purpose Review (only one per repository)
+  # Purpose
   - id: Purpose
     title: Review that Advertised Features Match System Design
     paths:
@@ -39,29 +38,29 @@ reviews:
       - "docs/design/introduction.md"
       - "docs/design/nuget-installer.md"
 
-  # NuGetInstaller-Architecture Review (one per system)
+  # NuGetInstaller - Specials
   - id: NuGetInstaller-Architecture
     title: Review that NuGet Installer Architecture Satisfies Requirements
     paths:
       - "docs/reqstream/nuget-installer.yaml"
+      - "docs/reqstream/nuget-installer/platform-requirements.yaml"
       - "docs/design/introduction.md"
       - "docs/design/nuget-installer.md"
       - "docs/verification/introduction.md"
       - "docs/verification/nuget-installer.md"
       - "test/**/IntegrationTests.cs"
 
-  # NuGetInstaller-Design Review (one per system)
   - id: NuGetInstaller-Design
     title: Review that NuGet Installer Design is Consistent and Complete
     paths:
       - "docs/reqstream/nuget-installer.yaml"
       - "docs/reqstream/nuget-installer/platform-requirements.yaml"
       - "docs/design/introduction.md"
+      - "docs/design/nuget-installer.md"
       - "docs/design/nuget-installer/**/*.md"
       - "docs/verification/introduction.md"
       - "docs/verification/ots.md"
 
-  # NuGetInstaller-AllRequirements Review (one per system)
   - id: NuGetInstaller-AllRequirements
     title: Review that All NuGet Installer Requirements are Complete
     paths:
@@ -70,7 +69,6 @@ reviews:
       - "docs/reqstream/ots/**/*.yaml"
 
   # NuGetInstaller - Program
-  # NuGetInstaller-Program Review (one per unit)
   - id: NuGetInstaller-Program
     title: Review that NuGet Installer Program Implementation is Correct
     paths:
@@ -81,7 +79,6 @@ reviews:
       - "test/**/ProgramTests.cs"
 
   # NuGetInstaller - Cli
-  # NuGetInstaller-Cli Review (one per subsystem)
   - id: NuGetInstaller-Cli
     title: Review that NuGet Installer Cli Satisfies Subsystem Requirements
     paths:
@@ -90,7 +87,6 @@ reviews:
       - "docs/verification/nuget-installer/cli.md"
       - "test/**/Cli/CliSubsystemTests.cs"
 
-  # NuGetInstaller-Cli-Context Review (one per unit)
   - id: NuGetInstaller-Cli-Context
     title: Review that NuGet Installer Cli Context Implementation is Correct
     paths:
@@ -101,7 +97,6 @@ reviews:
       - "test/**/Cli/ContextTests.cs"
 
   # NuGetInstaller - NuGet
-  # NuGetInstaller-NuGet Review (one per subsystem)
   - id: NuGetInstaller-NuGet
     title: Review that NuGet Installer NuGet Satisfies Subsystem Requirements
     paths:
@@ -110,7 +105,6 @@ reviews:
       - "docs/verification/nuget-installer/nuget.md"
       - "test/**/NuGet/NuGetSubsystemTests.cs"
 
-  # NuGetInstaller-NuGet-Models Review (one per subsystem)
   - id: NuGetInstaller-NuGet-Models
     title: Review that NuGet Installer NuGet Models Satisfies Subsystem Requirements
     paths:
@@ -119,7 +113,6 @@ reviews:
       - "docs/verification/nuget-installer/nuget/models.md"
       - "test/**/NuGet/Models/ModelsSubsystemTests.cs"
 
-  # NuGetInstaller-NuGet-PackageEntry Review (one per unit)
   - id: NuGetInstaller-NuGet-Models-PackageEntry
     title: Review that NuGet Installer NuGet Models PackageEntry Implementation is Correct
     paths:
@@ -128,7 +121,6 @@ reviews:
       - "docs/verification/nuget-installer/nuget/models/package-entry.md"
       - "src/**/NuGet/Models/PackageEntry.cs"
 
-  # NuGetInstaller-NuGet-PackagesConfigReader Review (one per unit)
   - id: NuGetInstaller-NuGet-PackagesConfigReader
     title: Review that NuGet Installer NuGet PackagesConfigReader Implementation is Correct
     paths:
@@ -138,7 +130,6 @@ reviews:
       - "src/**/NuGet/PackagesConfigReader.cs"
       - "test/**/NuGet/PackagesConfigReaderTests.cs"
 
-  # NuGetInstaller-NuGet-PackageExtractor Review (one per unit)
   - id: NuGetInstaller-NuGet-PackageExtractor
     title: Review that NuGet Installer NuGet PackageExtractor Implementation is Correct
     paths:
@@ -148,7 +139,6 @@ reviews:
       - "src/**/NuGet/PackageExtractor.cs"
       - "test/**/NuGet/PackageExtractorTests.cs"
 
-  # NuGetInstaller-NuGet-PackageInstaller Review (one per unit)
   - id: NuGetInstaller-NuGet-PackageInstaller
     title: Review that NuGet Installer NuGet PackageInstaller Implementation is Correct
     paths:
@@ -159,7 +149,6 @@ reviews:
       - "test/**/NuGet/PackageInstallerTests.cs"
 
   # NuGetInstaller - SelfTest
-  # NuGetInstaller-SelfTest Review (one per subsystem)
   - id: NuGetInstaller-SelfTest
     title: Review that NuGet Installer SelfTest Satisfies Subsystem Requirements
     paths:
@@ -168,7 +157,6 @@ reviews:
       - "docs/verification/nuget-installer/self-test.md"
       - "test/**/SelfTest/SelfTestSubsystemTests.cs"
 
-  # NuGetInstaller-SelfTest-Validation Review (one per unit)
   - id: NuGetInstaller-SelfTest-Validation
     title: Review that NuGet Installer SelfTest Validation Implementation is Correct
     paths:
@@ -179,7 +167,6 @@ reviews:
       - "test/**/SelfTest/ValidationTests.cs"
 
   # NuGetInstaller - Utilities
-  # NuGetInstaller-Utilities Review (one per subsystem)
   - id: NuGetInstaller-Utilities
     title: Review that NuGet Installer Utilities Satisfies Subsystem Requirements
     paths:
@@ -188,7 +175,6 @@ reviews:
       - "docs/verification/nuget-installer/utilities.md"
       - "test/**/Utilities/UtilitiesSubsystemTests.cs"
 
-  # NuGetInstaller-Utilities-PathHelpers Review (one per unit)
   - id: NuGetInstaller-Utilities-PathHelpers
     title: Review that NuGet Installer Utilities PathHelpers Implementation is Correct
     paths:

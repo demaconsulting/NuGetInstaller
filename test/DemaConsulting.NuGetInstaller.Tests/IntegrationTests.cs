@@ -226,6 +226,7 @@ public class IntegrationTests
 
             var xmlContent = File.ReadAllText(resultsFile);
             Assert.Contains("<testsuites", xmlContent);
+            Assert.Contains("</testsuites>", xmlContent);
         }
         finally
         {

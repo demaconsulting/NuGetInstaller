@@ -9,15 +9,14 @@ review coverage and currency.
 
 ### Verification Approach
 
-ReviewMark is verified by CI pipeline step evidence. The tool runs as part of the same CI
-pipeline that produces the TRX test results. A successful pipeline run demonstrates that
-ReviewMark read the configuration, queried the evidence store, and generated both the review
-plan and the review report without error.
+ReviewMark is verified by CI pipeline step evidence. The tool's built-in `--validate`
+command is executed in the CI pipeline and writes test method results to a TRX file.
+The TRX file is consumed by ReqStream to satisfy the OTS requirement.
 
-Test evidence names:
+Test evidence names (test methods written to the TRX file by `dotnet reviewmark --validate`):
 
-- `ReviewMark_ReviewPlanGeneration` — linked to the CI step that generates the review plan
-- `ReviewMark_ReviewReportGeneration` — linked to the CI step that generates the review report
+- `ReviewMark_ReviewPlanGeneration` — validates that ReviewMark can generate a review plan
+- `ReviewMark_ReviewReportGeneration` — validates that ReviewMark can generate a review report
 
 ### Coverage Summary
 

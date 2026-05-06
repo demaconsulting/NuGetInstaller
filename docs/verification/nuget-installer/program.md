@@ -3,10 +3,10 @@
 ### Verification Strategy
 
 The Program unit is verified using xUnit unit tests in `ProgramTests.cs`. Tests call the
-`Program.Run` static method directly, supplying a `Context` instance whose console output is
-captured via a `StringWriter`. Temporary directories and fixture `packages.config` files are
-created on disk where the install path requires real files. No external network access is
-required because all package resolution uses the local NuGet cache.
+`Program.Run` static method directly; console output is captured by redirecting `Console.Out`
+to a `StringWriter` before creating the `Context`. Temporary directories and fixture
+`packages.config` files are created on disk where the install path requires real files. No
+external network access is required because all package resolution uses the local NuGet cache.
 
 ### Test Scenarios
 

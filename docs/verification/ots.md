@@ -22,3 +22,21 @@ Each OTS item is verified using one or more of the following evidence types:
 
 Requirements for each OTS item are defined in the corresponding `docs/reqstream/ots/{name}.yaml`
 file. Test evidence is recorded in the ReqStream requirements traceability matrix.
+
+## OTS Item Summary
+
+The following table lists all OTS items and their primary evidence type. Full verification
+details for each item are provided in the individual OTS item verification documents under `docs/verification/ots/`.
+
+| OTS Item    | Primary Evidence Type                                                  |
+| ----------- | ---------------------------------------------------------------------- |
+| BuildMark   | CI pipeline step evidence                                              |
+| FileAssert  | Self-validation                                                        |
+| xUnit       | Integration test evidence                                              |
+| Pandoc      | CI pipeline step evidence combined with FileAssert document validation |
+| ReqStream   | CI pipeline step evidence                                              |
+| ReviewMark  | CI pipeline step evidence                                              |
+| SarifMark   | CI pipeline step evidence                                              |
+| SonarMark   | CI pipeline step evidence                                              |
+| VersionMark | CI pipeline step evidence                                              |
+| WeasyPrint  | CI pipeline step evidence combined with FileAssert document validation |

@@ -55,7 +55,7 @@ In-house software items have parallel artifacts organized as follows:
 
 - **Requirements**: `docs/reqstream/nuget-installer.yaml` and
   `docs/reqstream/nuget-installer/{subsystem}/{item}.yaml`
-- **Design**: `docs/design/introduction.md` and
+- **Design**: `docs/design/introduction.md`, `docs/design/nuget-installer.md`, and
   `docs/design/nuget-installer/{subsystem}/{item}.md`
 - **Verification**: `docs/verification/introduction.md` (this document) and
   `docs/verification/nuget-installer/{subsystem}/{item}.md`

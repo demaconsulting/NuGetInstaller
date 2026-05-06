@@ -60,7 +60,7 @@ NuGetInstaller (System)
     └── PathHelpers (Unit)
 ```
 
-Each unit is described in detail in its own chapter within this document.
+Each unit is described in detail in the companion design document collection.
 
 ## Folder Layout
 
@@ -94,8 +94,28 @@ Throughout this document:
   methods/algorithms, and interactions with other units.
 - Text tables are used in preference to diagrams, which may not render in all PDF viewers.
 
+## Companion Artifact Structure
+
+Each in-house software item has corresponding artifacts in parallel directory trees:
+
+- **Requirements**: `docs/reqstream/nuget-installer.yaml`,
+  `docs/reqstream/nuget-installer/.../{item}.yaml`
+- **Design**: `docs/design/nuget-installer.md`,
+  `docs/design/nuget-installer/.../{item}.md`
+- **Verification**: `docs/verification/nuget-installer.md`,
+  `docs/verification/nuget-installer/.../{item}.md`
+- **Source code**: `src/DemaConsulting.NuGetInstaller/.../{Item}.cs`
+- **Tests**: `test/DemaConsulting.NuGetInstaller.Tests/.../{Item}Tests.cs`
+
+OTS items have no design documentation; their artifacts sit parallel to system folders:
+
+- **Requirements**: `docs/reqstream/ots/{ots-name}.yaml`
+- **Verification**: `docs/verification/ots/{ots-name}.md`
+
+Review-sets for all items are defined in `.reviewmark.yaml` at the repository root.
+
 ## References
 
 - NuGet Installer System Requirements (`docs/reqstream/nuget-installer.yaml`)
-- NuGet Installer User Guide
+- [REF-2] NuGet Installer User Guide (`docs/user_guide/introduction.md`)
 - NuGet Installer Repository: <https://github.com/demaconsulting/NuGetInstaller>

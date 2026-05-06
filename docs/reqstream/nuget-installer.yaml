@@ -46,6 +46,7 @@ sections:
           - NuGetInstaller-Cli-Validate
           - NuGetInstaller-Cli-Results
           - NuGetInstaller-Cli-ResultAlias
+          - NuGetInstaller-Program-Validate
           - NuGetInstaller-SelfTest-Qualification
           - NuGetInstaller-SelfTest-TrxOutput
           - NuGetInstaller-SelfTest-JUnitOutput
@@ -72,6 +73,7 @@ sections:
           console capture.
         children:
           - NuGetInstaller-Cli-Log
+          - NuGetInstaller-Cli-OutputManagement
         tests:
           - NuGetInstaller_LogFlag_FlagProvided_WritesOutputToFile
 
@@ -98,6 +100,26 @@ sections:
           - NuGetInstaller_UnknownArgument_InvalidFlag_ReturnsNonZeroExitCode
           - NuGetInstaller_UnknownArgument_InvalidFlag_ReportsErrorMessage
 
+      - id: NuGetInstaller-System-ErrorHandling-MissingFile
+        title: The tool shall report an error when the package configuration file is not found.
+        justification: |
+          A clear error when the configuration file is absent prevents silent failures
+          and gives users actionable diagnostic information.
+        children:
+          - NuGetInstaller-NuGet-MissingFile
+        tests:
+          - NuGetInstaller_InstallPackages_ValidConfig_ExtractsPackageToOutputDirectory
+
+      - id: NuGetInstaller-System-ErrorHandling-MalformedXml
+        title: The tool shall report an error when the package configuration file contains malformed XML.
+        justification: |
+          A clear error for malformed XML helps users identify and fix configuration
+          file issues quickly, rather than encountering an opaque parse failure.
+        children:
+          - NuGetInstaller-NuGet-MalformedXml
+        tests:
+          - NuGetInstaller_InstallPackages_ValidConfig_ExtractsPackageToOutputDirectory
+
       - id: NuGetInstaller-System-OutputDirectory
         title: >-
           The tool shall install NuGet packages into the directory specified by the
@@ -110,6 +132,8 @@ sections:
         children:
           - NuGetInstaller-Cli-OutputDirectory
           - NuGetInstaller-NuGet-ExtractPackages
+          - NuGetInstaller-Utilities-SafePaths
+          - NuGetInstaller-Utilities-NullRejection
         tests:
           - NuGetInstaller_InstallPackages_ValidConfig_ExtractsPackageToOutputDirectory
           - NuGetInstaller_InstallPackages_DefaultOutputDirectory_InstallsToCurrentDirectory
@@ -163,8 +187,29 @@ sections:
           the full NuGet.exe or Visual Studio tooling.
         children:
           - NuGetInstaller-Cli-PackagesConfig
+          - NuGetInstaller-Cli-Context
           - NuGetInstaller-Program-Install
           - NuGetInstaller-NuGet-ReadConfig
           - NuGetInstaller-NuGet-ExtractPackages
         tests:
           - NuGetInstaller_InstallPackages_ValidConfig_ExtractsPackageToOutputDirectory
+
+      - id: NuGetInstaller-System-CrossPlatform
+        title: The tool shall run on all supported platforms and runtimes.
+        justification: |
+          The tool is advertised as a cross-platform tool that runs on the three major
+          desktop and server platforms and on all current .NET LTS and standard runtimes.
+          This requirement ensures the tool is built and verified on all supported
+          platforms and runtimes in every CI run, providing continuous cross-platform
+          compatibility evidence.
+        children:
+          - NuGetInstaller-Platform-Windows
+          - NuGetInstaller-Platform-Linux
+          - NuGetInstaller-Platform-MacOS
+          - NuGetInstaller-Platform-Net8
+          - NuGetInstaller-Platform-Net9
+          - NuGetInstaller-Platform-Net10
+        tests:
+          - "windows@NuGetInstaller_VersionDisplay"
+          - "ubuntu@NuGetInstaller_VersionDisplay"
+          - "macos@NuGetInstaller_VersionDisplay"

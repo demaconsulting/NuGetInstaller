@@ -9,14 +9,14 @@ release artifacts.
 
 ### Verification Approach
 
-SarifMark is verified by CI pipeline step evidence. The tool runs in the same CI pipeline
-that produces the TRX test results. A successful pipeline run demonstrates that SarifMark
-read the SARIF input and generated the Markdown report without error.
+SarifMark is verified by CI pipeline step evidence. The tool's built-in `--validate`
+command is executed in the CI pipeline and writes test method results to a TRX file.
+The TRX file is consumed by ReqStream to satisfy the OTS requirement.
 
-Test evidence names:
+Test evidence names (test methods written to the TRX file by `dotnet sarifmark --validate`):
 
-- `SarifMark_SarifReading` — linked to the CI step that reads the CodeQL SARIF output
-- `SarifMark_MarkdownReportGeneration` — linked to the CI step that writes the Markdown report
+- `SarifMark_SarifReading` — validates that SarifMark can read SARIF input
+- `SarifMark_MarkdownReportGeneration` — validates that SarifMark can generate a Markdown report
 
 ### Coverage Summary
 
