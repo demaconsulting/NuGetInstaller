@@ -1,17 +1,17 @@
-# Cli Subsystem
+## Cli Subsystem
 
 The `Cli` subsystem provides the command-line interface for the NuGet Installer.
 It is responsible for accepting user input from the command line and routing output to
 the console and an optional log file.
 
-## Overview
+### Overview
 
 The `Cli` subsystem acts as the primary boundary between the user's shell invocation and
 the tool's internal logic. It owns argument parsing, output formatting, and error tracking.
 All other subsystems receive a `Context` object from the `Cli` subsystem to read parsed
 flags and write output.
 
-## Units
+### Units
 
 The `Cli` subsystem contains the following software unit:
 
@@ -19,7 +19,7 @@ The `Cli` subsystem contains the following software unit:
 |-----------|------------------|---------------------------------------------------|
 | `Context` | `Cli/Context.cs` | Argument parsing, output channels, and exit code. |
 
-## Interfaces
+### Interfaces
 
 The `Cli` subsystem exposes the following interface to the rest of the tool:
 
@@ -40,7 +40,7 @@ The `Cli` subsystem exposes the following interface to the rest of the tool:
 | `Context.HeadingDepth`       | Outbound  | Heading depth for markdown output (default 1, valid range 1–6).        |
 | `Context.Dispose`            | Outbound  | Releases resources held by the context (flushes and closes log file).  |
 
-## Command-Line Flags
+### Command-Line Flags
 
 The following table maps each command-line flag to its corresponding `Context` property:
 
@@ -57,7 +57,7 @@ The following table maps each command-line flag to its corresponding `Context` p
 | `-x`, `-ExcludeVersion`               | `Context.ExcludeVersion`     | Boolean flag                             |
 | `[packages.config]`                   | `Context.PackagesConfigFile` | Positional; default `packages.config`    |
 
-## Error Handling
+### Error Handling
 
 When `Context.Create` encounters an unknown or malformed command-line argument it throws
 `ArgumentException` with a descriptive message identifying the offending argument.
@@ -79,7 +79,7 @@ Additional error cases handled by `Context.Create`:
   if one is open, but are not written to stderr. This is an intentional exception to the
   general rule that errors are written to stderr.
 
-## Interactions
+### Interactions
 
 The `Cli` subsystem has no dependencies on other tool subsystems. It uses only .NET base
 class library types. The `Program` unit at system level creates the `Context` and passes it

@@ -26,20 +26,19 @@ namespace DemaConsulting.NuGetInstaller.Tests.NuGet;
 /// <summary>
 ///     Integration tests for the PackageInstaller class.
 /// </summary>
-[TestClass]
 public class PackageInstallerTests
 {
     /// <summary>
     ///     Test that InstallAsync throws ArgumentNullException when outputDirectory is null.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void PackageInstaller_InstallAsync_NullOutputDirectory_ThrowsArgumentNullException()
     {
         // Arrange
         using var context = Context.Create(["--silent"]);
 
         // Act & Assert
-        Assert.ThrowsExactly<ArgumentNullException>(
+        Assert.Throws<ArgumentNullException>(
             () => PackageInstaller.InstallAsync(context, [], null!, excludeVersion: false)
                 .GetAwaiter().GetResult());
     }
@@ -47,8 +46,8 @@ public class PackageInstallerTests
     /// <summary>
     ///     Test that InstallAsync creates the output directory and succeeds when the package list is empty.
     /// </summary>
-    [TestMethod]
-    public void PackageInstaller_InstallAsync_EmptyPackages_CreatesOutputDirectoryAndSucceeds()
+    [Fact]
+    public async Task PackageInstaller_InstallAsync_EmptyPackages_CreatesOutputDirectoryAndSucceeds()
     {
         // Arrange: use a non-existent output directory path
         var tempDir = Path.Combine(Path.GetTempPath(), $"package_installer_test_{Guid.NewGuid()}");
@@ -58,11 +57,10 @@ public class PackageInstallerTests
         {
             // Act: install with an empty package list
             using var context = Context.Create(["--silent"]);
-            PackageInstaller.InstallAsync(context, [], outputDir, excludeVersion: false)
-                .GetAwaiter().GetResult();
+            await PackageInstaller.InstallAsync(context, [], outputDir, excludeVersion: false);
 
             // Assert: output directory should have been created
-            Assert.IsTrue(Directory.Exists(outputDir),
+            Assert.True(Directory.Exists(outputDir),
                 "Output directory should be created even when the package list is empty");
         }
         finally
@@ -77,8 +75,8 @@ public class PackageInstallerTests
     /// <summary>
     ///     Test that InstallAsync installs packages and uses {Id}.{Version}/ folder naming by default.
     /// </summary>
-    [TestMethod]
-    public void PackageInstaller_InstallAsync_DefaultNaming_ExtractsPackageToVersionedFolder()
+    [Fact]
+    public async Task PackageInstaller_InstallAsync_DefaultNaming_ExtractsPackageToVersionedFolder()
     {
         // Arrange: create a temporary directory with a packages.config file
         var tempDir = Path.Combine(Path.GetTempPath(), $"package_installer_test_{Guid.NewGuid()}");
@@ -87,28 +85,26 @@ public class PackageInstallerTests
         {
             Directory.CreateDirectory(tempDir);
             var configPath = Path.Combine(tempDir, "packages.config");
-            File.WriteAllText(configPath,
+            await File.WriteAllTextAsync(configPath,
                 """
                 <?xml version="1.0" encoding="utf-8"?>
                 <packages>
                   <package id="DemaConsulting.NuGet.Caching" version="1.0.0" />
                 </packages>
-                """);
+                """, TestContext.Current.CancellationToken);
 
             // Read package entries from the config
             var packages = PackagesConfigReader.Read(configPath);
 
             // Act: install with default (versioned) naming
             using var context = Context.Create(["--silent"]);
-            PackageInstaller.InstallAsync(context, packages, tempDir, excludeVersion: false)
-                .GetAwaiter().GetResult();
+            await PackageInstaller.InstallAsync(context, packages, tempDir, excludeVersion: false);
 
             // Assert: folder uses {Id}.{Version}/ naming
             var expectedFolder = Path.Combine(tempDir, "DemaConsulting.NuGet.Caching.1.0.0");
-            Assert.IsTrue(Directory.Exists(expectedFolder),
+            Assert.True(Directory.Exists(expectedFolder),
                 $"Versioned package folder should exist at {expectedFolder}");
-            Assert.IsNotEmpty(Directory.GetFileSystemEntries(expectedFolder),
-                "Versioned package folder should contain extracted files");
+            Assert.NotEmpty(Directory.GetFileSystemEntries(expectedFolder));
         }
         finally
         {
@@ -122,8 +118,8 @@ public class PackageInstallerTests
     /// <summary>
     ///     Test that InstallAsync uses {Id}/ folder naming when excludeVersion is true.
     /// </summary>
-    [TestMethod]
-    public void PackageInstaller_InstallAsync_ExcludeVersion_UsesFlatFolderNaming()
+    [Fact]
+    public async Task PackageInstaller_InstallAsync_ExcludeVersion_UsesFlatFolderNaming()
     {
         // Arrange: create a temporary directory with a packages.config file
         var tempDir = Path.Combine(Path.GetTempPath(), $"package_installer_test_{Guid.NewGuid()}");
@@ -132,31 +128,29 @@ public class PackageInstallerTests
         {
             Directory.CreateDirectory(tempDir);
             var configPath = Path.Combine(tempDir, "packages.config");
-            File.WriteAllText(configPath,
+            await File.WriteAllTextAsync(configPath,
                 """
                 <?xml version="1.0" encoding="utf-8"?>
                 <packages>
                   <package id="DemaConsulting.NuGet.Caching" version="1.0.0" />
                 </packages>
-                """);
+                """, TestContext.Current.CancellationToken);
 
             // Read package entries from the config
             var packages = PackagesConfigReader.Read(configPath);
 
             // Act: install with excludeVersion: true
             using var context = Context.Create(["--silent"]);
-            PackageInstaller.InstallAsync(context, packages, tempDir, excludeVersion: true)
-                .GetAwaiter().GetResult();
+            await PackageInstaller.InstallAsync(context, packages, tempDir, excludeVersion: true);
 
             // Assert: folder uses {Id}/ naming, not {Id}.{Version}/
             var expectedFolder = Path.Combine(tempDir, "DemaConsulting.NuGet.Caching");
-            Assert.IsTrue(Directory.Exists(expectedFolder),
+            Assert.True(Directory.Exists(expectedFolder),
                 $"Version-less package folder should exist at {expectedFolder}");
-            Assert.IsNotEmpty(Directory.GetFileSystemEntries(expectedFolder),
-                "Version-less package folder should contain extracted files");
+            Assert.NotEmpty(Directory.GetFileSystemEntries(expectedFolder));
 
             var versionedFolder = Path.Combine(tempDir, "DemaConsulting.NuGet.Caching.1.0.0");
-            Assert.IsFalse(Directory.Exists(versionedFolder),
+            Assert.False(Directory.Exists(versionedFolder),
                 "Versioned package folder should not exist when excludeVersion is true");
         }
         finally
@@ -171,8 +165,8 @@ public class PackageInstallerTests
     /// <summary>
     ///     Test that InstallAsync skips already-extracted packages without error.
     /// </summary>
-    [TestMethod]
-    public void PackageInstaller_InstallAsync_AlreadyExtracted_SkipsInstallation()
+    [Fact]
+    public async Task PackageInstaller_InstallAsync_AlreadyExtracted_SkipsInstallation()
     {
         // Arrange: install a package to establish the initial state
         var tempDir = Path.Combine(Path.GetTempPath(), $"package_installer_test_{Guid.NewGuid()}");
@@ -181,29 +175,27 @@ public class PackageInstallerTests
         {
             Directory.CreateDirectory(tempDir);
             var configPath = Path.Combine(tempDir, "packages.config");
-            File.WriteAllText(configPath,
+            await File.WriteAllTextAsync(configPath,
                 """
                 <?xml version="1.0" encoding="utf-8"?>
                 <packages>
                   <package id="DemaConsulting.NuGet.Caching" version="1.0.0" />
                 </packages>
-                """);
+                """, TestContext.Current.CancellationToken);
 
             var packages = PackagesConfigReader.Read(configPath);
             using var context = Context.Create(["--silent"]);
 
-            PackageInstaller.InstallAsync(context, packages, tempDir, excludeVersion: false)
-                .GetAwaiter().GetResult();
+            await PackageInstaller.InstallAsync(context, packages, tempDir, excludeVersion: false);
 
             var expectedFolder = Path.Combine(tempDir, "DemaConsulting.NuGet.Caching.1.0.0");
-            Assert.IsTrue(Directory.Exists(expectedFolder), "Package should be installed after first call");
+            Assert.True(Directory.Exists(expectedFolder), "Package should be installed after first call");
 
             // Act: install the same packages again (destination folder already exists)
-            PackageInstaller.InstallAsync(context, packages, tempDir, excludeVersion: false)
-                .GetAwaiter().GetResult();
+            await PackageInstaller.InstallAsync(context, packages, tempDir, excludeVersion: false);
 
             // Assert: folder still exists and installation did not throw
-            Assert.IsTrue(Directory.Exists(expectedFolder),
+            Assert.True(Directory.Exists(expectedFolder),
                 "Package folder should still exist after second install (skipped)");
         }
         finally

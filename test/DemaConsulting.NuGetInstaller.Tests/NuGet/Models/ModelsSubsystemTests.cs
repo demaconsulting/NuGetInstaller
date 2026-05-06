@@ -25,13 +25,12 @@ namespace DemaConsulting.NuGetInstaller.Tests.NuGet.Models;
 /// <summary>
 ///     Subsystem tests for the NuGet Models subsystem covering PackageEntry data model.
 /// </summary>
-[TestClass]
 public class ModelsSubsystemTests
 {
     /// <summary>
     ///     Test that PackageEntry stores all properties correctly when constructed with all fields.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void ModelsSubsystem_PackageEntry_AllProperties_StoresCorrectly()
     {
         // Arrange: construct a PackageEntry with all fields populated
@@ -43,15 +42,15 @@ public class ModelsSubsystemTests
         };
 
         // Assert: verify all properties are stored and accessible
-        Assert.AreEqual("MyPackage", entry.Id);
-        Assert.AreEqual("1.2.3", entry.Version);
-        Assert.AreEqual("net8.0", entry.TargetFramework);
+        Assert.Equal("MyPackage", entry.Id);
+        Assert.Equal("1.2.3", entry.Version);
+        Assert.Equal("net8.0", entry.TargetFramework);
     }
 
     /// <summary>
     ///     Test that PackageEntry TargetFramework is null when not set.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void ModelsSubsystem_PackageEntry_OptionalTargetFramework_IsNullWhenNotSet()
     {
         // Arrange: construct a PackageEntry without TargetFramework
@@ -62,7 +61,6 @@ public class ModelsSubsystemTests
         };
 
         // Assert: TargetFramework is null when not explicitly set
-        Assert.IsNull(entry.TargetFramework,
-            "TargetFramework should be null when not specified");
+        Assert.Null(entry.TargetFramework);
     }
 }

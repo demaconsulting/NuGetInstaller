@@ -9,7 +9,8 @@ sections:
   - title: Cli Subsystem Requirements
     requirements:
       - id: NuGetInstaller-Cli-Context
-        title: The Cli subsystem shall parse command-line arguments into the Context interface.
+        title: The Cli subsystem shall parse command-line arguments and expose the resulting settings
+          through a consistent interface.
         justification: |
           Provides a standardized approach to command-line argument parsing across
           all DEMA Consulting DotNet Tools. Parsed flags are exposed through a

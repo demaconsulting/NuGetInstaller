@@ -28,14 +28,13 @@ namespace DemaConsulting.NuGetInstaller.Tests.NuGet;
 ///     Subsystem tests for the NuGet subsystem covering PackagesConfigReader, PackageExtractor,
 ///     and PackageInstaller integration workflows.
 /// </summary>
-[TestClass]
 public class NuGetSubsystemTests
 {
     /// <summary>
     ///     Test that the NuGet subsystem reads a packages.config and installs packages end-to-end.
     /// </summary>
-    [TestMethod]
-    public void NuGetSubsystem_ReadAndInstallWorkflow_ValidConfig_ReturnsAndInstallsPackages()
+    [Fact]
+    public async Task NuGetSubsystem_ReadAndInstallWorkflow_ValidConfig_ReturnsAndInstallsPackages()
     {
         // Arrange: create a temporary directory with a packages.config file
         var tempDir = Path.Combine(Path.GetTempPath(), $"nuget_subsystem_test_{Guid.NewGuid()}");
@@ -44,28 +43,26 @@ public class NuGetSubsystemTests
         {
             Directory.CreateDirectory(tempDir);
             var configPath = Path.Combine(tempDir, "packages.config");
-            File.WriteAllText(configPath,
+            await File.WriteAllTextAsync(configPath,
                 """
                 <?xml version="1.0" encoding="utf-8"?>
                 <packages>
                   <package id="DemaConsulting.NuGet.Caching" version="1.0.0" />
                 </packages>
-                """);
+                """, TestContext.Current.CancellationToken);
 
             // Act: read config and install packages using the subsystem pipeline
             var packages = PackagesConfigReader.Read(configPath);
             using var context = Context.Create(["--silent"]);
-            PackageInstaller.InstallAsync(context, packages, tempDir, excludeVersion: false)
-                .GetAwaiter().GetResult();
+            await PackageInstaller.InstallAsync(context, packages, tempDir, excludeVersion: false);
 
             // Assert: verify packages were read and installed
-            Assert.HasCount(1, packages);
-            Assert.AreEqual("DemaConsulting.NuGet.Caching", packages[0].Id);
+            Assert.Single(packages);
+            Assert.Equal("DemaConsulting.NuGet.Caching", packages[0].Id);
             var expectedFolder = Path.Combine(tempDir, "DemaConsulting.NuGet.Caching.1.0.0");
-            Assert.IsTrue(Directory.Exists(expectedFolder),
+            Assert.True(Directory.Exists(expectedFolder),
                 "Package should be extracted to output directory");
-            Assert.IsNotEmpty(Directory.GetFileSystemEntries(expectedFolder),
-                "Extracted folder should contain files");
+            Assert.NotEmpty(Directory.GetFileSystemEntries(expectedFolder));
         }
         finally
         {
@@ -79,7 +76,7 @@ public class NuGetSubsystemTests
     /// <summary>
     ///     Test that the NuGet subsystem config reading workflow returns correct entries.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void NuGetSubsystem_ConfigReadingWorkflow_ValidPackagesConfig_ReturnsEntries()
     {
         // Arrange: create a packages.config with multiple entries
@@ -100,12 +97,12 @@ public class NuGetSubsystemTests
             var packages = PackagesConfigReader.Read(tempFile);
 
             // Assert: verify all entries are returned with correct data
-            Assert.HasCount(2, packages);
-            Assert.AreEqual("PackageA", packages[0].Id);
-            Assert.AreEqual("1.0.0", packages[0].Version);
-            Assert.AreEqual("PackageB", packages[1].Id);
-            Assert.AreEqual("2.0.0", packages[1].Version);
-            Assert.AreEqual("net8.0", packages[1].TargetFramework);
+            Assert.Equal(2, packages.Count);
+            Assert.Equal("PackageA", packages[0].Id);
+            Assert.Equal("1.0.0", packages[0].Version);
+            Assert.Equal("PackageB", packages[1].Id);
+            Assert.Equal("2.0.0", packages[1].Version);
+            Assert.Equal("net8.0", packages[1].TargetFramework);
         }
         finally
         {
@@ -116,7 +113,7 @@ public class NuGetSubsystemTests
     /// <summary>
     ///     Test that the NuGet subsystem extraction workflow extracts to new directory.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void NuGetSubsystem_ExtractionWorkflow_ValidPackage_ExtractsToDirectory()
     {
         // Arrange: create a temporary zip file simulating a .nupkg
@@ -136,9 +133,9 @@ public class NuGetSubsystemTests
             var result = PackageExtractor.Extract(zipPath, destFolder);
 
             // Assert: verify extraction occurred and content is present
-            Assert.IsTrue(result, "Extract should return true for new destination");
-            Assert.IsTrue(Directory.Exists(destFolder), "Destination folder should exist");
-            Assert.IsTrue(File.Exists(Path.Combine(destFolder, "content.txt")),
+            Assert.True(result, "Extract should return true for new destination");
+            Assert.True(Directory.Exists(destFolder), "Destination folder should exist");
+            Assert.True(File.Exists(Path.Combine(destFolder, "content.txt")),
                 "Extracted content should be present");
         }
         finally
@@ -153,7 +150,7 @@ public class NuGetSubsystemTests
     /// <summary>
     ///     Test that the NuGet subsystem extraction workflow skips existing destinations.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void NuGetSubsystem_ExtractionWorkflow_ExistingDestination_SkipsExtraction()
     {
         // Arrange: create a temporary zip file and pre-existing destination
@@ -170,7 +167,7 @@ public class NuGetSubsystemTests
             var result = PackageExtractor.Extract(zipPath, destFolder);
 
             // Assert: verify extraction was skipped
-            Assert.IsFalse(result, "Extract should return false for existing destination");
+            Assert.False(result, "Extract should return false for existing destination");
         }
         finally
         {
@@ -184,8 +181,8 @@ public class NuGetSubsystemTests
     /// <summary>
     ///     Test that the NuGet subsystem installs packages using {Id}/ folder naming when excludeVersion is true.
     /// </summary>
-    [TestMethod]
-    public void NuGetSubsystem_ReadAndInstallWorkflow_ExcludeVersion_UsesFlatFolderNaming()
+    [Fact]
+    public async Task NuGetSubsystem_ReadAndInstallWorkflow_ExcludeVersion_UsesFlatFolderNaming()
     {
         // Arrange: create a temporary directory with a packages.config file
         var tempDir = Path.Combine(Path.GetTempPath(), $"nuget_subsystem_test_{Guid.NewGuid()}");
@@ -194,26 +191,25 @@ public class NuGetSubsystemTests
         {
             Directory.CreateDirectory(tempDir);
             var configPath = Path.Combine(tempDir, "packages.config");
-            File.WriteAllText(configPath,
+            await File.WriteAllTextAsync(configPath,
                 """
                 <?xml version="1.0" encoding="utf-8"?>
                 <packages>
                   <package id="DemaConsulting.NuGet.Caching" version="1.0.0" />
                 </packages>
-                """);
+                """, TestContext.Current.CancellationToken);
 
             // Act: read config and install packages using excludeVersion: true
             var packages = PackagesConfigReader.Read(configPath);
             using var context = Context.Create(["--silent"]);
-            PackageInstaller.InstallAsync(context, packages, tempDir, excludeVersion: true)
-                .GetAwaiter().GetResult();
+            await PackageInstaller.InstallAsync(context, packages, tempDir, excludeVersion: true);
 
             // Assert: folder uses {Id}/ naming, not {Id}.{Version}/
             var expectedFolder = Path.Combine(tempDir, "DemaConsulting.NuGet.Caching");
-            Assert.IsTrue(Directory.Exists(expectedFolder),
+            Assert.True(Directory.Exists(expectedFolder),
                 "Version-less package folder should exist when excludeVersion is true");
             var versionedFolder = Path.Combine(tempDir, "DemaConsulting.NuGet.Caching.1.0.0");
-            Assert.IsFalse(Directory.Exists(versionedFolder),
+            Assert.False(Directory.Exists(versionedFolder),
                 "Versioned package folder should not exist when excludeVersion is true");
         }
         finally
@@ -228,14 +224,14 @@ public class NuGetSubsystemTests
     /// <summary>
     ///     Test that the NuGet subsystem throws InvalidOperationException when packages.config does not exist.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void NuGetSubsystem_MissingFileWorkflow_NonexistentConfig_ThrowsInvalidOperationException()
     {
         // Arrange: use a path to a non-existent file
         var nonExistentPath = Path.Combine(Path.GetTempPath(), $"nonexistent_{Guid.NewGuid()}.config");
 
         // Act & Assert: verify the subsystem throws InvalidOperationException
-        var exception = Assert.ThrowsExactly<InvalidOperationException>(
+        var exception = Assert.Throws<InvalidOperationException>(
             () => PackagesConfigReader.Read(nonExistentPath));
         Assert.Contains("not found", exception.Message);
     }
@@ -243,7 +239,7 @@ public class NuGetSubsystemTests
     /// <summary>
     ///     Test that the NuGet subsystem throws XmlException when packages.config contains malformed XML.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void NuGetSubsystem_MalformedXmlWorkflow_InvalidXml_ThrowsXmlException()
     {
         // Arrange: write a malformed XML file
@@ -254,7 +250,7 @@ public class NuGetSubsystemTests
             File.WriteAllText(tempFile, "<packages><package id=\"A\" version=\"1.0\"</packages>");
 
             // Act & Assert: malformed XML must throw XmlException
-            Assert.ThrowsExactly<System.Xml.XmlException>(
+            Assert.Throws<System.Xml.XmlException>(
                 () => PackagesConfigReader.Read(tempFile));
         }
         finally

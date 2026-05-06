@@ -1,16 +1,16 @@
-# SelfTest Subsystem
+## SelfTest Subsystem
 
 The `SelfTest` subsystem provides the self-validation framework for the NuGet Installer.
 It runs a built-in suite of tests to demonstrate the tool is functioning correctly in the
 deployment environment.
 
-## Overview
+### Overview
 
 The `SelfTest` subsystem is invoked when the user passes `--validate` on the command line.
 It exercises the tool's own capabilities and reports a pass/fail summary. It can also write
 test results to a file in TRX or JUnit XML format for integration with CI/CD pipelines.
 
-## Units
+### Units
 
 The `SelfTest` subsystem contains the following software unit:
 
@@ -18,7 +18,7 @@ The `SelfTest` subsystem contains the following software unit:
 |--------------|--------------------------|----------------------------------------------------|
 | `Validation` | `SelfTest/Validation.cs` | Orchestrating and executing self-validation tests. |
 
-## Interfaces
+### Interfaces
 
 The `SelfTest` subsystem exposes the following interface to the rest of the tool:
 
@@ -26,7 +26,7 @@ The `SelfTest` subsystem exposes the following interface to the rest of the tool
 |------------------|-----------|-----------------------------------------------------------------------|
 | `Validation.Run` | Outbound  | Runs all self-validation tests, prints a summary, and writes results. |
 
-## Self-Tests
+### Self-Tests
 
 The `SelfTest` subsystem executes three built-in tests covering the tool's core behaviors:
 
@@ -42,7 +42,7 @@ Each test runner creates a temporary directory via the private `TemporaryDirecto
 extension of `context.ResultsFile`: `.trx` produces TRX (MSTest) format; `.xml` produces JUnit
 XML format.
 
-## Error Handling
+### Error Handling
 
 Individual test methods catch all exceptions from the `try` block and record the exception
 message as the test failure reason in the shared `TestResults` object before continuing to the
@@ -50,7 +50,7 @@ next test. This broad catch strategy is intentional: the self-validation framewo
 resilient to unexpected failures in any single test so that the remaining tests still execute
 and produce evidence.
 
-## Interactions
+### Interactions
 
 | Dependency                   | Direction | Purpose                                                      |
 |------------------------------|-----------|--------------------------------------------------------------|

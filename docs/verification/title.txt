@@ -1,0 +1,13 @@
+---
+title: NuGet Installer Software Verification Design Document
+subtitle: A .NET CLI Tool for NuGet Package Installation
+author: DEMA Consulting
+description: Verification design document for the NuGet Installer
+lang: en-US
+keywords:
+  - NuGet Installer
+  - .NET
+  - Command-Line Tool
+  - Verification
+  - Software Verification Design Document
+---

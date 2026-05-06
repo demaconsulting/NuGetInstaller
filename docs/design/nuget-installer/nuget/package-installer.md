@@ -1,9 +1,9 @@
-# PackageInstaller
+### PackageInstaller
 
 The `PackageInstaller` class orchestrates the installation of NuGet packages from a
 packages list into an output directory.
 
-## Overview
+#### Overview
 
 `PackageInstaller` is a static class that coordinates the two-step install process:
 first ensuring each package is present in the NuGet global package cache via
@@ -11,13 +11,13 @@ first ensuring each package is present in the NuGet global package cache via
 directory via `PackageExtractor.Extract`. Packages are installed in parallel using
 `Task.WhenAll`.
 
-## Data Model
+#### Data Model
 
 `PackageInstaller` holds no instance state. All state is local to the async methods.
 
-## Methods
+#### Methods
 
-### InstallAsync(Context, IReadOnlyList\<PackageEntry\>, string, bool)
+##### InstallAsync(Context, IReadOnlyList\<PackageEntry\>, string, bool)
 
 Installs all specified packages into the output directory.
 
@@ -35,7 +35,7 @@ Installs all specified packages into the output directory.
 1. Create the output directory if it does not exist.
 2. Install all packages in parallel via `Task.WhenAll`.
 
-### InstallPackageAsync (private)
+##### InstallPackageAsync (private)
 
 Installs a single package.
 
@@ -57,7 +57,7 @@ Installs a single package.
 4. Call `PackageExtractor.Extract` to extract or skip.
 5. Write a status message via `context.WriteLine`.
 
-## Interactions
+#### Interactions
 
 | Dependency         | Direction | Purpose                                                    |
 |--------------------|-----------|------------------------------------------------------------|
@@ -66,7 +66,7 @@ Installs a single package.
 | `PackageExtractor` | Uses      | Delegates ZIP extraction to `PackageExtractor.Extract`.    |
 | `NuGetCache`       | Uses      | OTS library for resolving packages in the global cache.    |
 
-## Error Handling
+#### Error Handling
 
 `InstallAsync` throws `ArgumentNullException` if `outputDirectory` is `null`, and
 `ArgumentException` if `outputDirectory` is empty.

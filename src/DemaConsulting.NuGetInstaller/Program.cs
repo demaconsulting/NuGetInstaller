@@ -33,6 +33,11 @@ internal static class Program
     /// <summary>
     ///     Gets the application version string.
     /// </summary>
+    /// <returns>
+    ///     The version string read from <see cref="AssemblyInformationalVersionAttribute"/>;
+    ///     falls back to the assembly's <see cref="System.Version"/> string if the informational
+    ///     attribute is absent; returns <c>"0.0.0"</c> when neither attribute is available.
+    /// </returns>
     public static string Version
     {
         get
@@ -50,6 +55,14 @@ internal static class Program
     /// <summary>
     ///     Main entry point for the NuGet Installer.
     /// </summary>
+    /// <remarks>
+    ///     Exception-handling strategy: <see cref="ArgumentException"/> and
+    ///     <see cref="InvalidOperationException"/> are expected errors (bad arguments, missing
+    ///     files, inaccessible log) — they are caught, written to stderr, and translated to
+    ///     exit code 1 so callers can detect failure without a crash. All other exceptions
+    ///     are unexpected; they are written to stderr and re-thrown so the .NET runtime can
+    ///     generate an event-log entry and a crash dump for post-mortem analysis.
+    /// </remarks>
     /// <param name="args">Command-line arguments.</param>
     /// <returns>Exit code: 0 for success, non-zero for failure.</returns>
     private static int Main(string[] args)
@@ -88,6 +101,29 @@ internal static class Program
     /// <summary>
     ///     Runs the program logic based on the provided context.
     /// </summary>
+    /// <remarks>
+    ///     Dispatch priority order:
+    ///     <list type="number">
+    ///       <item><description>
+    ///         Version flag — writes the version string and returns immediately.
+    ///         <see cref="PrintBanner"/> is intentionally skipped so that the version output
+    ///         contains only the version string, with no banner overhead.
+    ///       </description></item>
+    ///       <item><description>
+    ///         PrintBanner — called unconditionally for all other paths so every invocation
+    ///         announces the tool name and version before doing useful work.
+    ///       </description></item>
+    ///       <item><description>
+    ///         Help flag — calls <see cref="PrintHelp"/> and returns.
+    ///       </description></item>
+    ///       <item><description>
+    ///         Validate flag — delegates to <see cref="Validation.Run"/>.
+    ///       </description></item>
+    ///       <item><description>
+    ///         Otherwise — delegates to <see cref="RunToolLogic"/> for package installation.
+    ///       </description></item>
+    ///     </list>
+    /// </remarks>
     /// <param name="context">The context containing command line arguments and program state.</param>
     public static void Run(Context context)
     {
@@ -122,6 +158,13 @@ internal static class Program
     /// <summary>
     ///     Prints the application banner.
     /// </summary>
+    /// <remarks>
+    ///     Called by <see cref="Run"/> before dispatching to <see cref="PrintHelp"/>,
+    ///     <see cref="Validation.Run"/>, or <see cref="RunToolLogic"/>. Intentionally
+    ///     not called when the Version flag is set — the version path returns before
+    ///     reaching this method so that <c>--version</c> output contains only the version
+    ///     string with no additional decoration.
+    /// </remarks>
     /// <param name="context">The context for output.</param>
     private static void PrintBanner(Context context)
     {
@@ -133,6 +176,11 @@ internal static class Program
     /// <summary>
     ///     Prints usage information.
     /// </summary>
+    /// <remarks>
+    ///     Called by <see cref="Run"/> when the Help flag is set, immediately after
+    ///     <see cref="PrintBanner"/>. Lists all supported command-line options so that
+    ///     users can self-serve without consulting external documentation.
+    /// </remarks>
     /// <param name="context">The context for output.</param>
     private static void PrintHelp(Context context)
     {
@@ -154,6 +202,28 @@ internal static class Program
     /// <summary>
     ///     Runs the main tool logic.
     /// </summary>
+    /// <remarks>
+    ///     Four-step package installation workflow:
+    ///     <list type="number">
+    ///       <item><description>
+    ///         Verify <see cref="Cli.Context.PackagesConfigFile"/> exists; report an error
+    ///         via <see cref="Cli.Context.WriteError"/> and return early if not found.
+    ///       </description></item>
+    ///       <item><description>
+    ///         Read the package list from the config file via
+    ///         <see cref="PackagesConfigReader.Read"/>.
+    ///       </description></item>
+    ///       <item><description>
+    ///         Resolve the output directory from <see cref="Cli.Context.OutputDirectory"/>,
+    ///         defaulting to the current working directory when the flag is absent.
+    ///       </description></item>
+    ///       <item><description>
+    ///         Install all packages via <see cref="PackageInstaller.InstallAsync"/>,
+    ///         forwarding <see cref="Cli.Context.ExcludeVersion"/> to control whether output
+    ///         folders use <c>{Id}.{Version}/</c> or <c>{Id}/</c> naming.
+    ///       </description></item>
+    ///     </list>
+    /// </remarks>
     /// <param name="context">The context containing command line arguments and program state.</param>
     private static void RunToolLogic(Context context)
     {

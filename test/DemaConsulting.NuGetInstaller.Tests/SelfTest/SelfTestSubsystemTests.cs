@@ -26,13 +26,12 @@ namespace DemaConsulting.NuGetInstaller.Tests.SelfTest;
 /// <summary>
 ///     Subsystem tests for the SelfTest subsystem covering Validation workflows.
 /// </summary>
-[TestClass]
 public class SelfTestSubsystemTests
 {
     /// <summary>
     ///     Test that self-test subsystem can run validation workflow without result files.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void SelfTestSubsystem_ValidationWorkflow_NoResultFiles_CompletesSuccessfully()
     {
         // Arrange: command line arguments for validation in silent mode
@@ -43,14 +42,14 @@ public class SelfTestSubsystemTests
         Validation.Run(context);
 
         // Assert: validation completes successfully with correct flags set
-        Assert.IsTrue(context.Validate, "Context should have validate flag set");
-        Assert.AreEqual(0, context.ExitCode, "Validation should complete successfully");
+        Assert.True(context.Validate, "Context should have validate flag set");
+        Assert.Equal(0, context.ExitCode);
     }
 
     /// <summary>
     ///     Test that self-test subsystem can run validation workflow with TRX result file.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void SelfTestSubsystem_ValidationWorkflow_WithTrxFile_GeneratesResults()
     {
         // Arrange: temporary TRX file path and validation command with results output
@@ -65,11 +64,11 @@ public class SelfTestSubsystemTests
             Validation.Run(context);
 
             // Assert: validation completes and generates TRX file with standard format
-            Assert.IsTrue(context.Validate, "Context should have validate flag set");
-            Assert.AreEqual(0, context.ExitCode, "Validation should complete successfully");
-            Assert.IsTrue(File.Exists(trxFile), "TRX file should be generated");
+            Assert.True(context.Validate, "Context should have validate flag set");
+            Assert.Equal(0, context.ExitCode);
+            Assert.True(File.Exists(trxFile), "TRX file should be generated");
             var trxContent = File.ReadAllText(trxFile);
-            Assert.Contains("<TestRun", trxContent, "TRX file should contain standard TestRun element");
+            Assert.Contains("<TestRun", trxContent);
         }
         finally
         {
@@ -84,7 +83,7 @@ public class SelfTestSubsystemTests
     /// <summary>
     ///     Test that self-test subsystem can run validation workflow with JUnit result file.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void SelfTestSubsystem_ValidationWorkflow_WithJUnitFile_GeneratesResults()
     {
         // Arrange: temporary JUnit XML file path and validation command with results output
@@ -99,11 +98,11 @@ public class SelfTestSubsystemTests
             Validation.Run(context);
 
             // Assert: validation completes and generates JUnit XML file with standard format
-            Assert.IsTrue(context.Validate, "Context should have validate flag set");
-            Assert.AreEqual(0, context.ExitCode, "Validation should complete successfully");
-            Assert.IsTrue(File.Exists(junitFile), "JUnit file should be generated");
+            Assert.True(context.Validate, "Context should have validate flag set");
+            Assert.Equal(0, context.ExitCode);
+            Assert.True(File.Exists(junitFile), "JUnit file should be generated");
             var junitContent = File.ReadAllText(junitFile);
-            Assert.Contains("<testsuites", junitContent, "JUnit file should contain standard testsuites element");
+            Assert.Contains("<testsuites", junitContent);
         }
         finally
         {
@@ -118,7 +117,7 @@ public class SelfTestSubsystemTests
     /// <summary>
     ///     Test that self-test subsystem can run validation workflow with both result file formats.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void SelfTestSubsystem_ValidationWorkflow_WithBothResultFiles_GeneratesBothResults()
     {
         // Arrange: setup validation arguments for both TRX and JUnit result file outputs
@@ -135,22 +134,22 @@ public class SelfTestSubsystemTests
             Validation.Run(trxContext);
 
             // Assert: verify validation completed and TRX result file was generated with standard format
-            Assert.IsTrue(trxContext.Validate, "Context should have validate flag set for TRX run");
-            Assert.AreEqual(0, trxContext.ExitCode, "Validation should complete successfully for TRX run");
-            Assert.IsTrue(File.Exists(trxFile), "TRX file should be generated");
+            Assert.True(trxContext.Validate, "Context should have validate flag set for TRX run");
+            Assert.Equal(0, trxContext.ExitCode);
+            Assert.True(File.Exists(trxFile), "TRX file should be generated");
             var trxContent = File.ReadAllText(trxFile);
-            Assert.Contains("<TestRun", trxContent, "TRX file should contain standard TestRun element");
+            Assert.Contains("<TestRun", trxContent);
 
             // Act: run validation with JUnit XML output
             using var junitContext = Context.Create(junitArgs);
             Validation.Run(junitContext);
 
             // Assert: verify validation completed and JUnit XML result file was generated with standard format
-            Assert.IsTrue(junitContext.Validate, "Context should have validate flag set for JUnit run");
-            Assert.AreEqual(0, junitContext.ExitCode, "Validation should complete successfully for JUnit run");
-            Assert.IsTrue(File.Exists(junitFile), "JUnit file should be generated");
+            Assert.True(junitContext.Validate, "Context should have validate flag set for JUnit run");
+            Assert.Equal(0, junitContext.ExitCode);
+            Assert.True(File.Exists(junitFile), "JUnit file should be generated");
             var junitContent = File.ReadAllText(junitFile);
-            Assert.Contains("<testsuites", junitContent, "JUnit file should contain standard testsuites element");
+            Assert.Contains("<testsuites", junitContent);
         }
         finally
         {
@@ -167,4 +166,3 @@ public class SelfTestSubsystemTests
         }
     }
 }
-

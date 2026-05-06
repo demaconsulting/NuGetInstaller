@@ -21,7 +21,7 @@ sections:
           - PackagesConfigReader_Read_EmptyPackages_ReturnsEmptyList
 
       - id: NuGetInstaller-PackagesConfigReader-FileNotFound
-        title: The PackagesConfigReader class shall throw when the config file does not exist.
+        title: The PackagesConfigReader class shall report an error when the config file does not exist.
         justification: |
           Clear error reporting when the file is missing prevents silent failures
           and helps users quickly identify misconfiguration.
@@ -29,7 +29,7 @@ sections:
           - PackagesConfigReader_Read_FileNotFound_ThrowsInvalidOperationException
 
       - id: NuGetInstaller-PackagesConfigReader-MissingAttributes
-        title: The PackagesConfigReader class shall throw when required attributes are missing.
+        title: The PackagesConfigReader class shall report an error when required attributes are missing.
         justification: |
           Each package element must have id and version attributes. Rejecting
           malformed entries with descriptive errors prevents downstream failures

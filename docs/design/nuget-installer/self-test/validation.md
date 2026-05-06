@@ -1,22 +1,22 @@
-# Validation
+### Validation
 
 The `Validation` class provides the self-validation framework for the NuGet Installer.
 It runs a suite of internal tests that demonstrate the tool is functioning correctly in the
 deployment environment.
 
-## Overview
+#### Overview
 
 `Validation.Run` prints a header, executes each test, accumulates results into a
 `DemaConsulting.TestResults.TestResults` object, prints a summary, and optionally writes
 a results file in TRX or JUnit XML format.
 
-## Data Model
+#### Data Model
 
 `Validation` holds no instance state. All state is local to `Run` and the private test methods.
 
-## Methods
+#### Methods
 
-### Run(Context context)
+##### Run(Context context)
 
 Orchestrates the validation sequence:
 
@@ -29,7 +29,7 @@ Orchestrates the validation sequence:
    Failed count is written via `WriteError` (red) when non-zero; otherwise via `WriteLine`.
 5. Calls `WriteResultsFile` if `context.ResultsFile` is set.
 
-### RunVersionTest / RunHelpTest
+##### RunVersionTest / RunHelpTest
 
 Each of these test methods:
 
@@ -39,7 +39,7 @@ Each of these test methods:
 4. Validates the output against expected content.
 5. Records pass or fail in the shared `TestResults`.
 
-### RunInstallPackageTest
+##### RunInstallPackageTest
 
 This test method exercises the package installation API directly:
 
@@ -50,12 +50,12 @@ This test method exercises the package installation API directly:
 5. Verifies the expected package folder exists and is non-empty.
 6. Records pass or fail in the shared `TestResults`.
 
-### WriteResultsFile(Context context, TestResults testResults)
+##### WriteResultsFile(Context context, TestResults testResults)
 
 Writes `testResults` to `context.ResultsFile`. The format is determined by the file extension:
 `.trx` for TRX (MSTest), `.xml` for JUnit.
 
-## Interactions
+#### Interactions
 
 | Dependency                   | Direction | Purpose                                         |
 |------------------------------|-----------|-------------------------------------------------|
@@ -66,7 +66,7 @@ Writes `testResults` to `context.ResultsFile`. The format is determined by the f
 | `PackageInstaller`           | Uses      | Installs packages in install test.              |
 | `DemaConsulting.TestResults` | Uses      | Result model, TRX and JUnit serialization.      |
 
-## Error Handling
+#### Error Handling
 
 Exceptions thrown inside individual test methods (`RunVersionTest`, `RunHelpTest`,
 `RunInstallPackageTest`) are caught by a try/catch block inside each runner. The exception

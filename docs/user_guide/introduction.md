@@ -154,7 +154,7 @@ Each test proves specific functionality works correctly:
 
 - **`NuGetInstaller_VersionDisplay`** - `--version` outputs a valid version string.
 - **`NuGetInstaller_HelpDisplay`** - `--help` outputs usage and options information.
-- **`NuGetInstaller_InstallPackage`** - Installs a known package from a packages.config file.
+- **`NuGetInstaller_InstallPackage`** - Installs a NuGet package from a packages.config file.
 
 ## Silent Mode
 
@@ -199,18 +199,18 @@ nuget-installer --log output.log
 
 The following command-line options are supported:
 
-| Option                          | Description                                                  |
-| ------------------------------- | ------------------------------------------------------------ |
-| `[packages.config]`             | Path to packages.config (default: packages.config)           |
-| `-x`, `-ExcludeVersion`         | Name output folder {Id}/ instead of {Id}.{Version}/          |
-| `-o`, `-OutputDirectory <dir>`  | Output directory (default: current directory)                |
-| `-v`, `--version`               | Display version information                                  |
-| `-?`, `-h`, `--help`            | Display help message                                         |
-| `--silent`                      | Suppress console output                                      |
-| `--validate`                    | Run self-validation                                          |
-| `--results <file>`              | Write validation results to file (TRX or JUnit format)       |
-| `--depth <#>`                   | Set heading depth for markdown output (default: 1)           |
-| `--log <file>`                  | Write output to log file                                     |
+| Option                                  | Description                                                  |
+| --------------------------------------- | ------------------------------------------------------------ |
+| `[packages.config]`                     | Path to packages.config (default: packages.config)           |
+| `-x`, `-ExcludeVersion`                 | Name output folder {Id}/ instead of {Id}.{Version}/          |
+| `-o`, `-OutputDirectory <dir>`          | Output directory (default: current directory)                |
+| `-v`, `--version`                       | Display version information                                  |
+| `-?`, `-h`, `--help`                    | Display help message                                         |
+| `--silent`                              | Suppress console output                                      |
+| `--validate`                            | Run self-validation                                          |
+| `--results <file>`, `--result <file>`   | Write validation results to file (TRX or JUnit format)       |
+| `--depth <#>`                           | Set heading depth for markdown output (default: 1)           |
+| `--log <file>`                          | Write output to log file                                     |
 
 # Examples
 

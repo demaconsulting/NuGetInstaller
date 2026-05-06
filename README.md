@@ -85,18 +85,18 @@ nuget-installer --silent --log output.log
 
 ## Command-Line Options
 
-| Option                          | Description                                                  |
-| ------------------------------- | ------------------------------------------------------------ |
-| `[packages.config]`             | Path to packages.config (default: packages.config)           |
-| `-x`, `-ExcludeVersion`         | Name output folder {Id}/ instead of {Id}.{Version}/          |
-| `-o`, `-OutputDirectory <dir>`  | Output directory (default: current directory)                |
-| `-v`, `--version`               | Display version information                                  |
-| `-?`, `-h`, `--help`            | Display help message                                         |
-| `--silent`                      | Suppress console output                                      |
-| `--validate`                    | Run self-validation                                          |
-| `--results <file>`              | Write validation results to file (TRX or JUnit format)       |
-| `--depth <#>`                   | Set heading depth for markdown output (default: 1)           |
-| `--log <file>`                  | Write output to log file                                     |
+| Option                                  | Description                                                  |
+| --------------------------------------- | ------------------------------------------------------------ |
+| `[packages.config]`                     | Path to packages.config (default: packages.config)           |
+| `-x`, `-ExcludeVersion`                 | Name output folder {Id}/ instead of {Id}.{Version}/          |
+| `-o`, `-OutputDirectory <dir>`          | Output directory (default: current directory)                |
+| `-v`, `--version`                       | Display version information                                  |
+| `-?`, `-h`, `--help`                    | Display help message                                         |
+| `--silent`                              | Suppress console output                                      |
+| `--validate`                            | Run self-validation                                          |
+| `--results <file>`, `--result <file>`   | Write validation results to file (TRX or JUnit format)       |
+| `--depth <#>`                           | Set heading depth for markdown output (default: 1)           |
+| `--log <file>`                          | Write output to log file                                     |
 
 ## Self Validation
 

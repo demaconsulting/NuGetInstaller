@@ -1,6 +1,6 @@
-# PathHelpers Design
+### PathHelpers Design
 
-## Overview
+#### Overview
 
 `PathHelpers` is a static utility class that provides a safe path-combination method. It
 protects callers against path-traversal attacks by verifying the resolved combined path stays
@@ -8,9 +8,9 @@ within the base directory. Note that `Path.GetFullPath` normalizes `.`/`..` segm
 not resolve symlinks or reparse points, so this check guards against string-level traversal
 only.
 
-## Class Structure
+#### Class Structure
 
-### SafePathCombine Method
+##### SafePathCombine Method
 
 ```csharp
 internal static string SafePathCombine(string basePath, string relativePath)
@@ -39,7 +39,7 @@ the base directory.
 5. When a traversal is detected, throw `ArgumentException` identifying `relativePath` as
    the problematic parameter.
 
-## Design Decisions
+#### Design Decisions
 
 - **`Path.GetRelativePath` for containment check**: Using `GetRelativePath` to verify
   containment handles root paths (e.g. `/`, `C:\`), platform case-sensitivity, and
@@ -56,7 +56,7 @@ the base directory.
 - **No logging or error accumulation**: `SafePathCombine` is a pure utility method that throws
   on invalid input; it does not interact with the `Context` or any output mechanism.
 
-## Error Handling
+#### Error Handling
 
 | Exception                 | Condition                                                                  |
 |---------------------------|----------------------------------------------------------------------------|

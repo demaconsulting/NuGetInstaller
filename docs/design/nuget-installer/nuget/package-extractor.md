@@ -1,9 +1,9 @@
-# PackageExtractor
+### PackageExtractor
 
 The `PackageExtractor` class extracts NuGet package (.nupkg) contents to a destination
 folder.
 
-## Overview
+#### Overview
 
 `PackageExtractor` is an `internal` static utility class with a single `Extract` method. It opens the
 archive with `ZipFile.OpenRead` and extracts entries one at a time, accumulating the total
@@ -11,7 +11,7 @@ number of bytes written. If the destination folder already exists, extraction is
 and the method returns `false`. If the total extracted size exceeds 1 GB the method throws
 an `InvalidOperationException` to defend against zip-bomb attacks.
 
-## Data Model
+#### Data Model
 
 `PackageExtractor` holds no instance state. All state is local to the `Extract` method.
 
@@ -22,9 +22,9 @@ The class defines two constants:
 | `MaxExtractedBytes`   | 1 073 741 824 | Maximum bytes that may be extracted (1 GB ceiling) |
 | `CopyBufferSize`      | 81 920        | Buffer size (80 KiB) used when copying entry data  |
 
-## Methods
+#### Methods
 
-### Extract(string nupkgPath, string destFolder)
+##### Extract(string nupkgPath, string destFolder)
 
 Extracts all entries from a .nupkg file into the destination folder.
 
@@ -62,7 +62,7 @@ Extracts all entries from a .nupkg file into the destination folder.
    f. Write the chunk to the destination file stream.
 6. Return `true`.
 
-## Security
+#### Security
 
 Two attack vectors are mitigated:
 
@@ -79,6 +79,6 @@ Two attack vectors are mitigated:
   mid-extraction, no cleanup of the partially created destination folder is performed.
   The caller is responsible for cleaning up any partially populated folder if desired.
 
-## Interactions
+#### Interactions
 
 `PackageExtractor` uses .NET base class library types (`Directory`, `File`, `ZipFile`, `ZipArchiveEntry`).
