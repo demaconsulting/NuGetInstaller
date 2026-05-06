@@ -2,7 +2,7 @@
 
 ### Verification Strategy
 
-The Cli subsystem is verified using MSTest integration tests in `CliSubsystemTests.cs`. Each
+The Cli subsystem is verified using xUnit integration tests in `CliSubsystemTests.cs`. Each
 test constructs a `Context` from a specific set of command-line arguments and then calls
 `Program.Run`, asserting on the combined observable behavior: console output captured via a
 `StringWriter`, exit code, and (where applicable) file system state. The tests operate at the

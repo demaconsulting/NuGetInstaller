@@ -2,7 +2,7 @@
 
 ##### Verification Strategy
 
-The `PackageEntry` unit is verified using MSTest unit tests in `ModelsSubsystemTests.cs`.
+The `PackageEntry` unit is verified using xUnit unit tests in `ModelsSubsystemTests.cs`.
 Tests construct `PackageEntry` instances directly and assert on the stored property values. No
 dependencies require mocking.
 

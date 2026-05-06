@@ -2,7 +2,7 @@
 
 ### Verification Strategy
 
-The Program unit is verified using MSTest unit tests in `ProgramTests.cs`. Tests call the
+The Program unit is verified using xUnit unit tests in `ProgramTests.cs`. Tests call the
 `Program.Run` static method directly, supplying a `Context` instance whose console output is
 captured via a `StringWriter`. Temporary directories and fixture `packages.config` files are
 created on disk where the install path requires real files. No external network access is

@@ -211,11 +211,11 @@ reviews:
       - "docs/reqstream/ots/fileassert.yaml"
       - "docs/verification/ots/fileassert.md"
 
-  - id: OTS-MSTest
-    title: Review that MSTest Provides Required Functionality
+  - id: OTS-XUnit
+    title: Review that xUnit Provides Required Functionality
     paths:
-      - "docs/reqstream/ots/mstest.yaml"
-      - "docs/verification/ots/mstest.md"
+      - "docs/reqstream/ots/xunit.yaml"
+      - "docs/verification/ots/xunit.md"
 
   - id: OTS-Pandoc
     title: Review that Pandoc Provides Required Functionality

@@ -2,7 +2,7 @@
 
 #### Verification Strategy
 
-The Models subsystem is verified using MSTest unit tests in `ModelsSubsystemTests.cs`. Tests
+The Models subsystem is verified using xUnit unit tests in `ModelsSubsystemTests.cs`. Tests
 construct `PackageEntry` instances directly and assert on the property values. No mocking is
 required because the subsystem contains only data model classes with no external dependencies.
 

@@ -2,7 +2,7 @@
 
 ### Verification Strategy
 
-The NuGet subsystem is verified using MSTest integration tests in `NuGetSubsystemTests.cs`.
+The NuGet subsystem is verified using xUnit integration tests in `NuGetSubsystemTests.cs`.
 Tests exercise the subsystem through complete workflows — reading a `packages.config`, resolving
 packages from the local NuGet cache, and extracting them to a temporary output directory. No
 internal components are mocked at the subsystem level; tests validate the combined behavior of

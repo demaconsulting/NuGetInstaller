@@ -2,7 +2,7 @@
 
 #### Verification Strategy
 
-The `PackageExtractor` unit is verified using MSTest unit tests in `PackageExtractorTests.cs`.
+The `PackageExtractor` unit is verified using xUnit unit tests in `PackageExtractorTests.cs`.
 Tests construct minimal `.zip` archive fixtures in memory and write them to temporary file
 paths, then call `PackageExtractor.Extract` and assert on the return value, extracted file
 content, or thrown exception type. All tests use temporary directories that are cleaned up in

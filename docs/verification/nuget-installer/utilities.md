@@ -2,7 +2,7 @@
 
 ### Verification Strategy
 
-The Utilities subsystem is verified using MSTest integration tests in
+The Utilities subsystem is verified using xUnit integration tests in
 `UtilitiesSubsystemTests.cs`. Tests exercise subsystem-level workflows — path resolution,
 directory creation, path traversal validation, and null-argument rejection — by calling
 the subsystem API directly. No mocking is applied at the subsystem level.

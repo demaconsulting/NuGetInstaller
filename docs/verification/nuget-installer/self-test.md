@@ -2,7 +2,7 @@
 
 ### Verification Strategy
 
-The SelfTest subsystem is verified using MSTest integration tests in
+The SelfTest subsystem is verified using xUnit integration tests in
 `SelfTestSubsystemTests.cs`. Tests invoke `Validation.Run` through a silent `Context` and
 assert on the exit code, console output, and (where applicable) the content of TRX or JUnit
 XML result files written to a temporary directory.

@@ -34,7 +34,7 @@ The following ten OTS items are also verified:
 
 - **BuildMark** — build-notes documentation generator
 - **FileAssert** — document assertion tool
-- **MSTest** — unit testing framework
+- **xUnit** — unit testing framework
 - **Pandoc** — Markdown to HTML converter
 - **ReqStream** — requirements traceability tool
 - **ReviewMark** — file review tracking tool

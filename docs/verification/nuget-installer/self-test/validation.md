@@ -2,7 +2,7 @@
 
 #### Verification Strategy
 
-The Validation unit is verified using MSTest unit tests in `ValidationTests.cs`. Tests call
+The Validation unit is verified using xUnit unit tests in `ValidationTests.cs`. Tests call
 `Validation.Run` with a silent `Context` and optional temporary result file paths, then assert
 on the exit code, the presence of expected summary text in the context output buffer, and the
 content of any generated result files. All temporary files and directories are cleaned up in

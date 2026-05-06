@@ -2,7 +2,7 @@
 
 #### Verification Strategy
 
-The `PackageInstaller` unit is verified using MSTest unit tests in `PackageInstallerTests.cs`.
+The `PackageInstaller` unit is verified using xUnit unit tests in `PackageInstallerTests.cs`.
 Tests call `PackageInstaller.InstallAsync` with a list of `PackageEntry` objects and an output
 directory path, then assert on the resulting directory structure and the status messages written
 to a silent `Context`. A real `.nupkg` archive from the local NuGet cache is used to exercise

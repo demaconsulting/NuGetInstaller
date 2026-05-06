@@ -2,7 +2,7 @@
 
 #### Verification Strategy
 
-The `PackagesConfigReader` unit is verified using MSTest unit tests in
+The `PackagesConfigReader` unit is verified using xUnit unit tests in
 `PackagesConfigReaderTests.cs`. Each test writes a fixture XML file to a temporary directory,
 calls `PackagesConfigReader.Read`, and asserts on the returned collection or the thrown
 exception type. Tests cover valid single and multiple packages, an empty packages element,

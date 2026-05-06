@@ -2,7 +2,7 @@
 
 #### Verification Strategy
 
-The Context unit is verified using MSTest unit tests in `ContextTests.cs`. Each test
+The Context unit is verified using xUnit unit tests in `ContextTests.cs`. Each test
 constructs a `Context` from a specific string array of command-line arguments and asserts
 on the resulting property values, console output behavior, and log file behavior. Tests
 that verify error output replace the standard output and error streams with `StringWriter`

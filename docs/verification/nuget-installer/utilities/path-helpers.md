@@ -2,7 +2,7 @@
 
 #### Verification Strategy
 
-The `PathHelpers` unit is verified using MSTest unit tests in `PathHelpersTests.cs`. Tests
+The `PathHelpers` unit is verified using xUnit unit tests in `PathHelpersTests.cs`. Tests
 call `PathHelpers.SafePathCombine` directly with a range of base path and relative path
 combinations and assert on the returned combined path or the thrown exception type. Boundary
 values include empty relative path, single-dot reference, nested sub-paths, and the

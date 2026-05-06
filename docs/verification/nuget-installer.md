@@ -3,7 +3,7 @@
 ## System Verification Strategy
 
 The NuGet Installer is verified at the system level using integration tests that invoke the
-published `dotnet` tool end-to-end. Tests are written using MSTest in `IntegrationTests.cs` and
+published `dotnet` tool end-to-end. Tests are written using xUnit in `IntegrationTests.cs` and
 exercise the complete tool — from command-line argument parsing through package extraction — in
 a temporary directory. No mocking or stubbing is used at the system level; tests exercise the
 actual binary on the actual file system.
