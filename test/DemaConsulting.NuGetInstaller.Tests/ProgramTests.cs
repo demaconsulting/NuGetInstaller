@@ -254,7 +254,7 @@ public class ProgramTests
                 Program.Run(context);
 
                 // Assert: exit code is success and the package folder was extracted
-                Assert.True(context.ExitCode == 0, $"Program should succeed. Output: {outWriter}");
+                Assert.Equal(0, context.ExitCode);
                 var expectedFolder = Path.Combine(tempDir, "DemaConsulting.NuGet.Caching.1.0.0");
                 Assert.True(Directory.Exists(expectedFolder),
                     $"Package folder should exist at {expectedFolder}");
@@ -299,6 +299,6 @@ public class ProgramTests
         Program.Run(context);
 
         // Assert: exit code is non-zero when packages.config is missing
-        Assert.True(context.ExitCode == 1, "Exit code should be 1 when packages.config is missing");
+        Assert.Equal(1, context.ExitCode);
     }
 }

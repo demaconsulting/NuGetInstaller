@@ -99,10 +99,7 @@ public class PathHelpersTests
     public void PathHelpers_SafePathCombine_WindowsAbsolutePath_ThrowsArgumentException()
     {
         // This scenario is only meaningful on Windows where drive-letter paths are absolute
-        if (!OperatingSystem.IsWindows())
-        {
-            return; // Windows-only test skipped on non-Windows platform
-        }
+        Assert.SkipUnless(OperatingSystem.IsWindows(), "Windows-only test: drive-letter paths are only absolute on Windows");
 
         // Arrange: Windows drive-letter path passed as relative path
         var basePath = "C:\\Users\\project";

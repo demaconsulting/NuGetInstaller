@@ -43,7 +43,7 @@ public class SelfTestSubsystemTests
 
         // Assert: validation completes successfully with correct flags set
         Assert.True(context.Validate, "Context should have validate flag set");
-        Assert.True(context.ExitCode == 0, "Validation should complete successfully");
+        Assert.Equal(0, context.ExitCode);
     }
 
     /// <summary>
@@ -65,7 +65,7 @@ public class SelfTestSubsystemTests
 
             // Assert: validation completes and generates TRX file with standard format
             Assert.True(context.Validate, "Context should have validate flag set");
-            Assert.True(context.ExitCode == 0, "Validation should complete successfully");
+            Assert.Equal(0, context.ExitCode);
             Assert.True(File.Exists(trxFile), "TRX file should be generated");
             var trxContent = File.ReadAllText(trxFile);
             Assert.Contains("<TestRun", trxContent);
@@ -99,7 +99,7 @@ public class SelfTestSubsystemTests
 
             // Assert: validation completes and generates JUnit XML file with standard format
             Assert.True(context.Validate, "Context should have validate flag set");
-            Assert.True(context.ExitCode == 0, "Validation should complete successfully");
+            Assert.Equal(0, context.ExitCode);
             Assert.True(File.Exists(junitFile), "JUnit file should be generated");
             var junitContent = File.ReadAllText(junitFile);
             Assert.Contains("<testsuites", junitContent);
@@ -135,7 +135,7 @@ public class SelfTestSubsystemTests
 
             // Assert: verify validation completed and TRX result file was generated with standard format
             Assert.True(trxContext.Validate, "Context should have validate flag set for TRX run");
-            Assert.True(trxContext.ExitCode == 0, "Validation should complete successfully for TRX run");
+            Assert.Equal(0, trxContext.ExitCode);
             Assert.True(File.Exists(trxFile), "TRX file should be generated");
             var trxContent = File.ReadAllText(trxFile);
             Assert.Contains("<TestRun", trxContent);
@@ -146,7 +146,7 @@ public class SelfTestSubsystemTests
 
             // Assert: verify validation completed and JUnit XML result file was generated with standard format
             Assert.True(junitContext.Validate, "Context should have validate flag set for JUnit run");
-            Assert.True(junitContext.ExitCode == 0, "Validation should complete successfully for JUnit run");
+            Assert.Equal(0, junitContext.ExitCode);
             Assert.True(File.Exists(junitFile), "JUnit file should be generated");
             var junitContent = File.ReadAllText(junitFile);
             Assert.Contains("<testsuites", junitContent);

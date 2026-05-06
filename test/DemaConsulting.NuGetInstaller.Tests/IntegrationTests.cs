@@ -288,7 +288,7 @@ public class IntegrationTests
                 tempDir);
 
             // Assert: verify the tool exits successfully and the package is extracted
-            Assert.True(exitCode == 0, $"Tool should succeed. Output: {output}");
+            Assert.Equal(0, exitCode);
             Assert.Contains("Installed", output);
 
             var expectedFolder = Path.Combine(tempDir, "DemaConsulting.NuGet.Caching.1.0.0");
@@ -328,7 +328,7 @@ public class IntegrationTests
 
             // Act: run the tool with -x (exclude version) flag
             var exitCode = Runner.Run(
-                out var output,
+                out _,
                 null,
                 "dotnet",
                 _dllPath,
@@ -338,7 +338,7 @@ public class IntegrationTests
                 "-x");
 
             // Assert: package folder uses {Id}/ naming, not {Id}.{Version}/
-            Assert.True(exitCode == 0, $"Tool should succeed. Output: {output}");
+            Assert.Equal(0, exitCode);
             var expectedFolder = Path.Combine(tempDir, "DemaConsulting.NuGet.Caching");
             Assert.True(Directory.Exists(expectedFolder),
                 $"Version-less package folder should exist at {expectedFolder}");
@@ -372,7 +372,7 @@ public class IntegrationTests
             "2");
 
         // Assert: output contains level-2 heading
-        Assert.True(exitCode == 0, $"Tool should succeed. Output: {output}");
+        Assert.Equal(0, exitCode);
         Assert.Contains("## ", output);
     }
 
@@ -412,7 +412,7 @@ public class IntegrationTests
                 tempDir);
 
             // Assert: exit code is 0 and the tool reports skipping
-            Assert.True(exitCode == 0, $"Tool should succeed even when skipping. Output: {output}");
+            Assert.Equal(0, exitCode);
             Assert.Contains("Skipping", output);
         }
         finally
@@ -447,14 +447,14 @@ public class IntegrationTests
 
             // Act: run with tempDir as the working directory so the tool defaults output there
             var exitCode = Runner.Run(
-                out var output,
+                out _,
                 tempDir,
                 "dotnet",
                 _dllPath,
                 configPath);
 
             // Assert: tool exits successfully and the package is extracted to the working directory
-            Assert.True(exitCode == 0, $"Tool should succeed. Output: {output}");
+            Assert.Equal(0, exitCode);
             var expectedFolder = Path.Combine(tempDir, "DemaConsulting.NuGet.Caching.1.0.0");
             Assert.True(Directory.Exists(expectedFolder),
                 $"Package folder should exist in the working directory at {expectedFolder}");
@@ -483,7 +483,7 @@ public class IntegrationTests
             "--unknown");
 
         // Assert: tool reports an error message identifying the unrecognized flag
-        Assert.True(exitCode != 0, "Tool should return non-zero exit code for unknown flag");
+        Assert.NotEqual(0, exitCode);
         Assert.Contains("--unknown", output);
     }
 }

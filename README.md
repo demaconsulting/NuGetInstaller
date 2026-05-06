@@ -94,7 +94,7 @@ nuget-installer --silent --log output.log
 | `-?`, `-h`, `--help`            | Display help message                                         |
 | `--silent`                      | Suppress console output                                      |
 | `--validate`                    | Run self-validation                                          |
-| `--results`, `--result <file>`  | Write validation results to file (TRX or JUnit format)       |
+| `--results <file>`, `--result <file>`  | Write validation results to file (TRX or JUnit format)       |
 | `--depth <#>`                   | Set heading depth for markdown output (default: 1)           |
 | `--log <file>`                  | Write output to log file                                     |
 
