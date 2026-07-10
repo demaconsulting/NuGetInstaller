@@ -1,5 +1,7 @@
 ## NuGet Subsystem
 
+![NuGet Structure](NuGetView.svg)
+
 The `NuGet` subsystem provides the package management functionality for the NuGet Installer.
 It is responsible for reading package configuration, resolving packages from the NuGet global
 cache, and extracting them into the output directory.
@@ -8,8 +10,13 @@ cache, and extracting them into the output directory.
 
 The `NuGet` subsystem implements the core value proposition of the tool: installing NuGet
 packages from a `packages.config` file into a local directory. It owns the entire pipeline
-from XML parsing through cache resolution to ZIP extraction. All other subsystems interact
-with `NuGet` only through the `PackageInstaller` orchestrator.
+from XML parsing through cache resolution to ZIP extraction. Other subsystems interact with
+`NuGet` primarily through the `PackageInstaller` orchestrator for extraction and installation,
+but the `Program` and `SelfTest` subsystems also call `PackagesConfigReader.Read` directly to
+parse a `packages.config` file before handing the resulting `PackageEntry` list to
+`PackageInstaller`; see the *Program Unit Design* (`docs/design/nuget-installer/program.md`)
+and the *SelfTest Subsystem Design* (`docs/design/nuget-installer/self-test.md`) for the
+specific call sites.
 
 ### Units and Child Subsystems
 
@@ -31,6 +38,19 @@ The `NuGet` subsystem exposes the following interfaces to the rest of the tool:
 | `PackagesConfigReader.Read`      | Outbound  | Parses a packages.config file and returns a list of `PackageEntry`.   |
 | `PackageInstaller.InstallAsync`  | Outbound  | Installs packages; `excludeVersion` controls versioned/flat naming.   |
 | `PackageExtractor.Extract`       | Internal  | Extracts a .nupkg; `true` if extracted, `false` if folder exists.     |
+
+### Design
+
+`PackageInstaller` is the orchestrator that drives the other units in this subsystem.
+For each installation request, it first calls `PackagesConfigReader.Read` to parse the
+`packages.config` file into a list of `PackageEntry` instances (defined in the `Models`
+child subsystem). It then resolves each entry from the NuGet global package cache and
+calls `PackageExtractor.Extract` to unpack the resolved `.nupkg` into the computed
+destination folder, choosing the versioned or version-less folder name based on the
+`excludeVersion` flag. `PackageInstaller` processes all packages concurrently with
+`Task.WhenAll`, so `PackageExtractor` invocations for different packages may run in
+parallel with no shared mutable state between them. `PackageEntry` instances flow from
+`PackagesConfigReader` to `PackageInstaller` as plain data with no behavior of their own.
 
 ### Normal Operation
 

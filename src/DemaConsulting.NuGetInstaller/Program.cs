@@ -194,7 +194,7 @@ internal static class Program
         context.WriteLine("  -?, -h, --help               Display this help message");
         context.WriteLine("  --silent                     Suppress console output");
         context.WriteLine("  --validate                   Run self-validation");
-        context.WriteLine("  --results <file>             Write validation results to file (.trx or .xml)");
+        context.WriteLine("  --results, --result <file>   Write validation results to file (.trx or .xml)");
         context.WriteLine("  --depth <#>                  Set heading depth for markdown output (default: 1)");
         context.WriteLine("  --log <file>                 Write output to log file");
     }

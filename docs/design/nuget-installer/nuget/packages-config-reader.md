@@ -1,9 +1,11 @@
 ### PackagesConfigReader
 
+![NuGet Structure](NuGetView.svg)
+
 The `PackagesConfigReader` class reads and parses packages.config XML files, returning a
 list of `PackageEntry` objects.
 
-#### Overview
+#### Purpose
 
 `PackagesConfigReader` is a static utility class with a single `Read` method. It loads the
 XML document, iterates over `<package>` elements, and constructs `PackageEntry` objects from
@@ -13,7 +15,7 @@ the `id`, `version`, and optional `targetFramework` attributes.
 
 `PackagesConfigReader` holds no instance state. All state is local to the `Read` method.
 
-#### Methods
+#### Key Methods
 
 ##### Read(string filePath)
 
@@ -37,12 +39,6 @@ Reads and parses a packages.config file.
 5. Throw `InvalidOperationException` if `id` or `version` is missing.
 6. Return a read-only list of `PackageEntry` objects.
 
-#### Interactions
-
-| Dependency     | Direction | Purpose                                          |
-|----------------|-----------|--------------------------------------------------|
-| `PackageEntry` | Creates   | Constructs `PackageEntry` instances from XML.    |
-
 #### Error Handling
 
 `Read` throws the following exceptions:
@@ -54,3 +50,15 @@ Reads and parses a packages.config file.
 
 The `XDocument.Load` call propagates `XmlException` for malformed XML without wrapping it,
 preserving the original diagnostic message (line number, position) for the caller.
+
+#### Dependencies
+
+`PackagesConfigReader` uses .NET base class library types (`XDocument`, `File`) and creates
+`PackageEntry` instances from the parsed XML. It has no dependencies on other units,
+subsystems, OTS items, or shared packages.
+
+#### Callers
+
+`PackagesConfigReader` is called directly by `Program` and by `Validation` (in the
+`SelfTest` subsystem), each of which reads a `packages.config` file to obtain the list of
+package entries to pass to `PackageInstaller`.

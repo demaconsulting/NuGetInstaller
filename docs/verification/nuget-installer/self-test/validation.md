@@ -8,6 +8,20 @@ on the exit code, the presence of expected summary text in the context output bu
 content of any generated result files. All temporary files and directories are cleaned up in
 test teardown.
 
+#### Test Environment
+
+Tests run under the standard xUnit runner with no external services. Result files are written
+to uniquely named paths under the OS temporary directory and removed during test teardown;
+no persistent state is required.
+
+#### Acceptance Criteria
+
+A unit test passes when `Validation.Run` completes with exit code `0`, the expected
+summary text (including the version, help, and install-package test results) appears in the
+captured output, and — for scenarios that supply a results file path — the generated file
+exists and contains the expected root XML element (`<TestRun` for TRX, `<testsuites` for
+JUnit).
+
 #### Test Scenarios
 
 ##### Run Scenario

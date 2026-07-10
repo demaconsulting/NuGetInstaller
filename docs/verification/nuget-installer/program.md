@@ -8,6 +8,21 @@ to a `StringWriter` before creating the `Context`. Temporary directories and fix
 `packages.config` files are created on disk where the install path requires real files. No
 external network access is required because all package resolution uses the local NuGet cache.
 
+### Test Environment
+
+Tests require a writable OS temporary directory for fixture `packages.config` files and
+install output folders, and rely on the local NuGet package cache for extraction (no network
+access is required). Tests that exercise the current-working-directory default path
+temporarily change `Environment.CurrentDirectory` and restore it during teardown. Tests run
+under the standard xUnit test runner with no additional mocking.
+
+### Acceptance Criteria
+
+A unit test passes when `Program.Run` returns the documented exit code (`0` for success
+paths, non-zero when a required file is missing), prints the expected version, help, or
+banner text to the captured console output for the corresponding flag, and — for install
+scenarios — the expected packages are extracted to the output directory.
+
 ### Test Scenarios
 
 #### Version Display Scenario
@@ -56,13 +71,17 @@ Test method:
 #### Package Install Scenario
 
 Tests verify that the default execution path reads the package configuration and extracts
-packages into the output directory, and that the banner is displayed when no arguments are
-provided.
+packages into the output directory, that the default no-flag path installs from a
+`packages.config` file in the current working directory, and that the banner is displayed
+when no arguments are provided.
 
 Test methods:
 
 - `Program_Run_WithValidPackagesConfig_InstallsPackages` — asserts packages are extracted when
   a well-formed `packages.config` is supplied
+- `Program_Run_WithNoFlags_InstallsPackagesFromDefaultConfigInCurrentDirectory` — asserts
+  packages are extracted when no flags are provided and a `packages.config` file exists in the
+  current working directory, exercising the documented default execution path
 - `Program_Run_NoArguments_DisplaysBanner` — asserts the banner is shown when no arguments are
   provided
 
@@ -74,4 +93,4 @@ Test methods:
 | `NuGetInstaller-Program-Help` | `Program_Run_WithHelpFlag_DisplaysUsageInformation`, `Program_Run_WithShortHelpFlag_QuestionMark_DisplaysUsageInformation`, `Program_Run_WithShortHelpFlag_H_DisplaysUsageInformation` |
 | `NuGetInstaller-Program-Validate` | `Program_Run_WithValidateFlag_RunsValidation` |
 | `NuGetInstaller-Program-ExitCode` | `Program_Run_WithMissingPackagesConfig_ReturnsNonZeroExitCode` |
-| `NuGetInstaller-Program-Install` | `Program_Run_WithValidPackagesConfig_InstallsPackages`, `Program_Run_NoArguments_DisplaysBanner` |
+| `NuGetInstaller-Program-Install` | `Program_Run_WithValidPackagesConfig_InstallsPackages`, `Program_Run_WithNoFlags_InstallsPackagesFromDefaultConfigInCurrentDirectory`, `Program_Run_NoArguments_DisplaysBanner` |

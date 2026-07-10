@@ -206,4 +206,56 @@ public class PackageInstallerTests
             }
         }
     }
+
+    /// <summary>
+    ///     Test that InstallAsync writes a status message via the context for newly installed
+    ///     packages and a different status message when a package is already installed and skipped.
+    /// </summary>
+    [Fact]
+    public async Task PackageInstaller_InstallAsync_WritesStatusMessageForInstalledAndSkippedPackages()
+    {
+        // Arrange: create a temporary directory with a packages.config file, and route the
+        // context's status messages to a log file so they can be asserted.
+        var tempDir = Path.Combine(Path.GetTempPath(), $"package_installer_test_{Guid.NewGuid()}");
+        var logFile = Path.Combine(Path.GetTempPath(), $"package_installer_test_{Guid.NewGuid()}.log");
+
+        try
+        {
+            Directory.CreateDirectory(tempDir);
+            var configPath = Path.Combine(tempDir, "packages.config");
+            await File.WriteAllTextAsync(configPath,
+                """
+                <?xml version="1.0" encoding="utf-8"?>
+                <packages>
+                  <package id="DemaConsulting.NuGet.Caching" version="1.0.0" />
+                </packages>
+                """, TestContext.Current.CancellationToken);
+
+            var packages = PackagesConfigReader.Read(configPath);
+
+            // Act: install the package for the first time, then again to trigger the skip path
+            using (var context = Context.Create(["--silent", "--log", logFile]))
+            {
+                await PackageInstaller.InstallAsync(context, packages, tempDir, excludeVersion: false);
+                await PackageInstaller.InstallAsync(context, packages, tempDir, excludeVersion: false);
+            }
+
+            // Assert: the log file contains a status message for the install and the skip
+            var logContent = await File.ReadAllTextAsync(logFile, TestContext.Current.CancellationToken);
+            Assert.Contains("Installed DemaConsulting.NuGet.Caching 1.0.0", logContent);
+            Assert.Contains("Skipping DemaConsulting.NuGet.Caching 1.0.0 (already exists)", logContent);
+        }
+        finally
+        {
+            if (Directory.Exists(tempDir))
+            {
+                Directory.Delete(tempDir, true);
+            }
+
+            if (File.Exists(logFile))
+            {
+                File.Delete(logFile);
+            }
+        }
+    }
 }

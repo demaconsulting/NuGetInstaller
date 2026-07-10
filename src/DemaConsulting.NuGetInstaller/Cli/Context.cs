@@ -36,6 +36,12 @@ internal sealed class Context : IDisposable
     private bool _hasErrors;
 
     /// <summary>
+    ///     Synchronizes writes to the console and log file so concurrent callers (e.g. parallel
+    ///     package installation tasks) cannot interleave or corrupt output.
+    /// </summary>
+    private readonly object _writeLock = new();
+
+    /// <summary>
     ///     Gets a value indicating whether the version flag was specified.
     /// </summary>
     public bool Version { get; private init; }
@@ -297,7 +303,10 @@ internal sealed class Context : IDisposable
         /// <returns>Argument value</returns>
         private static string GetRequiredStringArgument(string arg, string[] args, int index, string description)
         {
-            if (index >= args.Length)
+            // The value is missing if there are no more arguments, or the next token
+            // looks like a flag (e.g. "--log --silent" must not swallow "--silent" as
+            // the log file value).
+            if (index >= args.Length || args[index].StartsWith('-'))
             {
                 throw new ArgumentException($"{arg} requires {description}", nameof(args));
             }
@@ -333,14 +342,17 @@ internal sealed class Context : IDisposable
     /// <param name="message">The message to write.</param>
     public void WriteLine(string message)
     {
-        // Write to console unless silent mode is enabled
-        if (!Silent)
+        lock (_writeLock)
         {
-            Console.WriteLine(message);
-        }
+            // Write to console unless silent mode is enabled
+            if (!Silent)
+            {
+                Console.WriteLine(message);
+            }
 
-        // Write to log file if logging is enabled
-        _logWriter?.WriteLine(message);
+            // Write to log file if logging is enabled
+            _logWriter?.WriteLine(message);
+        }
     }
 
     /// <summary>
@@ -349,20 +361,23 @@ internal sealed class Context : IDisposable
     /// <param name="message">The error message to write.</param>
     public void WriteError(string message)
     {
-        // Mark that we have encountered errors
-        _hasErrors = true;
-
-        // Write to error console unless silent mode is enabled
-        if (!Silent)
+        lock (_writeLock)
         {
-            var previousColor = Console.ForegroundColor;
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.Error.WriteLine(message);
-            Console.ForegroundColor = previousColor;
-        }
+            // Mark that we have encountered errors
+            _hasErrors = true;
 
-        // Write to log file if logging is enabled
-        _logWriter?.WriteLine(message);
+            // Write to error console unless silent mode is enabled
+            if (!Silent)
+            {
+                var previousColor = Console.ForegroundColor;
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.Error.WriteLine(message);
+                Console.ForegroundColor = previousColor;
+            }
+
+            // Write to log file if logging is enabled
+            _logWriter?.WriteLine(message);
+        }
     }
 
     /// <summary>

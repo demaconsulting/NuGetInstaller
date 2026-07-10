@@ -1,5 +1,7 @@
 ### Context
 
+![Cli Structure](CliView.svg)
+
 The `Context` class handles command-line argument parsing and program output for the
 NuGet Installer. It is the primary interface between the user's command-line invocation
 and the tool's internal logic.

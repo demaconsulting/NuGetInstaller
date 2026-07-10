@@ -1,13 +1,31 @@
 ## Cli Subsystem Verification
 
-### Verification Strategy
+### Verification Approach
 
 The Cli subsystem is verified using xUnit integration tests in `CliSubsystemTests.cs`. Each
 test constructs a `Context` from a specific set of command-line arguments and then calls
 `Program.Run`, asserting on the combined observable behavior: console output captured via a
 `StringWriter`, exit code, and (where applicable) file system state. The tests operate at the
 subsystem boundary — validating the interaction between argument parsing (`Context`) and
-dispatch logic (`Program.Run`) — without mocking any internal components.
+dispatch logic (`Program.Run`) — without mocking any internal components. Unit-level
+assertions against `Context` in isolation (with no interaction with `Program`) belong in
+`ContextTests.cs`, not in this subsystem test file.
+
+### Test Environment
+
+Tests run under the standard xUnit test runner with no external services. Some scenarios
+create temporary files and directories (log files, results files, `packages.config` fixtures)
+under the OS temporary directory, and delete them during test teardown. Console `Out` and
+`Error` are redirected to `StringWriter` instances for the duration of each test and restored
+afterward. No network access is required.
+
+### Acceptance Criteria
+
+A subsystem test passes when the observed console output, exit code, and (where applicable)
+file system state match the behavior documented for the corresponding command-line flag
+combination. The subsystem verification is considered complete when every flag combination
+handled by `Context` and dispatched by `Program.Run` has at least one passing test that
+exercises both units together.
 
 ### Test Scenarios
 

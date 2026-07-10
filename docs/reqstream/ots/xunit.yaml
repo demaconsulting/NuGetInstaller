@@ -8,12 +8,31 @@ sections:
     sections:
       - title: xUnit Requirements
         requirements:
-          - id: NuGetInstaller-OTS-XUnit
-            title: xUnit shall execute unit tests and report results.
+          - id: NuGetInstaller-OTS-XUnit-TestExecution
+            title: xUnit shall discover and execute unit tests.
             justification: |
               xUnit (xunit.v3 and xunit.runner.visualstudio) is the unit-testing framework used
               by the project. It discovers and runs all test methods. Passing tests confirm the
-              framework is functioning correctly.
+              framework's discovery and execution behavior is functioning correctly.
+            tags: [ots]
+            tests:
+              - Context_Create_NoArguments_ReturnsDefaultContext
+              - Context_Create_VersionFlag_SetsVersionTrue
+              - Context_Create_SilentFlag_SetsSilentTrue
+              - Context_Create_LogFlag_OpensLogFile
+              - Context_Create_UnknownArgument_ThrowsArgumentException
+              - PathHelpers_SafePathCombine_ValidPaths_CombinesCorrectly
+              - Program_Run_WithVersionFlag_DisplaysVersionOnly
+              - Validation_Run_WithSilentContext_PrintsSummary
+
+          - id: NuGetInstaller-OTS-XUnit-TrxReporting
+            title: xUnit shall report test results in TRX format for ReqStream consumption.
+            justification: |
+              The xunit.runner.visualstudio adapter serializes each test outcome to a TRX result
+              file that ReqStream consumes via `--tests "artifacts/**/*.trx"` to build the trace
+              matrix and enforce requirements coverage. Each test method below appearing as
+              passing evidence in the generated TRX files confirms the adapter correctly reports
+              individual test outcomes, not just that the tests ran.
             tags: [ots]
             tests:
               - Context_Create_NoArguments_ReturnsDefaultContext

@@ -11,6 +11,23 @@ internal components are mocked at the subsystem level; tests validate the combin
 A silent `Context` (constructed with `--silent`) is used in all subsystem tests to suppress
 console output without affecting functional behavior.
 
+### Test Environment
+
+Tests run against a temporary output directory created per test and deleted afterward. The
+config-reading and installation tests require real `packages.config` files and, for the
+read-and-install and extraction scenarios, at least one package resolvable from the local
+NuGet global package cache on the test machine. No network access or external services are
+required beyond the local NuGet cache.
+
+### Acceptance Criteria
+
+A subsystem test passes when: the returned `PackageEntry` list matches the entries declared
+in the `packages.config` file under test; packages are extracted to the correct versioned or
+version-less destination folder; extraction is skipped (return value observed via installed
+folder state) when the destination already exists; and the expected exception type
+(`InvalidOperationException` or `XmlException`) is thrown for missing-file and malformed-XML
+inputs respectively.
+
 ### Test Scenarios
 
 #### Read and Install Workflow Scenario

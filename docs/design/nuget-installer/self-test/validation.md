@@ -1,20 +1,23 @@
 ### Validation
 
+![SelfTest Structure](SelfTestView.svg)
+
 The `Validation` class provides the self-validation framework for the NuGet Installer.
 It runs a suite of internal tests that demonstrate the tool is functioning correctly in the
 deployment environment.
 
-#### Overview
+#### Purpose
 
-`Validation.Run` prints a header, executes each test, accumulates results into a
-`DemaConsulting.TestResults.TestResults` object, prints a summary, and optionally writes
-a results file in TRX or JUnit XML format.
+`Validation` is responsible for orchestrating and executing the tool's built-in
+self-validation test suite. `Validation.Run` prints a header, executes each test,
+accumulates results into a `DemaConsulting.TestResults.TestResults` object, prints a
+summary, and optionally writes a results file in TRX or JUnit XML format.
 
 #### Data Model
 
 `Validation` holds no instance state. All state is local to `Run` and the private test methods.
 
-#### Methods
+#### Key Methods
 
 ##### Run(Context context)
 
@@ -55,20 +58,26 @@ This test method exercises the package installation API directly:
 Writes `testResults` to `context.ResultsFile`. The format is determined by the file extension:
 `.trx` for TRX (MSTest), `.xml` for JUnit.
 
-#### Interactions
-
-| Dependency                   | Direction | Purpose                                         |
-|------------------------------|-----------|-------------------------------------------------|
-| `Context`                    | Uses      | Output channel for header and summary lines.    |
-| `Program`                    | Uses      | `Program.Run` called to exercise the tool.      |
-| `PathHelpers`                | Uses      | `SafePathCombine` for temp-dir file paths.      |
-| `PackagesConfigReader`       | Uses      | Reads packages.config in install test.          |
-| `PackageInstaller`           | Uses      | Installs packages in install test.              |
-| `DemaConsulting.TestResults` | Uses      | Result model, TRX and JUnit serialization.      |
-
 #### Error Handling
 
 Exceptions thrown inside individual test methods (`RunVersionTest`, `RunHelpTest`,
 `RunInstallPackageTest`) are caught by a try/catch block inside each runner. The exception
 message is recorded as the test failure reason in the shared `TestResults` object, and
 execution continues with the next test.
+
+#### Dependencies
+
+| Dependency                   | Direction | Purpose                                      |
+|------------------------------|-----------|----------------------------------------------|
+| `Context`                    | Uses      | Output channel for header and summary lines. |
+| `Program`                    | Uses      | `Program.Run` called to exercise the tool.   |
+| `PathHelpers`                | Uses      | `SafePathCombine` for temp-dir file paths.   |
+| `PackagesConfigReader`       | Uses      | Reads packages.config in install test.       |
+| `PackageInstaller`           | Uses      | Installs packages in install test.           |
+| `DemaConsulting.TestResults` | Uses      | Result model, TRX and JUnit serialization.   |
+
+#### Callers
+
+| Caller    | Direction | Purpose                                                     |
+|-----------|-----------|-------------------------------------------------------------|
+| `Program` | Calls     | Invokes `Validation.Run` when the user passes `--validate`. |

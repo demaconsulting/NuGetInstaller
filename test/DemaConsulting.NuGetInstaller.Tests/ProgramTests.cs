@@ -274,6 +274,61 @@ public class ProgramTests
     }
 
     /// <summary>
+    ///     Test that Run installs packages from the default packages.config when no special
+    ///     flags are provided, exercising the documented default execution path.
+    /// </summary>
+    [Fact]
+    public void Program_Run_WithNoFlags_InstallsPackagesFromDefaultConfigInCurrentDirectory()
+    {
+        // Arrange: create a temporary working directory with a default-named packages.config file
+        var tempDir = Path.Combine(Path.GetTempPath(), $"program_default_install_test_{Guid.NewGuid()}");
+        var originalDirectory = Directory.GetCurrentDirectory();
+        try
+        {
+            Directory.CreateDirectory(tempDir);
+            var configPath = Path.Combine(tempDir, "packages.config");
+            File.WriteAllText(configPath,
+                """
+                <?xml version="1.0" encoding="utf-8"?>
+                <packages>
+                  <package id="DemaConsulting.NuGet.Caching" version="1.0.0" />
+                </packages>
+                """);
+            Directory.SetCurrentDirectory(tempDir);
+
+            var originalOut = Console.Out;
+            try
+            {
+                using var outWriter = new StringWriter();
+                Console.SetOut(outWriter);
+                using var context = Context.Create([]);
+
+                // Act: run the program with no flags from the temp working directory
+                Program.Run(context);
+
+                // Assert: exit code is success and the package folder was extracted into the
+                // current directory using the default packages.config
+                Assert.Equal(0, context.ExitCode);
+                var expectedFolder = Path.Combine(tempDir, "DemaConsulting.NuGet.Caching.1.0.0");
+                Assert.True(Directory.Exists(expectedFolder),
+                    $"Package folder should exist at {expectedFolder}");
+            }
+            finally
+            {
+                Console.SetOut(originalOut);
+            }
+        }
+        finally
+        {
+            Directory.SetCurrentDirectory(originalDirectory);
+            if (Directory.Exists(tempDir))
+            {
+                Directory.Delete(tempDir, true);
+            }
+        }
+    }
+
+    /// <summary>
     ///     Test that version property returns non-empty version string.
     /// </summary>
     [Fact]

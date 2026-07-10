@@ -8,6 +8,20 @@ combinations and assert on the returned combined path or the thrown exception ty
 values include empty relative path, single-dot reference, nested sub-paths, and the
 platform-specific Windows absolute path (verified only on Windows).
 
+#### Test Environment
+
+Tests are pure unit tests with no file-system, network, or external service dependencies —
+`SafePathCombine` operates only on in-memory strings. The Windows-absolute-path test is
+conditionally executed only when running on Windows (via the `windows@` test trait), since
+the pattern it rejects is not a meaningful absolute-path form on other platforms.
+
+#### Acceptance Criteria
+
+A unit test passes when `SafePathCombine` returns the expected combined path string for valid
+inputs, or throws `ArgumentException` for a relative path that would escape the base path
+(via `..` traversal, a rooted `/` path, or a Windows absolute path), or throws
+`ArgumentNullException` when either argument is `null`.
+
 #### Test Scenarios
 
 ##### Safe Combine Scenario

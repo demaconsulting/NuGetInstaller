@@ -1,6 +1,6 @@
 ### Context Unit Verification
 
-#### Verification Strategy
+#### Verification Approach
 
 The Context unit is verified using xUnit unit tests in `ContextTests.cs`. Each test
 constructs a `Context` from a specific string array of command-line arguments and asserts
@@ -10,6 +10,20 @@ instances before constructing the `Context`.
 
 No external dependencies are required. Log file tests write to temporary file paths and
 clean up in test teardown.
+
+#### Test Environment
+
+Tests run under the standard xUnit test runner with no external services. Log file tests
+create files under the OS temporary directory and delete them during test teardown. Console
+`Out` and `Error` are redirected to `StringWriter` instances for the duration of each test
+and restored afterward. No network access is required.
+
+#### Acceptance Criteria
+
+A unit test passes when the `Context` property values, thrown exceptions, console output,
+and log file contents match the behavior documented for the corresponding command-line
+argument combination. Unit verification is considered complete when every recognized flag,
+its documented aliases, and each malformed-argument path have at least one passing test.
 
 #### Test Scenarios
 

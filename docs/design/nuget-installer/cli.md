@@ -1,5 +1,7 @@
 ## Cli Subsystem
 
+![Cli Structure](CliView.svg)
+
 The `Cli` subsystem provides the command-line interface for the NuGet Installer.
 It is responsible for accepting user input from the command line and routing output to
 the console and an optional log file.
@@ -39,6 +41,28 @@ The `Cli` subsystem exposes the following interface to the rest of the tool:
 | `Context.ExitCode`           | Outbound  | Returns 0 for success or 1 when errors have been reported.             |
 | `Context.HeadingDepth`       | Outbound  | Heading depth for markdown output (default 1, valid range 1–6).        |
 | `Context.Dispose`            | Outbound  | Releases resources held by the context (flushes and closes log file).  |
+
+### Design
+
+The `Cli` subsystem contains a single unit, `Context`, so internal collaboration is limited
+to how `Context` is constructed and then consumed by the rest of the tool:
+
+- `Program.Main` calls `Context.Create(args)` once at startup. `Create` parses the raw
+  `string[]` argument array into a nested `ArgumentParser` helper type, validates each flag
+  (raising `ArgumentException` for unknown flags or missing required values), and then
+  copies the parsed values into an immutable `Context` instance using `init`-only properties.
+- If `--log <file>` was supplied, `Create` opens the log file before returning the `Context`,
+  so all subsequent output methods can write to both the console and the log file without
+  re-checking whether logging is enabled.
+- Once constructed, the single `Context` instance is passed by reference to every other
+  subsystem (`Program`, `SelfTest`, `NuGet`) that needs to read parsed flags or produce
+  output. No subsystem re-parses arguments or constructs its own `Context`.
+- `Context.WriteLine` and `Context.WriteError` centralize all console and log output so that
+  the `--silent` flag and log-file redirection are honored consistently regardless of which
+  subsystem is writing. `WriteError` additionally sets the internal error flag consumed by
+  `Context.ExitCode`.
+- `Context` implements `IDisposable` so the log file handle opened during `Create` is
+  flushed and closed deterministically via a `using` statement in `Program.Main`.
 
 ### Command-Line Flags
 

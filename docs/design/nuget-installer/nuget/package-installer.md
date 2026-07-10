@@ -1,5 +1,7 @@
 ### PackageInstaller
 
+![NuGet Structure](NuGetView.svg)
+
 The `PackageInstaller` class orchestrates the installation of NuGet packages from a
 packages list into an output directory.
 

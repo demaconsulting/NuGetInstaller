@@ -23,6 +23,8 @@ Test evidence names:
 - `Pandoc_ReviewReportHtml` — review report HTML document validated
 - `Pandoc_DesignHtml` — design document HTML validated
 - `Pandoc_UserGuideHtml` — user guide HTML document validated
+- `Pandoc_RequirementsHtml` — requirements document HTML validated
+- `Pandoc_TraceMatrixHtml` — trace matrix document HTML validated
 
 ### Coverage Summary
 
@@ -34,3 +36,5 @@ Test evidence names:
 | `NuGetInstaller-OTS-Pandoc` | `Pandoc_ReviewReportHtml` |
 | `NuGetInstaller-OTS-Pandoc` | `Pandoc_DesignHtml` |
 | `NuGetInstaller-OTS-Pandoc` | `Pandoc_UserGuideHtml` |
+| `NuGetInstaller-OTS-Pandoc` | `Pandoc_RequirementsHtml` |
+| `NuGetInstaller-OTS-Pandoc` | `Pandoc_TraceMatrixHtml` |

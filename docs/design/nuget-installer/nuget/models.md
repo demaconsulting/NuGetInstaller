@@ -1,36 +1,48 @@
-### Models Subsystem
+## Models Subsystem
+
+![NuGet Models Structure](NuGetModelsView.svg)
 
 The `Models` subsystem provides the data models used by the NuGet subsystem to represent
 package metadata throughout the installation pipeline.
 
-#### Overview
+### Overview
 
 The `Models` subsystem contains immutable data classes that carry package information between
 the configuration reader and the installer. It uses `required` init-only properties to enforce
 that every entry has the minimum required metadata (Id and Version).
 
-#### Units
+### Units
 
 The `Models` subsystem contains the following software unit:
 
-| Unit           | File                           | Responsibility                             |
-|----------------|--------------------------------|--------------------------------------------|
-| `PackageEntry` | `NuGet/Models/PackageEntry.cs` | Data model for a single package entry.     |
+| Unit           | File                           | Responsibility                         |
+|----------------|--------------------------------|----------------------------------------|
+| `PackageEntry` | `NuGet/Models/PackageEntry.cs` | Data model for a single package entry. |
 
-#### Interfaces
+### Interfaces
 
 The `Models` subsystem exposes the following interface to the rest of the tool:
 
-| Interface      | Direction | Description                                                     |
-|----------------|-----------|-----------------------------------------------------------------|
-| `PackageEntry` | Outbound  | Immutable data class consumed by reader and installer units.    |
+| Interface      | Direction | Description                                                  |
+|----------------|-----------|--------------------------------------------------------------|
+| `PackageEntry` | Outbound  | Immutable data class consumed by reader and installer units. |
 
-#### Error Handling
+### Design
+
+The `Models` subsystem contains a single unit, `PackageEntry`, so there is no internal
+collaboration between units. `PackageEntry` instances are created by `PackagesConfigReader`
+(in the parent `NuGet` subsystem) while parsing a `packages.config` file, one instance per
+`<package>` element. Each instance is then passed unmodified to `PackageInstaller`, which
+reads its `Id` and `Version` properties to resolve and extract the corresponding package.
+Because the properties are `required` and `init`-only, an instance is fully populated at
+construction and remains immutable for the rest of its lifetime.
+
+### Error Handling
 
 The `Models` subsystem contains only immutable data classes with no executable logic.
 Error handling is not applicable at this subsystem level.
 
-#### Interactions
+### Interactions
 
 The `Models` subsystem has no dependencies on other tool units or subsystems. It uses only
 .NET base class library types. It is consumed by `PackagesConfigReader` (which creates
