@@ -17,6 +17,31 @@ and asserts on the exit code, console output, file system state, or log files as
 
 The NuGet global cache on the CI runner supplies package archives for extraction tests.
 
+## Acceptance Criteria
+
+A system test scenario passes when all of the following hold:
+
+- The process exit code matches the expected value for the scenario (`0` for successful
+  operations such as version display, help display, self-validation, and package installation;
+  non-zero for error conditions such as unrecognized arguments, a missing `packages.config`
+  file, or malformed configuration XML).
+- Captured stdout/stderr contains the expected content for the scenario (for example, a
+  non-empty version string, the usage banner, an `Error:`/`Unexpected error:` prefixed
+  diagnostic message, or a package-installation confirmation), and contains no unexpected
+  error text for scenarios that are expected to succeed.
+- Any expected file system side effect occurs: the package output folder is created with a
+  non-empty content set for successful installs, the specified log file is created and
+  populated when `--log` is used, and the specified TRX/JUnit results file is created and
+  contains well-formed XML with the expected root elements when `--results` is used.
+- No unintended side effects occur: `--silent` produces no console output, `--skip-existing`
+  behavior leaves pre-existing package folders untouched and reports the skip, and error
+  scenarios do not leave partially-extracted package folders behind.
+
+A system test scenario fails if any of the above conditions is not met. The overall system
+verification passes only when every scenario in the sections below passes on all three
+supported platforms (Windows, Linux, macOS) and all three supported .NET runtimes (.NET 8,
+.NET 9, .NET 10).
+
 ## System Test Scenarios
 
 ### Version Display Scenario
@@ -122,6 +147,22 @@ the output directory.
 
 Test method: `NuGetInstaller_InstallPackages_ValidConfig_ExtractsPackageToOutputDirectory`
 
+### Missing Configuration File Scenario
+
+Verifies that the tool reports a not-found error and returns a non-zero exit code when the
+`packages.config` file specified on the command line does not exist. The test invokes the
+published tool against a nonexistent file path and asserts on the exit code and stderr content.
+
+Test method: `NuGetInstaller_InstallPackages_MissingConfigFile_ReportsErrorAndReturnsNonZeroExitCode`
+
+### Malformed Configuration File Scenario
+
+Verifies that the tool reports an error and returns a non-zero exit code when the
+`packages.config` file contains malformed XML. The test writes an incomplete/invalid XML
+fixture, invokes the published tool against it, and asserts on the exit code and stderr content.
+
+Test method: `NuGetInstaller_InstallPackages_MalformedConfigFile_ReportsErrorAndReturnsNonZeroExitCode`
+
 ## Platform Test Scenarios
 
 Platform requirements are verified by running the self-validation tests on each platform and
@@ -164,6 +205,8 @@ Test methods: `dotnet10.x@NuGetInstaller_VersionDisplay`, `dotnet10.x@NuGetInsta
 | `NuGetInstaller-System-Log` | `NuGetInstaller_LogFlag_FlagProvided_WritesOutputToFile` |
 | `NuGetInstaller-System-ErrorHandling-ExitCode` | `NuGetInstaller_UnknownArgument_InvalidFlag_ReturnsNonZeroExitCode` |
 | `NuGetInstaller-System-ErrorHandling-Report` | `NuGetInstaller_UnknownArgument_InvalidFlag_ReturnsNonZeroExitCode`, `NuGetInstaller_UnknownArgument_InvalidFlag_ReportsErrorMessage` |
+| `NuGetInstaller-System-ErrorHandling-MissingFile` | `NuGetInstaller_InstallPackages_MissingConfigFile_ReportsErrorAndReturnsNonZeroExitCode` |
+| `NuGetInstaller-System-ErrorHandling-MalformedXml` | `NuGetInstaller_InstallPackages_MalformedConfigFile_ReportsErrorAndReturnsNonZeroExitCode` |
 | `NuGetInstaller-System-OutputDirectory` | `NuGetInstaller_InstallPackages_ValidConfig_ExtractsPackageToOutputDirectory`, `NuGetInstaller_InstallPackages_DefaultOutputDirectory_InstallsToCurrentDirectory` |
 | `NuGetInstaller-System-ExcludeVersion` | `NuGetInstaller_InstallPackages_ExcludeVersionFlag_UsesFlatFolderNaming` |
 | `NuGetInstaller-System-Depth` | `NuGetInstaller_ValidateDepth_DepthFlagProvided_AdjustsHeadingDepth` |

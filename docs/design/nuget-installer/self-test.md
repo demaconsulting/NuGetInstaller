@@ -1,5 +1,7 @@
 ## SelfTest Subsystem
 
+![SelfTest Structure](SelfTestView.svg)
+
 The `SelfTest` subsystem provides the self-validation framework for the NuGet Installer.
 It runs a built-in suite of tests to demonstrate the tool is functioning correctly in the
 deployment environment.
@@ -26,7 +28,15 @@ The `SelfTest` subsystem exposes the following interface to the rest of the tool
 |------------------|-----------|-----------------------------------------------------------------------|
 | `Validation.Run` | Outbound  | Runs all self-validation tests, prints a summary, and writes results. |
 
-### Self-Tests
+### Design
+
+The `SelfTest` subsystem's single unit, `Validation`, orchestrates a fixed sequence of
+built-in tests, accumulates their outcomes into a shared results object, and reports the
+outcome through the `Context` output channel and process exit code. The subsections below
+describe the built-in tests, the error-handling strategy that keeps the suite resilient to
+individual test failures, and the internal/external collaborations involved.
+
+#### Self-Tests
 
 The `SelfTest` subsystem executes three built-in tests covering the tool's core behaviors:
 
@@ -42,7 +52,7 @@ Each test runner creates a temporary directory via the private `TemporaryDirecto
 extension of `context.ResultsFile`: `.trx` produces TRX (MSTest) format; `.xml` produces JUnit
 XML format.
 
-### Error Handling
+#### Error Handling
 
 Individual test methods catch all exceptions from the `try` block and record the exception
 message as the test failure reason in the shared `TestResults` object before continuing to the
@@ -50,7 +60,7 @@ next test. This broad catch strategy is intentional: the self-validation framewo
 resilient to unexpected failures in any single test so that the remaining tests still execute
 and produce evidence.
 
-### Interactions
+#### Interactions
 
 | Dependency                   | Direction | Purpose                                                      |
 |------------------------------|-----------|--------------------------------------------------------------|

@@ -1,5 +1,7 @@
 # System Design
 
+![NuGet Installer System Structure](NuGetInstallerView.svg)
+
 This document describes the system-level design of the NuGet Installer,
 including the overall architecture, external interfaces, and system-wide design
 decisions that affect all subsystems.
@@ -72,6 +74,58 @@ The system uses standard console I/O streams:
 - **Standard Output** — Normal program output and information display
 - **Standard Error** — Error messages and exception information
 - **Color Output** — Red color coding for error messages when supported
+
+## Dependencies
+
+### Runtime OTS Packages
+
+The published tool depends on two published NuGet packages produced outside this program;
+per `software-items.md` these are treated as OTS Software Items rather than Shared Packages:
+
+- **`DemaConsulting.NuGet.Caching`** — Resolves and caches NuGet packages from the local global
+  package cache. Consumed through its `NuGetCache` type by the NuGet subsystem; see the *Package
+  Installer Unit Design* (`docs/design/nuget-installer/nuget/package-installer.md`) for the
+  specific interaction.
+- **`DemaConsulting.TestResults`** — Provides the in-memory test-result model and TRX/JUnit
+  serialization used by self-validation. Consumed by the SelfTest subsystem; see the *SelfTest
+  Subsystem Design* (`docs/design/nuget-installer/self-test.md`) for the specific interaction.
+
+Neither package currently has a dedicated `docs/design/ots/{ots-name}.md` integration-design
+entry of its own; the interaction detail lives in the consuming unit/subsystem design pages
+referenced above.
+
+### Build-Pipeline OTS Tools
+
+The system's build, test, documentation, and compliance pipeline depends on eleven additional
+OTS tools (BuildMark, FileAssert, Pandoc, ReqStream, ReviewMark, SarifMark, SonarMark,
+SysML2Tools, VersionMark, WeasyPrint, and xUnit). These are development-time dependencies only —
+they are not linked into, or shipped with, the published tool. See the *OTS Integration Design*
+(`docs/design/ots.md`) for the overall integration strategy and the per-item design pages under
+`docs/design/ots/` for details of each tool.
+
+### Shared Packages
+
+N/A - the system does not currently consume any packages produced by another repository within
+the same DEMA Consulting program; both runtime dependencies above are treated as OTS Software
+Items per the categorization criteria in `software-items.md`.
+
+## Risk Control Measures
+
+N/A - the NuGet Installer is a build-automation command-line tool, not a medical device or
+safety-classified software item; IEC 62304 §5.3.3 segregation between software items to reduce
+risk to an acceptable level is therefore not a formal design requirement.
+
+The design nonetheless provides two forms of practical containment that limit the blast radius
+of a defect or malicious input without constituting a formal risk-control architecture:
+
+- **Extraction sandboxing** — The Package Extractor unit validates every archive entry's
+  resolved destination path against the target output folder (see the *Package Extractor Unit
+  Design*, `docs/design/nuget-installer/nuget/package-extractor.md`, Security subsection) and
+  bounds cumulative decompressed bytes, containing the effect of a zip-slip or zip-bomb package
+  to the single install operation rather than the whole process or file system.
+- **Process isolation** — Each invocation of the tool runs in a separate OS process with no
+  persistent or shared state between invocations (see System-Wide Design Constraints,
+  Scalability Constraints), so a failure in one invocation cannot corrupt the state of another.
 
 ## Data Flow
 

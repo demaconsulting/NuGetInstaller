@@ -3,10 +3,28 @@
 #### Verification Strategy
 
 The `PackageExtractor` unit is verified using xUnit unit tests in `PackageExtractorTests.cs`.
-Tests construct minimal `.zip` archive fixtures in memory and write them to temporary file
-paths, then call `PackageExtractor.Extract` and assert on the return value, extracted file
-content, or thrown exception type. All tests use temporary directories that are cleaned up in
-test teardown.
+Tests build real `.zip`/`.nupkg` archives on disk using `System.IO.Compression.ZipArchive`
+and `ZipFile`, written to temporary file paths under the OS temp directory, then call
+`PackageExtractor.Extract` and assert on the return value, extracted file content, or thrown
+exception type. The zip-bomb scenario writes an actual archive whose entry decompresses to
+approximately 1.1 GiB on disk (exceeding the 1 GB limit), so this test creates a genuinely
+large temporary file rather than a small or in-memory fixture. All tests use temporary
+directories that are cleaned up in a `finally` block after each test.
+
+#### Test Environment
+
+Tests require a writable OS temporary directory (`Path.GetTempPath()`) with enough free disk
+space to hold the zip-bomb fixture (in excess of 1 GB, plus the compressed archive itself).
+No network access or external services are required. Tests run in the standard xUnit test
+runner with no additional mocking.
+
+#### Acceptance Criteria
+
+A unit test passes when: `Extract` returns `true` and the expected file(s) exist in the
+destination folder for valid archives; `Extract` returns `false` and leaves the destination
+folder unmodified when it already exists; directory-marker entries are skipped without error;
+and `Extract` throws `InvalidOperationException` — with a message containing `"zip-slip"` or
+`"zip-bomb"` as appropriate — for a traversal entry or an oversized decompressed payload.
 
 #### Test Scenarios
 

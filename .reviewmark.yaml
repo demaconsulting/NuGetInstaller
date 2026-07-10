@@ -1,7 +1,7 @@
 ---
 # ReviewMark Configuration File
 # This file defines which files require review, where the evidence store is located,
-# and how files are grouped into named review-sets following hierarchical scope principles.
+# and how files are grouped into named review-sets.
 
 # Patterns identifying all files that require review.
 # Processed in order; prefix a pattern with '!' to exclude.
@@ -13,6 +13,7 @@ needs-review:
   - "docs/design/**/*.md"         # Design documentation files
   - "docs/verification/**/*.md"   # Verification documentation files
   - "docs/user_guide/**/*.md"     # User guide documentation
+  - "docs/sysml2/**/*.sysml"      # SysML2 architecture model
   - "!**/obj/**"                  # Exclude build output
   - "!**/bin/**"                  # Exclude build output
   - "!node_modules/**"            # Exclude npm dependencies
@@ -26,221 +27,347 @@ evidence-source:
   type: url
   location: https://raw.githubusercontent.com/demaconsulting/NuGetInstaller/reviews/index.json
 
+# Global context shown to every reviewer for orientation (not fingerprinted).
+context:
+  - docs/design/introduction.md
+
 # Review sets following standardized patterns for hierarchical compliance coverage
 reviews:
-  # Purpose
+  # Purpose Review (only one per repository)
   - id: Purpose
-    title: Review that Advertised Features Match System Design
+    title: Review that README and User Guide are Coherent and Complete
+    context:
+      - "!docs/design/introduction.md"                            # exclude design intro from user-facing review
     paths:
+      - "README.md"                                               # project readme
+      - "docs/user_guide/**/*.md"                                 # user guide
+
+  # Decomposition Review (only one per repository)
+  - id: Decomposition
+    title: Review that NuGetInstaller Decomposition Addresses the Stated Purpose
+    context:
       - "README.md"
       - "docs/user_guide/**/*.md"
-      - "docs/reqstream/nuget-installer.yaml"
-      - "docs/design/introduction.md"
-      - "docs/design/nuget-installer.md"
+    paths:
+      - "requirements.yaml"                                       # root requirements file
+      - "docs/design/introduction.md"                             # design introduction
+      - "docs/sysml2/**/*.sysml"                                  # SysML2 model (authoritative structure)
 
-  # NuGetInstaller - Specials
+  # NuGetInstaller-Architecture Review (one per system)
   - id: NuGetInstaller-Architecture
-    title: Review that NuGet Installer Architecture Satisfies Requirements
+    title: Review that NuGetInstaller Architecture Satisfies Requirements
+    context:
+      - "README.md"
+      - "docs/user_guide/**/*.md"
     paths:
-      - "docs/reqstream/nuget-installer.yaml"
-      - "docs/reqstream/nuget-installer/platform-requirements.yaml"
-      - "docs/design/introduction.md"
-      - "docs/design/nuget-installer.md"
-      - "docs/verification/introduction.md"
-      - "docs/verification/nuget-installer.md"
-      - "test/**/IntegrationTests.cs"
+      - "docs/reqstream/nuget-installer.yaml"                     # system requirements
+      - "docs/design/introduction.md"                             # design introduction
+      - "docs/design/nuget-installer.md"                          # system design
+      - "docs/verification/introduction.md"                       # verification introduction
+      - "docs/verification/nuget-installer.md"                    # system verification design
+      - "test/**/IntegrationTests.cs"                             # system integration tests
+      - "test/**/AssemblyInfo.cs"                                 # test infrastructure
+      - "test/**/Runner.cs"                                       # test infrastructure
 
+  # NuGetInstaller-Design Review (one per system)
   - id: NuGetInstaller-Design
-    title: Review that NuGet Installer Design is Consistent and Complete
-    paths:
+    title: Review that NuGetInstaller Design is Consistent and Complete
+    context:
       - "docs/reqstream/nuget-installer.yaml"
-      - "docs/reqstream/nuget-installer/platform-requirements.yaml"
-      - "docs/design/introduction.md"
-      - "docs/design/nuget-installer.md"
-      - "docs/design/nuget-installer/**/*.md"
-      - "docs/verification/introduction.md"
-      - "docs/verification/ots.md"
+    paths:
+      - "docs/reqstream/nuget-installer/platform-requirements.yaml"  # platform requirements
+      - "docs/design/introduction.md"                             # design introduction
+      - "docs/design/nuget-installer.md"                          # system design overview
+      - "docs/design/nuget-installer/**/*.md"                     # all system design documents
+      - "docs/verification/introduction.md"                       # verification introduction
+      - "docs/verification/ots.md"                                # OTS verification overview
 
+  # NuGetInstaller-Verification Review (one per system)
+  - id: NuGetInstaller-Verification
+    title: Review that NuGetInstaller Verification is Consistent and Complete
+    context:
+      - "docs/reqstream/nuget-installer.yaml"
+    paths:
+      - "docs/verification/introduction.md"                       # verification introduction
+      - "docs/verification/nuget-installer.md"                    # system verification overview
+      - "docs/verification/nuget-installer/**/*.md"               # all verification documents
+      - "docs/verification/ots.md"                                # OTS verification overview
+
+  # NuGetInstaller-AllRequirements Review (one per system)
   - id: NuGetInstaller-AllRequirements
-    title: Review that All NuGet Installer Requirements are Complete
+    title: Review that All NuGetInstaller Requirements are Complete
+    context:
+      - "docs/design/nuget-installer.md"
+      - "docs/reqstream/nuget-installer.yaml"
     paths:
-      - "requirements.yaml"
-      - "docs/reqstream/nuget-installer/**/*.yaml"
-      - "docs/reqstream/ots/**/*.yaml"
+      - "requirements.yaml"                                       # root requirements file
+      - "docs/reqstream/**/*.yaml"                                # all requirements files
 
-  # NuGetInstaller - Program
+  # NuGetInstaller-Program Review (one per unit directly under the system)
   - id: NuGetInstaller-Program
-    title: Review that NuGet Installer Program Implementation is Correct
+    title: Review that NuGetInstaller Program Implementation is Correct
+    context:
+      - "docs/design/nuget-installer.md"
+      - "docs/reqstream/nuget-installer.yaml"
     paths:
-      - "docs/reqstream/nuget-installer/program.yaml"
-      - "docs/design/nuget-installer/program.md"
-      - "docs/verification/nuget-installer/program.md"
-      - "src/**/Program.cs"
-      - "test/**/ProgramTests.cs"
+      - "docs/reqstream/nuget-installer/program.yaml"             # requirements
+      - "docs/design/nuget-installer/program.md"                  # design
+      - "docs/verification/nuget-installer/program.md"            # verification
+      - "src/**/Program.cs"                                       # implementation
+      - "test/**/ProgramTests.cs"                                 # unit tests
 
-  # NuGetInstaller - Cli
+  # NuGetInstaller-Cli Review (one per subsystem)
   - id: NuGetInstaller-Cli
-    title: Review that NuGet Installer Cli Satisfies Subsystem Requirements
+    title: Review that NuGetInstaller Cli Satisfies Subsystem Requirements
+    context:
+      - "docs/design/nuget-installer.md"
+      - "docs/reqstream/nuget-installer.yaml"
     paths:
-      - "docs/reqstream/nuget-installer/cli.yaml"
-      - "docs/design/nuget-installer/cli.md"
-      - "docs/verification/nuget-installer/cli.md"
-      - "test/**/Cli/CliSubsystemTests.cs"
+      - "docs/reqstream/nuget-installer/cli.yaml"                 # subsystem requirements
+      - "docs/design/nuget-installer/cli.md"                      # subsystem design
+      - "docs/verification/nuget-installer/cli.md"                # subsystem verification
+      - "test/**/Cli/CliSubsystemTests.cs"                        # subsystem tests
 
+  # NuGetInstaller-Cli-Context Review (one per unit)
   - id: NuGetInstaller-Cli-Context
-    title: Review that NuGet Installer Cli Context Implementation is Correct
+    title: Review that NuGetInstaller Cli Context Implementation is Correct
+    context:
+      - "docs/design/nuget-installer.md"
+      - "docs/reqstream/nuget-installer.yaml"
+      - "docs/design/nuget-installer/cli.md"
+      - "docs/reqstream/nuget-installer/cli.yaml"
     paths:
-      - "docs/reqstream/nuget-installer/cli/context.yaml"
-      - "docs/design/nuget-installer/cli/context.md"
-      - "docs/verification/nuget-installer/cli/context.md"
-      - "src/**/Cli/Context.cs"
-      - "test/**/Cli/ContextTests.cs"
+      - "docs/reqstream/nuget-installer/cli/context.yaml"         # requirements
+      - "docs/design/nuget-installer/cli/context.md"              # design
+      - "docs/verification/nuget-installer/cli/context.md"        # verification
+      - "src/**/Cli/Context.cs"                                   # implementation
+      - "test/**/Cli/ContextTests.cs"                             # unit tests
 
-  # NuGetInstaller - NuGet
+  # NuGetInstaller-NuGet Review (one per subsystem)
   - id: NuGetInstaller-NuGet
-    title: Review that NuGet Installer NuGet Satisfies Subsystem Requirements
+    title: Review that NuGetInstaller NuGet Satisfies Subsystem Requirements
+    context:
+      - "docs/design/nuget-installer.md"
+      - "docs/reqstream/nuget-installer.yaml"
     paths:
-      - "docs/reqstream/nuget-installer/nuget.yaml"
-      - "docs/design/nuget-installer/nuget.md"
-      - "docs/verification/nuget-installer/nuget.md"
-      - "test/**/NuGet/NuGetSubsystemTests.cs"
+      - "docs/reqstream/nuget-installer/nuget.yaml"               # subsystem requirements
+      - "docs/design/nuget-installer/nuget.md"                    # subsystem design
+      - "docs/verification/nuget-installer/nuget.md"              # subsystem verification
+      - "test/**/NuGet/NuGetSubsystemTests.cs"                    # subsystem tests
 
+  # NuGetInstaller-NuGet-Models Review (one per subsystem, nested under NuGet)
   - id: NuGetInstaller-NuGet-Models
-    title: Review that NuGet Installer NuGet Models Satisfies Subsystem Requirements
+    title: Review that NuGetInstaller NuGet Models Satisfies Subsystem Requirements
+    context:
+      - "docs/design/nuget-installer.md"
+      - "docs/reqstream/nuget-installer.yaml"
+      - "docs/design/nuget-installer/nuget.md"
+      - "docs/reqstream/nuget-installer/nuget.yaml"
     paths:
-      - "docs/reqstream/nuget-installer/nuget/models.yaml"
-      - "docs/design/nuget-installer/nuget/models.md"
-      - "docs/verification/nuget-installer/nuget/models.md"
-      - "test/**/NuGet/Models/ModelsSubsystemTests.cs"
+      - "docs/reqstream/nuget-installer/nuget/models.yaml"        # subsystem requirements
+      - "docs/design/nuget-installer/nuget/models.md"             # subsystem design
+      - "docs/verification/nuget-installer/nuget/models.md"       # subsystem verification
+      - "test/**/NuGet/Models/ModelsSubsystemTests.cs"            # subsystem tests
 
+  # NuGetInstaller-NuGet-Models-PackageEntry Review (one per unit under NuGet/Models)
   - id: NuGetInstaller-NuGet-Models-PackageEntry
-    title: Review that NuGet Installer NuGet Models PackageEntry Implementation is Correct
+    title: Review that NuGetInstaller NuGet Models PackageEntry Implementation is Correct
+    context:
+      - "docs/design/nuget-installer.md"
+      - "docs/reqstream/nuget-installer.yaml"
+      - "docs/design/nuget-installer/nuget.md"
+      - "docs/reqstream/nuget-installer/nuget.yaml"
+      - "docs/design/nuget-installer/nuget/models.md"
+      - "docs/reqstream/nuget-installer/nuget/models.yaml"
     paths:
-      - "docs/reqstream/nuget-installer/nuget/models/package-entry.yaml"
-      - "docs/design/nuget-installer/nuget/models/package-entry.md"
-      - "docs/verification/nuget-installer/nuget/models/package-entry.md"
-      - "src/**/NuGet/Models/PackageEntry.cs"
+      - "docs/reqstream/nuget-installer/nuget/models/package-entry.yaml"  # requirements
+      - "docs/design/nuget-installer/nuget/models/package-entry.md"       # design
+      - "docs/verification/nuget-installer/nuget/models/package-entry.md"  # verification
+      - "src/**/NuGet/Models/PackageEntry.cs"                             # implementation
 
+  # NuGetInstaller-NuGet-PackagesConfigReader Review (one per unit under NuGet)
   - id: NuGetInstaller-NuGet-PackagesConfigReader
-    title: Review that NuGet Installer NuGet PackagesConfigReader Implementation is Correct
+    title: Review that NuGetInstaller NuGet PackagesConfigReader Implementation is Correct
+    context:
+      - "docs/design/nuget-installer.md"
+      - "docs/reqstream/nuget-installer.yaml"
+      - "docs/design/nuget-installer/nuget.md"
+      - "docs/reqstream/nuget-installer/nuget.yaml"
     paths:
-      - "docs/reqstream/nuget-installer/nuget/packages-config-reader.yaml"
-      - "docs/design/nuget-installer/nuget/packages-config-reader.md"
-      - "docs/verification/nuget-installer/nuget/packages-config-reader.md"
-      - "src/**/NuGet/PackagesConfigReader.cs"
-      - "test/**/NuGet/PackagesConfigReaderTests.cs"
+      - "docs/reqstream/nuget-installer/nuget/packages-config-reader.yaml"  # requirements
+      - "docs/design/nuget-installer/nuget/packages-config-reader.md"       # design
+      - "docs/verification/nuget-installer/nuget/packages-config-reader.md"  # verification
+      - "src/**/NuGet/PackagesConfigReader.cs"                              # implementation
+      - "test/**/NuGet/PackagesConfigReaderTests.cs"                        # unit tests
 
+  # NuGetInstaller-NuGet-PackageExtractor Review (one per unit under NuGet)
   - id: NuGetInstaller-NuGet-PackageExtractor
-    title: Review that NuGet Installer NuGet PackageExtractor Implementation is Correct
+    title: Review that NuGetInstaller NuGet PackageExtractor Implementation is Correct
+    context:
+      - "docs/design/nuget-installer.md"
+      - "docs/reqstream/nuget-installer.yaml"
+      - "docs/design/nuget-installer/nuget.md"
+      - "docs/reqstream/nuget-installer/nuget.yaml"
     paths:
-      - "docs/reqstream/nuget-installer/nuget/package-extractor.yaml"
-      - "docs/design/nuget-installer/nuget/package-extractor.md"
-      - "docs/verification/nuget-installer/nuget/package-extractor.md"
-      - "src/**/NuGet/PackageExtractor.cs"
-      - "test/**/NuGet/PackageExtractorTests.cs"
+      - "docs/reqstream/nuget-installer/nuget/package-extractor.yaml"      # requirements
+      - "docs/design/nuget-installer/nuget/package-extractor.md"           # design
+      - "docs/verification/nuget-installer/nuget/package-extractor.md"     # verification
+      - "src/**/NuGet/PackageExtractor.cs"                                 # implementation
+      - "test/**/NuGet/PackageExtractorTests.cs"                           # unit tests
 
+  # NuGetInstaller-NuGet-PackageInstaller Review (one per unit under NuGet)
   - id: NuGetInstaller-NuGet-PackageInstaller
-    title: Review that NuGet Installer NuGet PackageInstaller Implementation is Correct
+    title: Review that NuGetInstaller NuGet PackageInstaller Implementation is Correct
+    context:
+      - "docs/design/nuget-installer.md"
+      - "docs/reqstream/nuget-installer.yaml"
+      - "docs/design/nuget-installer/nuget.md"
+      - "docs/reqstream/nuget-installer/nuget.yaml"
     paths:
-      - "docs/reqstream/nuget-installer/nuget/package-installer.yaml"
-      - "docs/design/nuget-installer/nuget/package-installer.md"
-      - "docs/verification/nuget-installer/nuget/package-installer.md"
-      - "src/**/NuGet/PackageInstaller.cs"
-      - "test/**/NuGet/PackageInstallerTests.cs"
+      - "docs/reqstream/nuget-installer/nuget/package-installer.yaml"      # requirements
+      - "docs/design/nuget-installer/nuget/package-installer.md"           # design
+      - "docs/verification/nuget-installer/nuget/package-installer.md"     # verification
+      - "src/**/NuGet/PackageInstaller.cs"                                 # implementation
+      - "test/**/NuGet/PackageInstallerTests.cs"                           # unit tests
 
-  # NuGetInstaller - SelfTest
+  # NuGetInstaller-SelfTest Review (one per subsystem)
   - id: NuGetInstaller-SelfTest
-    title: Review that NuGet Installer SelfTest Satisfies Subsystem Requirements
+    title: Review that NuGetInstaller SelfTest Satisfies Subsystem Requirements
+    context:
+      - "docs/design/nuget-installer.md"
+      - "docs/reqstream/nuget-installer.yaml"
     paths:
-      - "docs/reqstream/nuget-installer/self-test.yaml"
-      - "docs/design/nuget-installer/self-test.md"
-      - "docs/verification/nuget-installer/self-test.md"
-      - "test/**/SelfTest/SelfTestSubsystemTests.cs"
+      - "docs/reqstream/nuget-installer/self-test.yaml"                    # subsystem requirements
+      - "docs/design/nuget-installer/self-test.md"                         # subsystem design
+      - "docs/verification/nuget-installer/self-test.md"                   # subsystem verification
+      - "test/**/SelfTest/SelfTestSubsystemTests.cs"                       # subsystem tests
 
+  # NuGetInstaller-SelfTest-Validation Review (one per unit)
   - id: NuGetInstaller-SelfTest-Validation
-    title: Review that NuGet Installer SelfTest Validation Implementation is Correct
+    title: Review that NuGetInstaller SelfTest Validation Implementation is Correct
+    context:
+      - "docs/design/nuget-installer.md"
+      - "docs/reqstream/nuget-installer.yaml"
+      - "docs/design/nuget-installer/self-test.md"
+      - "docs/reqstream/nuget-installer/self-test.yaml"
     paths:
-      - "docs/reqstream/nuget-installer/self-test/validation.yaml"
-      - "docs/design/nuget-installer/self-test/validation.md"
-      - "docs/verification/nuget-installer/self-test/validation.md"
-      - "src/**/SelfTest/Validation.cs"
-      - "test/**/SelfTest/ValidationTests.cs"
+      - "docs/reqstream/nuget-installer/self-test/validation.yaml"         # requirements
+      - "docs/design/nuget-installer/self-test/validation.md"              # design
+      - "docs/verification/nuget-installer/self-test/validation.md"        # verification
+      - "src/**/SelfTest/Validation.cs"                                    # implementation
+      - "test/**/SelfTest/ValidationTests.cs"                              # unit tests
 
-  # NuGetInstaller - Utilities
+  # NuGetInstaller-Utilities Review (one per subsystem)
   - id: NuGetInstaller-Utilities
-    title: Review that NuGet Installer Utilities Satisfies Subsystem Requirements
+    title: Review that NuGetInstaller Utilities Satisfies Subsystem Requirements
+    context:
+      - "docs/design/nuget-installer.md"
+      - "docs/reqstream/nuget-installer.yaml"
     paths:
-      - "docs/reqstream/nuget-installer/utilities.yaml"
-      - "docs/design/nuget-installer/utilities.md"
-      - "docs/verification/nuget-installer/utilities.md"
-      - "test/**/Utilities/UtilitiesSubsystemTests.cs"
+      - "docs/reqstream/nuget-installer/utilities.yaml"                    # subsystem requirements
+      - "docs/design/nuget-installer/utilities.md"                         # subsystem design
+      - "docs/verification/nuget-installer/utilities.md"                   # subsystem verification
+      - "test/**/Utilities/UtilitiesSubsystemTests.cs"                     # subsystem tests
 
+  # NuGetInstaller-Utilities-PathHelpers Review (one per unit)
   - id: NuGetInstaller-Utilities-PathHelpers
-    title: Review that NuGet Installer Utilities PathHelpers Implementation is Correct
+    title: Review that NuGetInstaller Utilities PathHelpers Implementation is Correct
+    context:
+      - "docs/design/nuget-installer.md"
+      - "docs/reqstream/nuget-installer.yaml"
+      - "docs/design/nuget-installer/utilities.md"
+      - "docs/reqstream/nuget-installer/utilities.yaml"
     paths:
-      - "docs/reqstream/nuget-installer/utilities/path-helpers.yaml"
-      - "docs/design/nuget-installer/utilities/path-helpers.md"
-      - "docs/verification/nuget-installer/utilities/path-helpers.md"
-      - "src/**/Utilities/PathHelpers.cs"
-      - "test/**/Utilities/PathHelpersTests.cs"
+      - "docs/reqstream/nuget-installer/utilities/path-helpers.yaml"       # requirements
+      - "docs/design/nuget-installer/utilities/path-helpers.md"            # design
+      - "docs/verification/nuget-installer/utilities/path-helpers.md"      # verification
+      - "src/**/Utilities/PathHelpers.cs"                                  # implementation
+      - "test/**/Utilities/PathHelpersTests.cs"                            # unit tests
 
-  # OTS Items
+  # OTS-BuildMark Review (one per OTS item)
   - id: OTS-BuildMark
     title: Review that BuildMark Provides Required Functionality
     paths:
-      - "docs/reqstream/ots/buildmark.yaml"
-      - "docs/verification/ots/buildmark.md"
+      - "docs/reqstream/ots/buildmark.yaml"                                # OTS requirements
+      - "docs/design/ots/buildmark.md"                                     # OTS design
+      - "docs/verification/ots/buildmark.md"                               # OTS verification
 
+  # OTS-FileAssert Review (one per OTS item)
   - id: OTS-FileAssert
     title: Review that FileAssert Provides Required Functionality
     paths:
-      - "docs/reqstream/ots/fileassert.yaml"
-      - "docs/verification/ots/fileassert.md"
+      - "docs/reqstream/ots/fileassert.yaml"                               # OTS requirements
+      - "docs/design/ots/fileassert.md"                                    # OTS design
+      - "docs/verification/ots/fileassert.md"                              # OTS verification
 
-  - id: OTS-XUnit
+  # OTS-xUnit Review (one per OTS item)
+  - id: OTS-xUnit
     title: Review that xUnit Provides Required Functionality
     paths:
-      - "docs/reqstream/ots/xunit.yaml"
-      - "docs/verification/ots/xunit.md"
+      - "docs/reqstream/ots/xunit.yaml"                                    # OTS requirements
+      - "docs/design/ots/xunit.md"                                         # OTS design
+      - "docs/verification/ots/xunit.md"                                   # OTS verification
 
+  # OTS-Pandoc Review (one per OTS item)
   - id: OTS-Pandoc
     title: Review that Pandoc Provides Required Functionality
     paths:
-      - "docs/reqstream/ots/pandoc.yaml"
-      - "docs/verification/ots/pandoc.md"
+      - "docs/reqstream/ots/pandoc.yaml"                                   # OTS requirements
+      - "docs/design/ots/pandoc.md"                                        # OTS design
+      - "docs/verification/ots/pandoc.md"                                  # OTS verification
 
+  # OTS-ReqStream Review (one per OTS item)
   - id: OTS-ReqStream
     title: Review that ReqStream Provides Required Functionality
     paths:
-      - "docs/reqstream/ots/reqstream.yaml"
-      - "docs/verification/ots/reqstream.md"
+      - "docs/reqstream/ots/reqstream.yaml"                                # OTS requirements
+      - "docs/design/ots/reqstream.md"                                     # OTS design
+      - "docs/verification/ots/reqstream.md"                               # OTS verification
 
+  # OTS-ReviewMark Review (one per OTS item)
   - id: OTS-ReviewMark
     title: Review that ReviewMark Provides Required Functionality
     paths:
-      - "docs/reqstream/ots/reviewmark.yaml"
-      - "docs/verification/ots/reviewmark.md"
+      - "docs/reqstream/ots/reviewmark.yaml"                               # OTS requirements
+      - "docs/design/ots/reviewmark.md"                                    # OTS design
+      - "docs/verification/ots/reviewmark.md"                              # OTS verification
 
+  # OTS-SarifMark Review (one per OTS item)
   - id: OTS-SarifMark
     title: Review that SarifMark Provides Required Functionality
     paths:
-      - "docs/reqstream/ots/sarifmark.yaml"
-      - "docs/verification/ots/sarifmark.md"
+      - "docs/reqstream/ots/sarifmark.yaml"                                # OTS requirements
+      - "docs/design/ots/sarifmark.md"                                     # OTS design
+      - "docs/verification/ots/sarifmark.md"                               # OTS verification
 
+  # OTS-SonarMark Review (one per OTS item)
   - id: OTS-SonarMark
     title: Review that SonarMark Provides Required Functionality
     paths:
-      - "docs/reqstream/ots/sonarmark.yaml"
-      - "docs/verification/ots/sonarmark.md"
+      - "docs/reqstream/ots/sonarmark.yaml"                                # OTS requirements
+      - "docs/design/ots/sonarmark.md"                                     # OTS design
+      - "docs/verification/ots/sonarmark.md"                               # OTS verification
 
+  # OTS-SysML2Tools Review (one per OTS item)
+  - id: OTS-SysML2Tools
+    title: Review that SysML2Tools Provides Required Functionality
+    paths:
+      - "docs/reqstream/ots/sysml2tools.yaml"                              # OTS requirements
+      - "docs/design/ots/sysml2tools.md"                                   # OTS design
+      - "docs/verification/ots/sysml2tools.md"                             # OTS verification
+
+  # OTS-VersionMark Review (one per OTS item)
   - id: OTS-VersionMark
     title: Review that VersionMark Provides Required Functionality
     paths:
-      - "docs/reqstream/ots/versionmark.yaml"
-      - "docs/verification/ots/versionmark.md"
+      - "docs/reqstream/ots/versionmark.yaml"                              # OTS requirements
+      - "docs/design/ots/versionmark.md"                                   # OTS design
+      - "docs/verification/ots/versionmark.md"                             # OTS verification
 
+  # OTS-WeasyPrint Review (one per OTS item)
   - id: OTS-WeasyPrint
     title: Review that WeasyPrint Provides Required Functionality
     paths:
-      - "docs/reqstream/ots/weasyprint.yaml"
-      - "docs/verification/ots/weasyprint.md"
+      - "docs/reqstream/ots/weasyprint.yaml"                               # OTS requirements
+      - "docs/design/ots/weasyprint.md"                                    # OTS design
+      - "docs/verification/ots/weasyprint.md"                              # OTS verification

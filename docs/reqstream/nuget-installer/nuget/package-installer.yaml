@@ -54,4 +54,4 @@ sections:
           which were skipped because they were already present. Status messages allow
           consumers to distinguish first-time installs from cached-hit operations.
         tests:
-          - PackageInstaller_InstallAsync_AlreadyExtracted_SkipsInstallation
+          - PackageInstaller_InstallAsync_WritesStatusMessageForInstalledAndSkippedPackages

@@ -317,29 +317,34 @@ public class CliSubsystemTests
     }
 
     /// <summary>
-    ///     Test that Context writes error messages to stderr.
+    ///     Test that Context and Program work together to write error messages to stderr when
+    ///     the tool-level error path (missing packages.config) is exercised through <see cref="Program.Run"/>.
     /// </summary>
     [Fact]
     public void CliSubsystem_ErrorOutput_ContextAndProgram_WritesErrorToStderr()
     {
-        // Arrange: redirect stderr to capture error output
+        // Arrange: redirect stdout/stderr and build a context pointing at a missing packages.config
+        var originalOut = Console.Out;
         var originalError = Console.Error;
         try
         {
+            using var outWriter = new StringWriter();
             using var errWriter = new StringWriter();
+            Console.SetOut(outWriter);
             Console.SetError(errWriter);
-            using var context = Context.Create([]);
+            using var context = Context.Create(["missing-packages.config"]);
 
-            // Act: write an error message through the context
-            context.WriteError("Test error message");
+            // Act: run the program, which reports the missing file through Context.WriteError
+            Program.Run(context);
 
             // Assert: error is written to stderr and exit code reflects failure
             var errorOutput = errWriter.ToString();
-            Assert.Contains("Test error message", errorOutput);
+            Assert.Contains("missing-packages.config", errorOutput);
             Assert.True(context.ExitCode == 1, "Exit code should be non-zero after error");
         }
         finally
         {
+            Console.SetOut(originalOut);
             Console.SetError(originalError);
         }
     }

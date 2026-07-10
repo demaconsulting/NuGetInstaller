@@ -30,7 +30,7 @@ This document covers verification of the following software units:
 - **Utilities** subsystem:
   - **PathHelpers** unit — safe path combination utilities (`Utilities/PathHelpers.cs`)
 
-The following ten OTS items are also verified:
+The following eleven OTS items are also verified:
 
 - **BuildMark** — build-notes documentation generator
 - **FileAssert** — document assertion tool
@@ -40,6 +40,7 @@ The following ten OTS items are also verified:
 - **ReviewMark** — file review tracking tool
 - **SarifMark** — SARIF report processor
 - **SonarMark** — SonarCloud quality reporter
+- **SysML2Tools** — architecture model validation and diagram rendering tool
 - **VersionMark** — version tracking tool
 - **WeasyPrint** — HTML to PDF converter
 
@@ -62,9 +63,11 @@ In-house software items have parallel artifacts organized as follows:
 - **Source**: `src/DemaConsulting.NuGetInstaller/{Subsystem}/{Item}.cs`
 - **Tests**: `test/DemaConsulting.NuGetInstaller.Tests/{Subsystem}/{Item}Tests.cs`
 
-OTS software items have no design documentation. Their artifacts are:
+OTS software items have integration and usage design documented under `docs/design/ots/`.
+Their artifacts are:
 
 - **Requirements**: `docs/reqstream/ots/{ots-name}.yaml`
+- **Design**: `docs/design/ots/{ots-name}.md`
 - **Verification**: `docs/verification/ots/{ots-name}.md`
 
 Review-sets for all items are defined in `.reviewmark.yaml` at the repository root.

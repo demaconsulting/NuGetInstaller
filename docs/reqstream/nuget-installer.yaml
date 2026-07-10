@@ -108,7 +108,7 @@ sections:
         children:
           - NuGetInstaller-NuGet-MissingFile
         tests:
-          - NuGetInstaller_InstallPackages_ValidConfig_ExtractsPackageToOutputDirectory
+          - NuGetInstaller_InstallPackages_MissingConfigFile_ReportsErrorAndReturnsNonZeroExitCode
 
       - id: NuGetInstaller-System-ErrorHandling-MalformedXml
         title: The tool shall report an error when the package configuration file contains malformed XML.
@@ -118,7 +118,7 @@ sections:
         children:
           - NuGetInstaller-NuGet-MalformedXml
         tests:
-          - NuGetInstaller_InstallPackages_ValidConfig_ExtractsPackageToOutputDirectory
+          - NuGetInstaller_InstallPackages_MalformedConfigFile_ReportsErrorAndReturnsNonZeroExitCode
 
       - id: NuGetInstaller-System-OutputDirectory
         title: >-

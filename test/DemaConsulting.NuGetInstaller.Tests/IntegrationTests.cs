@@ -486,4 +486,82 @@ public class IntegrationTests
         Assert.NotEqual(0, exitCode);
         Assert.Contains("--unknown", output);
     }
+
+    /// <summary>
+    ///     Test that the tool reports an error when the packages.config file does not exist.
+    /// </summary>
+    [Fact]
+    public void NuGetInstaller_InstallPackages_MissingConfigFile_ReportsErrorAndReturnsNonZeroExitCode()
+    {
+        // Arrange: create a temporary directory without a packages.config file
+        var tempDir = Path.Combine(Path.GetTempPath(), $"integration_missing_file_test_{Guid.NewGuid()}");
+
+        try
+        {
+            Directory.CreateDirectory(tempDir);
+            var configPath = Path.Combine(tempDir, "packages.config");
+
+            // Act: run the tool against the nonexistent packages.config file
+            var exitCode = Runner.Run(
+                out var output,
+                null,
+                "dotnet",
+                _dllPath,
+                configPath,
+                "-o",
+                tempDir);
+
+            // Assert: the tool reports a not-found error and returns a non-zero exit code
+            Assert.NotEqual(0, exitCode);
+            Assert.Contains("not found", output);
+        }
+        finally
+        {
+            if (Directory.Exists(tempDir))
+            {
+                Directory.Delete(tempDir, true);
+            }
+        }
+    }
+
+    /// <summary>
+    ///     Test that the tool reports an error when the packages.config file contains malformed XML.
+    /// </summary>
+    [Fact]
+    public void NuGetInstaller_InstallPackages_MalformedConfigFile_ReportsErrorAndReturnsNonZeroExitCode()
+    {
+        // Arrange: create a temporary directory with a malformed packages.config file
+        var tempDir = Path.Combine(Path.GetTempPath(), $"integration_malformed_xml_test_{Guid.NewGuid()}");
+
+        try
+        {
+            Directory.CreateDirectory(tempDir);
+            var configPath = Path.Combine(tempDir, "packages.config");
+            File.WriteAllText(configPath, "<packages><package id=\"test\" version=\"");
+
+            // Act: run the tool against the malformed packages.config file
+            var exitCode = Runner.Run(
+                out var output,
+                null,
+                "dotnet",
+                _dllPath,
+                configPath,
+                "-o",
+                tempDir);
+
+            // Assert: the tool reports an error and returns a non-zero exit code. Malformed
+            // XML surfaces as an unhandled XmlException (see Program's exception-handling
+            // strategy), so the tool reports it as an unexpected error rather than a
+            // recognized ArgumentException/InvalidOperationException.
+            Assert.NotEqual(0, exitCode);
+            Assert.Contains("Unexpected error", output);
+        }
+        finally
+        {
+            if (Directory.Exists(tempDir))
+            {
+                Directory.Delete(tempDir, true);
+            }
+        }
+    }
 }

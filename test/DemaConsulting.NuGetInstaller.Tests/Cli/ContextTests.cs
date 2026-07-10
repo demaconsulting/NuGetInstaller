@@ -232,6 +232,30 @@ public class ContextTests
     }
 
     /// <summary>
+    ///     Test creating a context with --log followed by another flag throws exception
+    ///     instead of silently swallowing the following flag as the log file value.
+    /// </summary>
+    [Fact]
+    public void Context_Create_LogFlag_FollowedByAnotherFlag_ThrowsArgumentException()
+    {
+        // Act & Assert
+        var exception = Assert.Throws<ArgumentException>(() => Context.Create(["--log", "--silent"]));
+        Assert.Contains("--log", exception.Message);
+    }
+
+    /// <summary>
+    ///     Test creating a context with --results followed by another flag throws exception
+    ///     instead of silently swallowing the following flag as the results file value.
+    /// </summary>
+    [Fact]
+    public void Context_Create_ResultsFlag_FollowedByAnotherFlag_ThrowsArgumentException()
+    {
+        // Act & Assert
+        var exception = Assert.Throws<ArgumentException>(() => Context.Create(["--results", "--validate"]));
+        Assert.Contains("--results", exception.Message);
+    }
+
+    /// <summary>
     ///     Test creating a context with the --result alias flag (legacy alias for --results).
     /// </summary>
     [Fact]
@@ -571,6 +595,18 @@ public class ContextTests
     {
         // Act & Assert
         var exception = Assert.Throws<ArgumentException>(() => Context.Create(["-o"]));
+        Assert.Contains("-o", exception.Message);
+    }
+
+    /// <summary>
+    ///     Test creating a context with -o followed by another flag throws exception
+    ///     instead of silently swallowing the following flag as the output directory value.
+    /// </summary>
+    [Fact]
+    public void Context_Create_OutputDirectoryFlag_FollowedByAnotherFlag_ThrowsArgumentException()
+    {
+        // Act & Assert
+        var exception = Assert.Throws<ArgumentException>(() => Context.Create(["-o", "-x"]));
         Assert.Contains("-o", exception.Message);
     }
 

@@ -21,31 +21,41 @@ words:
   - dcterms
   - DEMA
   - Dema
+  - demaconsulting
   - doctitle
   - docversion
   - excludeversion
   - fileassert
+  - fontconfig
   - GHSA
   - hotspot
   - LASTEXITCODE
   - mstest
   - Newtonsoft
   - pandoc
+  - pandoctool
   - pagetitle
+  - Pango
   - Qube
   - reqstream
   - reviewmark
+  - sandboxing
   - SARIF
   - Sarif
   - sarifmark
   - slnx
   - snupkg
+  - sonarcloud
   - sonarmark
+  - sonarscanner
+  - sysml
+  - sysml2tools
   - thirdparty
   - venv
   - versionmark
   - Weasy
   - Weasyprint
+  - weasyprinttool
   - Werror
   - Xunit
   - yamlfix

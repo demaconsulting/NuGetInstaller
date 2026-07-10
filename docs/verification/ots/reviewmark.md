@@ -2,16 +2,17 @@
 
 ### Required Functionality
 
-ReviewMark (`NuGetInstaller-OTS-ReviewMark`) shall generate a review plan and review report
-from the review configuration. The `DemaConsulting.ReviewMark` tool reads `.reviewmark.yaml`
-and the review evidence store to produce a review plan and review report documenting file
-review coverage and currency.
+ReviewMark shall generate a review plan from the review configuration
+(`NuGetInstaller-OTS-ReviewMark-PlanGeneration`) and shall generate a review report from the
+review configuration and evidence store (`NuGetInstaller-OTS-ReviewMark-ReportGeneration`). The
+`DemaConsulting.ReviewMark` tool reads `.reviewmark.yaml` and the review evidence store to
+produce these two documents.
 
 ### Verification Approach
 
 ReviewMark is verified by CI pipeline step evidence. The tool's built-in `--validate`
 command is executed in the CI pipeline and writes test method results to a TRX file.
-The TRX file is consumed by ReqStream to satisfy the OTS requirement.
+The TRX file is consumed by ReqStream to satisfy the OTS requirements.
 
 Test evidence names (test methods written to the TRX file by `dotnet reviewmark --validate`):
 
@@ -22,4 +23,5 @@ Test evidence names (test methods written to the TRX file by `dotnet reviewmark 
 
 | Requirement ID | Test Method(s) |
 | --- | --- |
-| `NuGetInstaller-OTS-ReviewMark` | `ReviewMark_ReviewPlanGeneration`, `ReviewMark_ReviewReportGeneration` |
+| `NuGetInstaller-OTS-ReviewMark-PlanGeneration` | `ReviewMark_ReviewPlanGeneration` |
+| `NuGetInstaller-OTS-ReviewMark-ReportGeneration` | `ReviewMark_ReviewReportGeneration` |

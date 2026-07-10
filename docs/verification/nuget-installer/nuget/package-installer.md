@@ -8,6 +8,22 @@ directory path, then assert on the resulting directory structure and the status 
 to a silent `Context`. A real `.nupkg` archive from the local NuGet cache is used to exercise
 extraction; no mocking is applied within the unit.
 
+#### Test Environment
+
+Tests require the local NuGet package cache (populated by `dotnet restore` during the build)
+to contain the `DemaConsulting.NuGet.Caching` package used as the extraction fixture, and a
+writable OS temporary directory for output folders. No network access is required at test
+time because the package is resolved from the local cache. Tests run under the standard
+xUnit test runner.
+
+#### Acceptance Criteria
+
+A unit test passes when `InstallAsync` produces the expected output-folder layout (versioned
+`{Id}.{Version}/` or flat `{Id}/`, per the `excludeVersion` flag) containing the extracted
+package contents, creates the output directory when it does not already exist, and writes the
+expected skip status message to the `Context` for packages whose output folder already
+exists.
+
 #### Test Scenarios
 
 ##### Default Naming Scenario

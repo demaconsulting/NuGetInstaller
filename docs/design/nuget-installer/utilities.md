@@ -1,5 +1,7 @@
 ## Utilities Subsystem
 
+![Utilities Structure](UtilitiesView.svg)
+
 The `Utilities` subsystem provides shared utility functions for the NuGet Installer.
 It supplies reusable, independently testable helpers that are consumed by other subsystems.
 
@@ -26,12 +28,19 @@ The `Utilities` subsystem exposes the following interface to the rest of the too
 |-------------------------------|-----------|-------------------------------------------------------------------|
 | `PathHelpers.SafePathCombine` | Outbound  | Combines paths, rejecting null inputs and traversal sequences.    |
 
-### Interactions
+### Design
+
+`PathHelpers` implements safe path combination as a single stateless algorithm; there is no
+internal collaboration between multiple units to describe since the subsystem contains only
+one unit. The subsections below describe its external and internal dependencies, the error
+conditions it detects, and the algorithm it uses to defeat path-traversal attempts.
+
+#### Interactions
 
 `PathHelpers` has no dependencies on other tool units or subsystems. It uses only .NET base
 class library types (`Path`, `ArgumentNullException`).
 
-### Error Handling
+#### Error Handling
 
 `SafePathCombine` throws the following exceptions:
 
@@ -43,7 +52,7 @@ class library types (`Path`, `ArgumentNullException`).
 | `NotSupportedException`  | A path component contains an unsupported character.                                 |
 | `PathTooLongException`   | The resulting path exceeds the system's maximum path length.                        |
 
-### Algorithm
+#### Algorithm
 
 Both paths are resolved to absolute form via `Path.GetFullPath` before using
 `Path.GetRelativePath` for containment checking. This avoids simple prefix-matching

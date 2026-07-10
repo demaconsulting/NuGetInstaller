@@ -1,15 +1,20 @@
 ### PackageExtractor
 
+![NuGet Structure](NuGetView.svg)
+
 The `PackageExtractor` class extracts NuGet package (.nupkg) contents to a destination
 folder.
 
-#### Overview
+#### Purpose
 
-`PackageExtractor` is an `internal` static utility class with a single `Extract` method. It opens the
-archive with `ZipFile.OpenRead` and extracts entries one at a time, accumulating the total
-number of bytes written. If the destination folder already exists, extraction is skipped
-and the method returns `false`. If the total extracted size exceeds 1 GB the method throws
-an `InvalidOperationException` to defend against zip-bomb attacks.
+`PackageExtractor` has a single responsibility: to safely extract the contents of a
+NuGet package (`.nupkg`, a ZIP archive) into a destination folder, defending against
+zip-slip and zip-bomb attacks along the way. It is an `internal` static utility class with
+a single `Extract` method. It opens the archive with `ZipFile.OpenRead` and extracts entries
+one at a time, accumulating the total number of bytes written. If the destination folder
+already exists, extraction is skipped and the method returns `false`. If the total extracted
+size exceeds 1 GB the method throws an `InvalidOperationException` to defend against
+zip-bomb attacks.
 
 #### Data Model
 
@@ -17,12 +22,12 @@ an `InvalidOperationException` to defend against zip-bomb attacks.
 
 The class defines two constants:
 
-| Constant              | Value         | Description                                        |
-|-----------------------|---------------|----------------------------------------------------|
-| `MaxExtractedBytes`   | 1 073 741 824 | Maximum bytes that may be extracted (1 GB ceiling) |
-| `CopyBufferSize`      | 81 920        | Buffer size (80 KiB) used when copying entry data  |
+| Constant            | Value         | Description                                        |
+|---------------------|---------------|----------------------------------------------------|
+| `MaxExtractedBytes` | 1 073 741 824 | Maximum bytes that may be extracted (1 GB ceiling) |
+| `CopyBufferSize`    | 81 920        | Buffer size (80 KiB) used when copying entry data  |
 
-#### Methods
+#### Key Methods
 
 ##### Extract(string nupkgPath, string destFolder)
 
@@ -30,10 +35,10 @@ Extracts all entries from a .nupkg file into the destination folder.
 
 **Parameters:**
 
-| Parameter    | Type     | Description                              |
-|--------------|----------|------------------------------------------|
-| `nupkgPath`  | `string` | Path to the .nupkg file.                 |
-| `destFolder` | `string` | Destination folder for extraction.       |
+| Parameter    | Type     | Description                        |
+|--------------|----------|------------------------------------|
+| `nupkgPath`  | `string` | Path to the .nupkg file.           |
+| `destFolder` | `string` | Destination folder for extraction. |
 
 **Returns:** `bool` — `true` if extraction was performed; `false` if skipped.
 
@@ -62,6 +67,18 @@ Extracts all entries from a .nupkg file into the destination folder.
    f. Write the chunk to the destination file stream.
 6. Return `true`.
 
+#### Error Handling
+
+| Exception                   | Condition                                                                                                                                    | Propagation                                                     |
+|-----------------------------|----------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------|
+| `InvalidOperationException` | An archive entry's resolved destination path would escape `destFolder` (zip-slip).                                                           | Thrown directly by `Extract`; propagated to `PackageInstaller`. |
+| `InvalidOperationException` | Cumulative decompressed bytes written exceed `MaxExtractedBytes` (1 GB, zip-bomb).                                                           | Thrown directly by `Extract`; propagated to `PackageInstaller`. |
+| (propagated)                | Any I/O exception from `ZipFile.OpenRead`, `Directory.CreateDirectory`, or `FileStream` (e.g. `IOException`, `UnauthorizedAccessException`). | Not caught locally; propagated unchanged to the caller.         |
+
+Both checks are detected and handled locally within `Extract` — no partial-extraction
+cleanup is performed when either exception is thrown; the caller is responsible for
+removing any partially populated destination folder if desired.
+
 #### Security
 
 Two attack vectors are mitigated:
@@ -79,6 +96,14 @@ Two attack vectors are mitigated:
   mid-extraction, no cleanup of the partially created destination folder is performed.
   The caller is responsible for cleaning up any partially populated folder if desired.
 
-#### Interactions
+#### Dependencies
 
-`PackageExtractor` uses .NET base class library types (`Directory`, `File`, `ZipFile`, `ZipArchiveEntry`).
+`PackageExtractor` uses .NET base class library types (`Directory`, `File`, `ZipFile`,
+`ZipArchiveEntry`). It has no dependencies on other units, subsystems, OTS items, or shared
+packages.
+
+#### Callers
+
+`PackageExtractor` is called by `PackageInstaller`, which invokes `Extract` once per resolved
+package to unpack the cached `.nupkg` into the computed versioned or version-less destination
+folder.

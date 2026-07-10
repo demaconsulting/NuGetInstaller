@@ -8,14 +8,25 @@ sections:
     sections:
       - title: ReviewMark Requirements
         requirements:
-          - id: NuGetInstaller-OTS-ReviewMark
-            title: ReviewMark shall generate a review plan and review report from the review configuration.
+          - id: NuGetInstaller-OTS-ReviewMark-PlanGeneration
+            title: ReviewMark shall generate a review plan from the review configuration.
             justification: |
-              DemaConsulting.ReviewMark reads the .reviewmark.yaml configuration and the review
-              evidence store to produce a review plan and review report documenting file review
-              coverage and currency. It runs in the same CI pipeline that produces the TRX test
-              results, so a successful pipeline run is evidence that ReviewMark executed without error.
+              DemaConsulting.ReviewMark reads the .reviewmark.yaml configuration to produce a
+              review plan listing all files included in review-sets. It runs in the same CI
+              pipeline that produces the TRX test results, so a successful pipeline run is
+              evidence that ReviewMark's plan generation executed without error.
             tags: [ots]
             tests:
               - ReviewMark_ReviewPlanGeneration
+
+          - id: NuGetInstaller-OTS-ReviewMark-ReportGeneration
+            title: ReviewMark shall generate a review report from the review configuration and evidence store.
+            justification: |
+              DemaConsulting.ReviewMark reads the .reviewmark.yaml configuration and the review
+              evidence store to produce a review report documenting file review coverage and
+              currency. It runs in the same CI pipeline that produces the TRX test results, so a
+              successful pipeline run is evidence that ReviewMark's report generation executed
+              without error.
+            tags: [ots]
+            tests:
               - ReviewMark_ReviewReportGeneration
