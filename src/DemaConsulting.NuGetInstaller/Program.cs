@@ -241,8 +241,12 @@ internal static class Program
         // Resolve output directory
         var outputDirectory = context.OutputDirectory ?? Directory.GetCurrentDirectory();
 
+        // Resolve the directory containing packages.config so a project/repo-local nuget.config
+        // is discovered the same way `dotnet restore` discovers it
+        var configRoot = Path.GetDirectoryName(Path.GetFullPath(context.PackagesConfigFile));
+
         // Install
-        PackageInstaller.InstallAsync(context, packages, outputDirectory, context.ExcludeVersion)
+        PackageInstaller.InstallAsync(context, packages, outputDirectory, context.ExcludeVersion, configRoot)
             .GetAwaiter().GetResult();
     }
 }

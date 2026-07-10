@@ -36,6 +36,12 @@ internal static class PackageInstaller
     /// <param name="packages">The list of packages to install.</param>
     /// <param name="outputDirectory">The output directory for package extraction.</param>
     /// <param name="excludeVersion">When <see langword="true"/>, use {Id}/ folder naming instead of {Id}.{Version}/.</param>
+    /// <param name="configRoot">
+    ///     The directory from which to discover the applicable <c>nuget.config</c> (typically the
+    ///     directory containing the <c>packages.config</c> file). When <see langword="null"/>,
+    ///     <see cref="NuGetCache.EnsureCachedAsync(string, string, string?, System.Threading.CancellationToken)"/>
+    ///     falls back to the current working directory.
+    /// </param>
     /// <returns>A task representing the asynchronous operation.</returns>
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="outputDirectory"/> is <see langword="null"/>.</exception>
     /// <exception cref="ArgumentException">Thrown when <paramref name="outputDirectory"/> is empty.</exception>
@@ -43,7 +49,8 @@ internal static class PackageInstaller
         Context context,
         IReadOnlyList<PackageEntry> packages,
         string outputDirectory,
-        bool excludeVersion)
+        bool excludeVersion,
+        string? configRoot = null)
     {
         ArgumentNullException.ThrowIfNull(outputDirectory);
         ArgumentException.ThrowIfNullOrEmpty(outputDirectory);
@@ -53,7 +60,7 @@ internal static class PackageInstaller
 
         // Install all packages in parallel
         await Task.WhenAll(packages.Select(entry =>
-            InstallPackageAsync(context, entry, outputDirectory, excludeVersion))).ConfigureAwait(false);
+            InstallPackageAsync(context, entry, outputDirectory, excludeVersion, configRoot))).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -63,15 +70,22 @@ internal static class PackageInstaller
     /// <param name="entry">The package entry to install.</param>
     /// <param name="outputDirectory">The output directory for package extraction.</param>
     /// <param name="excludeVersion">When <see langword="true"/>, use {Id}/ folder naming instead of {Id}.{Version}/.</param>
+    /// <param name="configRoot">
+    ///     The directory from which to discover the applicable <c>nuget.config</c>, forwarded to
+    ///     <see cref="NuGetCache.EnsureCachedAsync(string, string, string?, System.Threading.CancellationToken)"/>.
+    /// </param>
     /// <returns>A task representing the asynchronous operation.</returns>
     private static async Task InstallPackageAsync(
         Context context,
         PackageEntry entry,
         string outputDirectory,
-        bool excludeVersion)
+        bool excludeVersion,
+        string? configRoot)
     {
-        // Ensure the package is in the local NuGet cache
-        var cacheFolder = await NuGetCache.EnsureCachedAsync(entry.Id, entry.Version).ConfigureAwait(false);
+        // Ensure the package is in the local NuGet cache. Passing configRoot (typically the
+        // directory containing packages.config) allows a project/repo-local nuget.config to be
+        // discovered the same way `dotnet restore` discovers it.
+        var cacheFolder = await NuGetCache.EnsureCachedAsync(entry.Id, entry.Version, configRoot).ConfigureAwait(false);
 
         // Build paths - NuGet global package cache uses lowercase for filenames
         var nupkgPath = Path.Combine(cacheFolder, $"{entry.Id}.{entry.Version}.nupkg".ToLowerInvariant());
