@@ -15,6 +15,8 @@ sections:
           The package configuration format is the standard NuGet mechanism for declaring
           package dependencies. Parsing it into a structured list of entries enables
           the installer to process each package independently.
+        children:
+          - NuGetInstaller-Models-PackageEntry
         tests:
           - PackagesConfigReader_Read_SinglePackage_ReturnsSingleEntry
           - PackagesConfigReader_Read_MultiplePackages_ReturnsAllEntries
