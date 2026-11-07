@@ -9,7 +9,7 @@
 
   <g transform="translate(30,30)">
     <rect x="150" y="0" width="520" height="70" rx="10" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
-    <text x="410" y="31" font-size="16" font-family="Consolas, monospace" font-weight="600" fill="#92400e" text-anchor="middle">nugetinstaller (Program)</text>
+    <text x="410" y="31" font-size="16" font-family="Consolas, monospace" font-weight="600" fill="#92400e" text-anchor="middle">nuget-installer (Program)</text>
     <text x="410" y="53" font-size="13" fill="#92400e" text-anchor="middle">command-line tool run by you or your build script</text>
     <line x1="410" y1="74" x2="410" y2="118" stroke="#475569" stroke-width="2" marker-end="url(#a)"/>
     <text x="422" y="100" font-size="12" fill="#334155">-o, -ExcludeVersion, --validate ...</text>

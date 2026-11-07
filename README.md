@@ -12,8 +12,9 @@
 NuGet Installer is a cross-platform .NET tool that installs NuGet packages listed in a
 `packages.config` file into a local output directory, mirroring the behavior of `nuget.exe install`.
 
-![NuGet Installer architecture: inputs (a packages.config file and NuGet feeds) flow through the Cli, Utilities,
-SelfTest, and NuGet components into extracted packages in the output directory][architecture]
+![NuGet Installer architecture: a packages.config file and NuGet feeds flow through the NuGet components (PackagesConfigReader,
+PackageInstaller, PackageExtractor) into extracted packages in the output directory, supported by the Cli,
+Utilities, and SelfTest components][architecture]
 
 ## Features
 
