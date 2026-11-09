@@ -1,5 +1,5 @@
 ---
-# Spell-Checking
+# Spell-Checking with TextLint
 #
 # PURPOSE:
 # - Maintain professional documentation and code quality
@@ -12,60 +12,42 @@
 version: "0.2"
 language: en
 
+# The files to spell-check
+files:
+  - "**/*.{md,yaml,yml,json,cs,cpp,hpp,h,txt}"
+# Also checks hidden paths such as .github/ and .*.yaml
+enableGlobDot: true
+
 # Project-specific technical terms and tool names
 words:
-  - Blockquotes
-  - buildmark
-  - canvasnet
-  - buildtransitive
-  - contentfiles
-  - dcterms
   - DEMA
   - Dema
   - demaconsulting
-  - doctitle
-  - docversion
+  - DEMACONSULTINGNUGETKEY
   - excludeversion
-  - fileassert
   - fontconfig
-  - GHSA
-  - hotspot
-  - LASTEXITCODE
-  - mstest
+  - ncipollo
+  - nestings
+  - netstandard
   - Newtonsoft
-  - pandoc
-  - pandoctool
-  - pagetitle
   - Pango
-  - Qube
-  - reqstream
-  - reviewmark
-  - sandboxing
-  - SARIF
+  - sarif
   - Sarif
-  - sarifmark
+  - SARIF
+  - Setext
+  - shopt
   - slnx
   - snupkg
-  - sonarcloud
-  - sonarmark
   - sonarscanner
-  - sysml
-  - sysml2tools
   - thirdparty
+  - unidirectionality
   - venv
-  - versionmark
-  - Weasy
-  - Weasyprint
-  - weasyprinttool
-  - Werror
-  - Xunit
   - yamlfix
-  - zipbomb
   - zipslip
 
 # Exclude common build artifacts, dependencies, and vendored third-party code
 ignorePaths:
-  - "**/.git/**"
+  - ".git"
   - "**/node_modules/**"
   - "**/.venv/**"
   - "**/thirdparty/**"

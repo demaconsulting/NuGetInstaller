@@ -1,4 +1,6 @@
 package NuGetInstaller {
+    private import SoftwareItemMetadata::*;
+
     doc
     /*
      * NuGetInstaller is a cross-platform .NET command-line tool that installs
@@ -9,10 +11,13 @@ package NuGetInstaller {
     part def NuGetInstallerSystem {
         doc /* The NuGet Installer system as a whole. */
 
-        comment testRef /* Test: test/DemaConsulting.NuGetInstaller.Tests/IntegrationTests.cs */
-        comment designRef /* Design: docs/design/nuget-installer.md */
-        comment verificationRef /* Verification: docs/verification/nuget-installer.md */
-        comment reqRef /* Requirements: docs/reqstream/nuget-installer.yaml */
+        metadata info : SoftwareInfo {
+            description = "The NuGet Installer system as a whole.";
+            testFiles = ("test/DemaConsulting.NuGetInstaller.Tests/IntegrationTests.cs");
+            designFiles = ("docs/design/nuget-installer.md");
+            verificationFiles = ("docs/verification/nuget-installer.md");
+            requirementFiles = ("docs/reqstream/nuget-installer.yaml");
+        }
 
         part program : Program;
         part cli : CliSubsystem;
