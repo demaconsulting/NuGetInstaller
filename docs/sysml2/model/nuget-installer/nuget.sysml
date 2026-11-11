@@ -5,7 +5,6 @@ package NuGetInstaller {
         doc /* Package management subsystem: reads packages.config, resolves each package from the NuGet global cache, and installs it into the output directory. */
 
         metadata info : SoftwareInfo {
-            description = "Package management subsystem: reads packages.config, resolves each package from the NuGet global cache, and installs it into the output directory.";
             testFiles = ("test/DemaConsulting.NuGetInstaller.Tests/NuGet/NuGetSubsystemTests.cs");
             designFiles = ("docs/design/nuget-installer/nuget.md");
             verificationFiles = ("docs/verification/nuget-installer/nuget.md");

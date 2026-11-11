@@ -12,7 +12,6 @@ package NuGetInstaller {
         doc /* The NuGet Installer system as a whole. */
 
         metadata info : SoftwareInfo {
-            description = "The NuGet Installer system as a whole.";
             testFiles = ("test/DemaConsulting.NuGetInstaller.Tests/IntegrationTests.cs");
             designFiles = ("docs/design/nuget-installer.md");
             verificationFiles = ("docs/verification/nuget-installer.md");

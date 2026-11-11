@@ -5,7 +5,6 @@ package NuGetInstaller {
         doc /* Safe path-combination utility that protects callers against path-traversal attacks by verifying the resolved combined path stays within the base directory. */
 
         metadata info : SoftwareInfo {
-            description = "Safe path-combination utility that protects callers against path-traversal attacks by verifying the resolved combined path stays within the base directory.";
             sourceFiles = ("src/DemaConsulting.NuGetInstaller/Utilities/PathHelpers.cs");
             testFiles = ("test/DemaConsulting.NuGetInstaller.Tests/Utilities/PathHelpersTests.cs");
             designFiles = ("docs/design/nuget-installer/utilities/path-helpers.md");

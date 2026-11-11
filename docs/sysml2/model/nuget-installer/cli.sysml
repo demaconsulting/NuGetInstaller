@@ -5,7 +5,6 @@ package NuGetInstaller {
         doc /* Command-line interface subsystem: parses user arguments, routes output to the console and an optional log file, and owns process I/O for the rest of the system. */
 
         metadata info : SoftwareInfo {
-            description = "Command-line interface subsystem: parses user arguments, routes output to the console and an optional log file, and owns process I/O for the rest of the system.";
             testFiles = ("test/DemaConsulting.NuGetInstaller.Tests/Cli/CliSubsystemTests.cs");
             designFiles = ("docs/design/nuget-installer/cli.md");
             verificationFiles = ("docs/verification/nuget-installer/cli.md");

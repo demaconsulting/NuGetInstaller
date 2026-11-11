@@ -5,7 +5,6 @@ package NuGetInstaller {
         doc /* Command-line argument parser and I/O owner: exposes parsed inputs, output/error writers, and an optional log-file sink to the rest of the system. */
 
         metadata info : SoftwareInfo {
-            description = "Command-line argument parser and I/O owner: exposes parsed inputs, output/error writers, and an optional log-file sink to the rest of the system.";
             sourceFiles = ("src/DemaConsulting.NuGetInstaller/Cli/Context.cs");
             testFiles = ("test/DemaConsulting.NuGetInstaller.Tests/Cli/ContextTests.cs");
             designFiles = ("docs/design/nuget-installer/cli/context.md");
