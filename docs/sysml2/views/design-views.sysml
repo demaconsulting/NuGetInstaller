@@ -5,7 +5,8 @@
 // 'render' - is what scopes the rendered diagram content.
 package NuGetInstaller {
     view SoftwareStructureView {
-        expose NuGetInstaller;
+        expose NuGetInstaller::**;
+        render asInterconnectionDiagram;
     }
 
     view NuGetInstallerView {
