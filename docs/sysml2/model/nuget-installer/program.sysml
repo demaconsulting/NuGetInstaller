@@ -5,7 +5,6 @@ package NuGetInstaller {
         doc /* Entry point and execution orchestrator that wires the Cli Context, PackagesConfigReader, and PackageInstaller together and returns the process exit code. */
 
         metadata info : SoftwareInfo {
-            description = "Entry point and execution orchestrator that wires the Cli Context, PackagesConfigReader, and PackageInstaller together and returns the process exit code.";
             sourceFiles = ("src/DemaConsulting.NuGetInstaller/Program.cs");
             testFiles = ("test/DemaConsulting.NuGetInstaller.Tests/ProgramTests.cs");
             designFiles = ("docs/design/nuget-installer/program.md");

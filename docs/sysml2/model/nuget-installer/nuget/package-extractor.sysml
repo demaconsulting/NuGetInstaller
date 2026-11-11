@@ -5,7 +5,6 @@ package NuGetInstaller {
         doc /* ZIP extraction wrapper for .nupkg files that safely writes package contents into a destination folder. */
 
         metadata info : SoftwareInfo {
-            description = "ZIP extraction wrapper for .nupkg files that safely writes package contents into a destination folder.";
             sourceFiles = ("src/DemaConsulting.NuGetInstaller/NuGet/PackageExtractor.cs");
             testFiles = ("test/DemaConsulting.NuGetInstaller.Tests/NuGet/PackageExtractorTests.cs");
             designFiles = ("docs/design/nuget-installer/nuget/package-extractor.md");

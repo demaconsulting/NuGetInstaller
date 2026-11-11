@@ -5,7 +5,6 @@ package NuGetInstaller {
         doc /* Self-validation subsystem: runs a built-in suite of tests that prove the tool is operational in the deployment environment. */
 
         metadata info : SoftwareInfo {
-            description = "Self-validation subsystem: runs a built-in suite of tests that prove the tool is operational in the deployment environment.";
             testFiles = ("test/DemaConsulting.NuGetInstaller.Tests/SelfTest/SelfTestSubsystemTests.cs");
             designFiles = ("docs/design/nuget-installer/self-test.md");
             verificationFiles = ("docs/verification/nuget-installer/self-test.md");
