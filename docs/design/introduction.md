@@ -47,6 +47,17 @@ system — their integration and usage are documented as prose design under
 
 ![Software Structure](SoftwareStructureView.svg)
 
+The diagram below complements the structure view by showing how data flows at run time: the
+`nuget-installer` entry point passes command-line flags to the Cli subsystem, PackagesConfigReader
+parses `packages.config`, PackageInstaller resolves each package from the NuGet feeds and global
+cache, and PackageExtractor unpacks it into the output directory; Utilities provides safe path
+handling and SelfTest runs the built-in checks.
+
+![NuGet Installer architecture: the nuget-installer Program entry point passes flags to the Cli subsystem,
+PackagesConfigReader parses packages.config, PackageInstaller resolves packages from the NuGet feeds and global
+cache, and PackageExtractor unpacks them into extracted packages in the output directory, with Utilities and
+SelfTest supporting](architecture.svg)
+
 ## Folder Layout
 
 The source code folder structure mirrors the top-level subsystem breakdown above, giving

@@ -13,7 +13,7 @@ traceability evidence that the NuGet Installer's functional requirements are imp
 correctly.
 
 xUnit is chosen because it provides a modern, self-contained test runner with
-`OutputType: Exe` support for .NET 8/9/10, strong assertion APIs, and the
+`OutputType: Exe` support for .NET 10/11, strong assertion APIs, and the
 `xunit.runner.visualstudio` adapter for the TRX output format that ReqStream requires.
 
 ### Features Used
@@ -32,7 +32,7 @@ xUnit is integrated via NuGet package references in the test project
 (`DemaConsulting.NuGetInstaller.Tests.csproj`):
 
 - `xunit.v3` — the core test framework providing `[Fact]`, `[Theory]`, assertions, and the
-  test runner infrastructure for .NET 8, 9, and 10.
+  test runner infrastructure for .NET 10 and 11.
 - `xunit.runner.visualstudio` — the Visual Studio and `dotnet test` adapter that enables TRX
   result file output.
 - `Microsoft.NET.Test.Sdk` — the test SDK integration layer required by the VSTest/`dotnet
@@ -41,7 +41,7 @@ xUnit is integrated via NuGet package references in the test project
 The test project is configured with `OutputType: Exe` (required for xUnit's self-contained
 test executables), `IsTestProject: true` (marks the project for MSBuild and the .NET test
 SDK), and `TreatWarningsAsErrors: true`. No `xunit.runner.json` file is required; default
-discovery and execution settings are used. Tests target `net8.0`, `net9.0`, and `net10.0`,
+discovery and execution settings are used. Tests target `net10.0` and `net11.0`,
 matching the supported runtime targets of the main project, and are executed with
 `dotnet test --logger trx;LogFileName=<name>.trx` to produce TRX files for ReqStream.
 

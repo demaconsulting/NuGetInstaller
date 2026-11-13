@@ -12,9 +12,13 @@
 NuGet Installer is a cross-platform .NET tool that installs NuGet packages listed in a
 `packages.config` file into a local output directory, mirroring the behavior of `nuget.exe install`.
 
-![NuGet Installer architecture: a packages.config file and NuGet feeds flow through the NuGet components (PackagesConfigReader,
-PackageInstaller, PackageExtractor) into extracted packages in the output directory, supported by the Cli,
-Utilities, and SelfTest components][architecture]
+The workflow below shows how to use it: list your packages in a `packages.config` file, run `nuget-installer`
+from the command line, a build script, or a CI pipeline, and use the extracted package folders in your build.
+
+![NuGet Installer workflow: list your packages by id and version in a version-controlled packages.config,
+run nuget-installer with the output directory, version-less folder, silent, and log options, get extracted package
+folders, a populated NuGet global cache, safe re-runs, and a pass/fail exit code, then use the packages from CMake,
+Make, Meson, build scripts, or CI/CD pipelines on Windows, Linux, and macOS][workflow]
 
 ## Features
 
@@ -24,7 +28,7 @@ Utilities, and SelfTest components][architecture]
 - ⏭️ **Skip Existing** — Re-running skips packages whose output folder already exists
 - ⚙️ **Standard CLI** — Shared options for help, version, validation, and logging
 - ✅ **Self-Validation** — Built-in qualification tests with TRX and JUnit output
-- 🌐 **Multi-Platform** — Runs on Windows, Linux, and macOS on .NET 8, 9, and 10
+- 🌐 **Multi-Platform** — Runs on Windows, Linux, and macOS on .NET 10 and 11
 - 🛡️ **Continuous Compliance** — Compliance evidence generated automatically on every CI run
 
 ## Use Case
@@ -178,7 +182,7 @@ By contributing to this project, you agree that your contributions will be licen
 
 <!-- Link References -->
 [link-contributing]: https://github.com/demaconsulting/NuGetInstaller/blob/main/CONTRIBUTING.md
-[architecture]: https://raw.githubusercontent.com/demaconsulting/NuGetInstaller/main/docs/images/architecture.png
+[workflow]: https://raw.githubusercontent.com/demaconsulting/NuGetInstaller/main/docs/images/workflow.png
 [link-forks]: https://github.com/demaconsulting/NuGetInstaller/network/members
 [link-stars]: https://github.com/demaconsulting/NuGetInstaller/stargazers
 [link-contributors]: https://github.com/demaconsulting/NuGetInstaller/graphs/contributors
