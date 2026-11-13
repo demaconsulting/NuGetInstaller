@@ -1,5 +1,5 @@
 ---
-title: NuGet Installer
+title: NuGet Installer Build Notes
 subtitle: A .NET CLI Tool for NuGet Package Installation
 author: DEMA Consulting
 description: Build notes for the NuGet Installer
