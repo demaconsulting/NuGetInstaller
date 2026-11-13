@@ -236,9 +236,8 @@ sections:
           - NuGetInstaller-Platform-Windows
           - NuGetInstaller-Platform-Linux
           - NuGetInstaller-Platform-MacOS
-          - NuGetInstaller-Platform-Net8
-          - NuGetInstaller-Platform-Net9
           - NuGetInstaller-Platform-Net10
+          - NuGetInstaller-Platform-Net11
         tests:
           - "windows@NuGetInstaller_VersionDisplay"
           - "ubuntu@NuGetInstaller_VersionDisplay"

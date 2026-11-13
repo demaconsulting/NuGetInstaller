@@ -1,6 +1,7 @@
 ---
 resource-path:
   - docs/design
+  - docs/design/generated
   - docs/design/nuget-installer
   - docs/design/nuget-installer/cli
   - docs/design/nuget-installer/nuget
@@ -8,7 +9,9 @@ resource-path:
   - docs/design/nuget-installer/self-test
   - docs/design/nuget-installer/utilities
   - docs/design/ots
+  - docs/images
   - docs/template
+embed-resources: true
 
 input-files:
   - docs/design/title.txt

@@ -57,15 +57,15 @@
       <line x1="487" y1="368" x2="498" y2="368"/>
     </g>
 
-    <text x="60" y="274" font-size="13" font-weight="600" fill="#475569" text-anchor="middle">Inputs</text>
-    <rect x="0" y="288" width="120" height="66" rx="6" fill="#f1f5f9" stroke="#64748b" stroke-width="2"/>
-    <text x="60" y="315" font-size="15" font-weight="600" fill="#334155" text-anchor="middle">Package list</text>
-    <text x="60" y="336" font-size="12" fill="#475569" text-anchor="middle">packages.config</text>
-    <rect x="0" y="370" width="120" height="66" rx="6" fill="#f1f5f9" stroke="#64748b" stroke-width="2"/>
-    <text x="60" y="397" font-size="15" font-weight="600" fill="#334155" text-anchor="middle">NuGet feeds</text>
-    <text x="60" y="418" font-size="12" fill="#475569" text-anchor="middle">and global cache</text>
-    <line x1="124" y1="321" x2="146" y2="321" stroke="#475569" stroke-width="2" marker-end="url(#a)"/>
-    <line x1="124" y1="403" x2="146" y2="403" stroke="#475569" stroke-width="2" marker-end="url(#a)"/>
+    <text x="60" y="326" font-size="13" font-weight="600" fill="#475569" text-anchor="middle">Inputs</text>
+    <rect x="0" y="338" width="120" height="60" rx="6" fill="#f1f5f9" stroke="#64748b" stroke-width="2"/>
+    <text x="60" y="363" font-size="15" font-weight="600" fill="#334155" text-anchor="middle">Package list</text>
+    <text x="60" y="383" font-size="12" fill="#475569" text-anchor="middle">packages.config</text>
+    <rect x="0" y="408" width="120" height="56" rx="6" fill="#f1f5f9" stroke="#64748b" stroke-width="2"/>
+    <text x="60" y="431" font-size="15" font-weight="600" fill="#334155" text-anchor="middle">NuGet feeds</text>
+    <text x="60" y="451" font-size="12" fill="#475569" text-anchor="middle">and global cache</text>
+    <line x1="124" y1="368" x2="166" y2="368" stroke="#475569" stroke-width="2" marker-end="url(#a)"/>
+    <polyline points="124,436 410,436 410,422" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#a)"/>
 
     <rect x="710" y="326" width="165" height="84" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
     <text x="792" y="352" font-size="16" font-weight="600" fill="#166534" text-anchor="middle">Outputs</text>

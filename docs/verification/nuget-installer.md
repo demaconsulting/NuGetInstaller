@@ -11,7 +11,7 @@ actual binary on the actual file system.
 ## Test Environment
 
 System integration tests run in the CI/CD pipeline on all three supported platforms (Windows,
-Linux, and macOS) under all three supported .NET runtimes (.NET 8, .NET 9, .NET 10). Each test
+Linux, and macOS) under both supported .NET runtimes (.NET 10 and .NET 11). Each test
 creates a temporary working directory, writes a `packages.config` fixture, invokes the tool,
 and asserts on the exit code, console output, file system state, or log files as appropriate.
 
@@ -39,8 +39,8 @@ A system test scenario passes when all of the following hold:
 
 A system test scenario fails if any of the above conditions is not met. The overall system
 verification passes only when every scenario in the sections below passes on all three
-supported platforms (Windows, Linux, macOS) and all three supported .NET runtimes (.NET 8,
-.NET 9, .NET 10).
+supported platforms (Windows, Linux, macOS) and both supported .NET runtimes (.NET 10 and
+.NET 11).
 
 ## System Test Scenarios
 
@@ -167,7 +167,7 @@ Test method: `NuGetInstaller_InstallPackages_MalformedConfigFile_ReportsErrorAnd
 
 Platform requirements are verified by running the self-validation tests on each platform and
 runtime. The CI pipeline runs the tool on Windows, Linux (Ubuntu), and macOS, and under
-.NET 8, .NET 9, and .NET 10. The test names below include a source-filter prefix identifying
+.NET 10 and .NET 11. The test names below include a source-filter prefix identifying
 the required platform or runtime.
 
 ### Windows Platform Scenario
@@ -182,17 +182,13 @@ Test methods: `ubuntu@NuGetInstaller_VersionDisplay`, `ubuntu@NuGetInstaller_Hel
 
 Test methods: `macos@NuGetInstaller_VersionDisplay`, `macos@NuGetInstaller_HelpDisplay`
 
-### .NET 8 Runtime Scenario
-
-Test methods: `dotnet8.x@NuGetInstaller_VersionDisplay`, `dotnet8.x@NuGetInstaller_HelpDisplay`
-
-### .NET 9 Runtime Scenario
-
-Test methods: `dotnet9.x@NuGetInstaller_VersionDisplay`, `dotnet9.x@NuGetInstaller_HelpDisplay`
-
 ### .NET 10 Runtime Scenario
 
 Test methods: `dotnet10.x@NuGetInstaller_VersionDisplay`, `dotnet10.x@NuGetInstaller_HelpDisplay`
+
+### .NET 11 Runtime Scenario
+
+Test methods: `dotnet11.x@NuGetInstaller_VersionDisplay`, `dotnet11.x@NuGetInstaller_HelpDisplay`
 
 ## Coverage Summary
 
@@ -216,6 +212,5 @@ Test methods: `dotnet10.x@NuGetInstaller_VersionDisplay`, `dotnet10.x@NuGetInsta
 | `NuGetInstaller-Platform-Windows` | `windows@NuGetInstaller_VersionDisplay`, `windows@NuGetInstaller_HelpDisplay` |
 | `NuGetInstaller-Platform-Linux` | `ubuntu@NuGetInstaller_VersionDisplay`, `ubuntu@NuGetInstaller_HelpDisplay` |
 | `NuGetInstaller-Platform-MacOS` | `macos@NuGetInstaller_VersionDisplay`, `macos@NuGetInstaller_HelpDisplay` |
-| `NuGetInstaller-Platform-Net8` | `dotnet8.x@NuGetInstaller_VersionDisplay`, `dotnet8.x@NuGetInstaller_HelpDisplay` |
-| `NuGetInstaller-Platform-Net9` | `dotnet9.x@NuGetInstaller_VersionDisplay`, `dotnet9.x@NuGetInstaller_HelpDisplay` |
 | `NuGetInstaller-Platform-Net10` | `dotnet10.x@NuGetInstaller_VersionDisplay`, `dotnet10.x@NuGetInstaller_HelpDisplay` |
+| `NuGetInstaller-Platform-Net11` | `dotnet11.x@NuGetInstaller_VersionDisplay`, `dotnet11.x@NuGetInstaller_HelpDisplay` |

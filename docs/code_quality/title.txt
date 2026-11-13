@@ -1,6 +1,6 @@
 ---
 title: NuGet Installer Code Quality Report
-subtitle: Code Quality Analysis Report
+subtitle: A .NET CLI Tool for NuGet Package Installation
 author: DEMA Consulting
 description: Code Quality Analysis Report for NuGet Installer
 lang: en-US

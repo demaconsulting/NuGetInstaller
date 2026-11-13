@@ -7,13 +7,14 @@ file into a local output directory. It resolves packages through the NuGet globa
 cache, downloading them from NuGet feeds as needed, and extracts their contents for use by
 downstream build processes.
 
-The figure below shows how the pieces fit together: the `nuget-installer` command reads
-your `packages.config` file, resolves each package through the NuGet global package cache and feeds, and
-extracts the packages into the output directory.
+The workflow below shows how NuGet Installer is used: list your packages in a `packages.config` file,
+run the `nuget-installer` command locally, in a build script, or in a CI pipeline, and use the extracted
+package folders from your build system.
 
-![NuGet Installer architecture: a packages.config file and NuGet feeds flow through the NuGet components (PackagesConfigReader,
-PackageInstaller, PackageExtractor) into extracted packages in the output directory, supported by the Cli,
-Utilities, and SelfTest components](architecture.svg)
+![NuGet Installer workflow: list your packages by id and version in a version-controlled packages.config,
+run nuget-installer with the output directory, version-less folder, silent, and log options, get extracted package
+folders, a populated NuGet global cache, safe re-runs, and a pass/fail exit code, then use the packages from CMake,
+Make, Meson, build scripts, or CI/CD pipelines on Windows, Linux, and macOS](workflow.svg)
 
 ## Scope
 

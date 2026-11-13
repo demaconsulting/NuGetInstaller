@@ -2,10 +2,11 @@
 
 - **project-name**: NuGet Installer
 - **organization**: DEMA Consulting
+- **project-tagline**: A .NET CLI Tool for NuGet Package Installation
 - **description**: Cross-platform .NET tool that installs NuGet packages listed in a `packages.config` file into a local
   output directory, mirroring the behavior of `nuget.exe install`
 - **languages**: C#
-- **technologies**: .NET 8/9/10, NuGet, MSBuild, xUnit
+- **technologies**: .NET 10/11, NuGet, MSBuild, xUnit
 
 # Project Structure
 

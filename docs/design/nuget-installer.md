@@ -164,9 +164,11 @@ of a defect or malicious input without constituting a formal risk-control archit
 
 The system targets multiple .NET runtime versions to maximize compatibility:
 
-- **.NET 8.0** — Long-term support baseline
-- **.NET 9.0** — Current standard runtime
-- **.NET 10.0** — Latest runtime for forward compatibility
+- **.NET 10.0** — Long-term support baseline
+- **.NET 11.0** — Latest runtime for forward compatibility
+
+The tool package sets `RollForward` to `LatestMajor` so the installed tool also runs on newer
+.NET runtimes when the targeted runtimes are not installed.
 
 ### Parameter Passing Architecture
 
@@ -237,8 +239,8 @@ requirements. Cross-platform compatibility is achieved by relying exclusively on
   free of OS-conditional logic.
 - **Console I/O** — Standard input/output streams provided by the .NET runtime
   handle platform encoding and line-ending differences transparently.
-- **Multi-target compilation** — The project file targets `net8.0`, `net9.0`, and
-  `net10.0`, and the CI pipeline builds and tests on all three target platforms,
+- **Multi-target compilation** — The project file targets `net10.0` and `net11.0`, and
+  the CI pipeline builds and tests on all three target platforms,
   providing continuous verification of cross-platform behavior.
 
 ## Performance Characteristics
