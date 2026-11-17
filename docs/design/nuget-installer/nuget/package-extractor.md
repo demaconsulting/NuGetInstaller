@@ -22,10 +22,10 @@ zip-bomb attacks.
 
 The class defines two constants:
 
-| Constant            | Value         | Description                                        |
-|---------------------|---------------|----------------------------------------------------|
+| Constant | Value | Description |
+| --- | --- | --- |
 | `MaxExtractedBytes` | 1 073 741 824 | Maximum bytes that may be extracted (1 GB ceiling) |
-| `CopyBufferSize`    | 81 920        | Buffer size (80 KiB) used when copying entry data  |
+| `CopyBufferSize` | 81 920 | Buffer size (80 KiB) used when copying entry data |
 
 #### Key Methods
 
@@ -35,9 +35,9 @@ Extracts all entries from a .nupkg file into the destination folder.
 
 **Parameters:**
 
-| Parameter    | Type     | Description                        |
-|--------------|----------|------------------------------------|
-| `nupkgPath`  | `string` | Path to the .nupkg file.           |
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `nupkgPath` | `string` | Path to the .nupkg file. |
 | `destFolder` | `string` | Destination folder for extraction. |
 
 **Returns:** `bool` — `true` if extraction was performed; `false` if skipped.
@@ -69,11 +69,12 @@ Extracts all entries from a .nupkg file into the destination folder.
 
 #### Error Handling
 
-| Exception                   | Condition                                                                                                                                    | Propagation                                                     |
-|-----------------------------|----------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------|
-| `InvalidOperationException` | An archive entry's resolved destination path would escape `destFolder` (zip-slip).                                                           | Thrown directly by `Extract`; propagated to `PackageInstaller`. |
-| `InvalidOperationException` | Cumulative decompressed bytes written exceed `MaxExtractedBytes` (1 GB, zip-bomb).                                                           | Thrown directly by `Extract`; propagated to `PackageInstaller`. |
-| (propagated)                | Any I/O exception from `ZipFile.OpenRead`, `Directory.CreateDirectory`, or `FileStream` (e.g. `IOException`, `UnauthorizedAccessException`). | Not caught locally; propagated unchanged to the caller.         |
+- **`InvalidOperationException`**: An archive entry's resolved destination path would escape `destFolder` (zip-slip).
+  Thrown directly by `Extract`; propagated to `PackageInstaller`.
+- **`InvalidOperationException`**: Cumulative decompressed bytes written exceed `MaxExtractedBytes` (1 GB, zip-bomb).
+  Thrown directly by `Extract`; propagated to `PackageInstaller`.
+- **(propagated)**: Any I/O exception from `ZipFile.OpenRead`, `Directory.CreateDirectory`, or `FileStream` (e.g.
+  `IOException`, `UnauthorizedAccessException`). Not caught locally; propagated unchanged to the caller.
 
 Both checks are detected and handled locally within `Extract` — no partial-extraction
 cleanup is performed when either exception is thrown; the caller is responsible for

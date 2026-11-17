@@ -25,12 +25,12 @@ Installs all specified packages into the output directory.
 
 **Parameters:**
 
-| Parameter         | Type                          | Description                                          |
-|-------------------|-------------------------------|------------------------------------------------------|
-| `context`         | `Context`                     | Output channel for status messages.                  |
-| `packages`        | `IReadOnlyList<PackageEntry>` | The list of packages to install.                     |
-| `outputDirectory` | `string`                      | The output directory for package extraction.         |
-| `excludeVersion`  | `bool`                        | Use `{Id}/` naming instead of `{Id}.{Version}/`.     |
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `context` | `Context` | Output channel for status messages. |
+| `packages` | `IReadOnlyList<PackageEntry>` | The list of packages to install. |
+| `outputDirectory` | `string` | The output directory for package extraction. |
+| `excludeVersion` | `bool` | Use `{Id}/` naming instead of `{Id}.{Version}/`. |
 
 **Algorithm:**
 
@@ -43,12 +43,12 @@ Installs a single package.
 
 **Parameters:**
 
-| Parameter         | Type           | Description                                      |
-|-------------------|----------------|--------------------------------------------------|
-| `context`         | `Context`      | Output channel for status messages.              |
-| `entry`           | `PackageEntry` | The package entry to install.                    |
-| `outputDirectory` | `string`       | The output directory for package extraction.     |
-| `excludeVersion`  | `bool`         | Use `{Id}/` naming instead of `{Id}.{Version}/`. |
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `context` | `Context` | Output channel for status messages. |
+| `entry` | `PackageEntry` | The package entry to install. |
+| `outputDirectory` | `string` | The output directory for package extraction. |
+| `excludeVersion` | `bool` | Use `{Id}/` naming instead of `{Id}.{Version}/`. |
 
 **Algorithm:**
 
@@ -61,12 +61,12 @@ Installs a single package.
 
 #### Interactions
 
-| Dependency         | Direction | Purpose                                                    |
-|--------------------|-----------|------------------------------------------------------------|
-| `Context`          | Uses      | Output channel for "Installed" / "Skipping" messages.      |
-| `PackageEntry`     | Reads     | Reads `Id` and `Version` from each entry.                  |
-| `PackageExtractor` | Uses      | Delegates ZIP extraction to `PackageExtractor.Extract`.    |
-| `NuGetCache`       | Uses      | OTS library for resolving packages in the global cache.    |
+| Dependency | Direction | Purpose |
+| --- | --- | --- |
+| `Context` | Uses | Output channel for "Installed" / "Skipping" messages. |
+| `PackageEntry` | Reads | Reads `Id` and `Version` from each entry. |
+| `PackageExtractor` | Uses | Delegates ZIP extraction to `PackageExtractor.Extract`. |
+| `NuGetCache` | Uses | OTS library for resolving packages in the global cache. |
 
 #### Error Handling
 

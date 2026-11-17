@@ -61,7 +61,16 @@ Test methods:
 
 #### Coverage Summary
 
-| Requirement ID | Test Method(s) |
-| --- | --- |
-| `NuGetInstaller-PathHelpers-SafeCombine` | `PathHelpers_SafePathCombine_ValidPaths_CombinesCorrectly`, `PathHelpers_SafePathCombine_PathTraversalWithDoubleDots_ThrowsArgumentException`, `PathHelpers_SafePathCombine_DoubleDotsInMiddle_ThrowsArgumentException`, `PathHelpers_SafePathCombine_SlashRootedRelativePath_ThrowsArgumentException`, `windows@PathHelpers_SafePathCombine_WindowsAbsolutePath_ThrowsArgumentException`, `PathHelpers_SafePathCombine_NestedPaths_CombinesCorrectly`, `PathHelpers_SafePathCombine_CurrentDirectoryReference_CombinesCorrectly`, `PathHelpers_SafePathCombine_EmptyRelativePath_ReturnsBasePath`, `PathHelpers_SafePathCombine_DotDotPrefixedName_CombinesCorrectly` |
-| `NuGetInstaller-PathHelpers-NullInputRejection` | `PathHelpers_SafePathCombine_NullBasePath_ThrowsArgumentNullException`, `PathHelpers_SafePathCombine_NullRelativePath_ThrowsArgumentNullException` |
+- `NuGetInstaller-PathHelpers-SafeCombine`:
+  - `PathHelpers_SafePathCombine_ValidPaths_CombinesCorrectly`
+  - `PathHelpers_SafePathCombine_PathTraversalWithDoubleDots_ThrowsArgumentException`
+  - `PathHelpers_SafePathCombine_DoubleDotsInMiddle_ThrowsArgumentException`
+  - `PathHelpers_SafePathCombine_SlashRootedRelativePath_ThrowsArgumentException`
+  - `windows@PathHelpers_SafePathCombine_WindowsAbsolutePath_ThrowsArgumentException`
+  - `PathHelpers_SafePathCombine_NestedPaths_CombinesCorrectly`
+  - `PathHelpers_SafePathCombine_CurrentDirectoryReference_CombinesCorrectly`
+  - `PathHelpers_SafePathCombine_EmptyRelativePath_ReturnsBasePath`
+  - `PathHelpers_SafePathCombine_DotDotPrefixedName_CombinesCorrectly`
+- `NuGetInstaller-PathHelpers-NullInputRejection`:
+  - `PathHelpers_SafePathCombine_NullBasePath_ThrowsArgumentNullException`
+  - `PathHelpers_SafePathCombine_NullRelativePath_ThrowsArgumentNullException`

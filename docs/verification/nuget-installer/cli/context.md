@@ -124,12 +124,48 @@ Test method:
 
 #### Coverage Summary
 
-| Requirement ID | Test Method(s) |
-| --- | --- |
-| `NuGetInstaller-Context-ArgumentParsing` | `Context_Create_NoArguments_ReturnsDefaultContext`, `Context_Create_VersionFlag_SetsVersionTrue`, `Context_Create_ShortVersionFlag_SetsVersionTrue`, `Context_Create_HelpFlag_SetsHelpTrue`, `Context_Create_ShortHelpFlag_H_SetsHelpTrue`, `Context_Create_ShortHelpFlag_Question_SetsHelpTrue`, `Context_Create_SilentFlag_SetsSilentTrue`, `Context_Create_ValidateFlag_SetsValidateTrue`, `Context_Create_ResultsFlag_SetsResultsFile`, `Context_Create_LogFlag_OpensLogFile`, `Context_Create_ResultAliasFlag_SetsResultsFile`, `Context_Create_DepthFlag_SetsHeadingDepth`, `Context_Create_NoDepthFlag_ReturnsDefaultHeadingDepth`, `Context_Create_PositionalArgument_SetsPackagesConfigFile`, `Context_Create_ExcludeVersionShortFlag_SetsExcludeVersionTrue`, `Context_Create_ExcludeVersionLongFlag_SetsExcludeVersionTrue`, `Context_Create_OutputDirectoryShortFlag_SetsOutputDirectory`, `Context_Create_OutputDirectoryLongFlag_SetsOutputDirectory`, `Context_Create_AllNewArguments_SetsAllProperties` |
-| `NuGetInstaller-Context-InvalidArgs` | `Context_Create_UnknownArgument_ThrowsArgumentException`, `Context_Create_LogFlag_WithoutValue_ThrowsArgumentException`, `Context_Create_ResultsFlag_WithoutValue_ThrowsArgumentException`, `Context_Create_ResultAliasFlag_WithoutValue_ThrowsArgumentException`, `Context_Create_DepthFlag_WithoutValue_ThrowsArgumentException`, `Context_Create_DepthFlag_NonIntegerValue_ThrowsArgumentException`, `Context_Create_DepthFlag_ZeroValue_ThrowsArgumentException`, `Context_Create_DepthFlag_ExceedsMaxValue_ThrowsArgumentException`, `Context_Create_OutputDirectoryFlag_WithoutValue_ThrowsArgumentException` |
-| `NuGetInstaller-Context-ConsoleOutput` | `Context_WriteLine_NotSilent_WritesToConsole`, `Context_WriteLine_Silent_DoesNotWriteToConsole` |
-| `NuGetInstaller-Context-LogFileOutput` | `Context_Create_LogFlag_OpensLogFile`, `Context_WriteError_WritesToLogFile` |
-| `NuGetInstaller-Context-Silent` | `Context_Create_SilentFlag_SetsSilentTrue`, `Context_WriteLine_Silent_DoesNotWriteToConsole`, `Context_WriteError_Silent_DoesNotWriteToConsole` |
-| `NuGetInstaller-Context-ErrorOutput` | `Context_WriteError_NotSilent_WritesToConsole`, `Context_WriteError_SetsErrorExitCode` |
-| `NuGetInstaller-Context-ExitCode` | `Context_WriteError_SetsErrorExitCode` |
+- `NuGetInstaller-Context-ArgumentParsing`:
+  - `Context_Create_NoArguments_ReturnsDefaultContext`
+  - `Context_Create_VersionFlag_SetsVersionTrue`
+  - `Context_Create_ShortVersionFlag_SetsVersionTrue`
+  - `Context_Create_HelpFlag_SetsHelpTrue`
+  - `Context_Create_ShortHelpFlag_H_SetsHelpTrue`
+  - `Context_Create_ShortHelpFlag_Question_SetsHelpTrue`
+  - `Context_Create_SilentFlag_SetsSilentTrue`
+  - `Context_Create_ValidateFlag_SetsValidateTrue`
+  - `Context_Create_ResultsFlag_SetsResultsFile`
+  - `Context_Create_LogFlag_OpensLogFile`
+  - `Context_Create_ResultAliasFlag_SetsResultsFile`
+  - `Context_Create_DepthFlag_SetsHeadingDepth`
+  - `Context_Create_NoDepthFlag_ReturnsDefaultHeadingDepth`
+  - `Context_Create_PositionalArgument_SetsPackagesConfigFile`
+  - `Context_Create_ExcludeVersionShortFlag_SetsExcludeVersionTrue`
+  - `Context_Create_ExcludeVersionLongFlag_SetsExcludeVersionTrue`
+  - `Context_Create_OutputDirectoryShortFlag_SetsOutputDirectory`
+  - `Context_Create_OutputDirectoryLongFlag_SetsOutputDirectory`
+  - `Context_Create_AllNewArguments_SetsAllProperties`
+- `NuGetInstaller-Context-InvalidArgs`:
+  - `Context_Create_UnknownArgument_ThrowsArgumentException`
+  - `Context_Create_LogFlag_WithoutValue_ThrowsArgumentException`
+  - `Context_Create_ResultsFlag_WithoutValue_ThrowsArgumentException`
+  - `Context_Create_ResultAliasFlag_WithoutValue_ThrowsArgumentException`
+  - `Context_Create_DepthFlag_WithoutValue_ThrowsArgumentException`
+  - `Context_Create_DepthFlag_NonIntegerValue_ThrowsArgumentException`
+  - `Context_Create_DepthFlag_ZeroValue_ThrowsArgumentException`
+  - `Context_Create_DepthFlag_ExceedsMaxValue_ThrowsArgumentException`
+  - `Context_Create_OutputDirectoryFlag_WithoutValue_ThrowsArgumentException`
+- `NuGetInstaller-Context-ConsoleOutput`:
+  - `Context_WriteLine_NotSilent_WritesToConsole`
+  - `Context_WriteLine_Silent_DoesNotWriteToConsole`
+- `NuGetInstaller-Context-LogFileOutput`:
+  - `Context_Create_LogFlag_OpensLogFile`
+  - `Context_WriteError_WritesToLogFile`
+- `NuGetInstaller-Context-Silent`:
+  - `Context_Create_SilentFlag_SetsSilentTrue`
+  - `Context_WriteLine_Silent_DoesNotWriteToConsole`
+  - `Context_WriteError_Silent_DoesNotWriteToConsole`
+- `NuGetInstaller-Context-ErrorOutput`:
+  - `Context_WriteError_NotSilent_WritesToConsole`
+  - `Context_WriteError_SetsErrorExitCode`
+- `NuGetInstaller-Context-ExitCode`:
+  - `Context_WriteError_SetsErrorExitCode`

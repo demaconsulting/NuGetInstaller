@@ -192,25 +192,54 @@ Test methods: `dotnet11.x@NuGetInstaller_VersionDisplay`, `dotnet11.x@NuGetInsta
 
 ## Coverage Summary
 
-| Requirement ID | Test Method(s) |
-| --- | --- |
-| `NuGetInstaller-System-Version` | `NuGetInstaller_VersionFlag_FlagProvided_OutputsVersion` |
-| `NuGetInstaller-System-Help` | `NuGetInstaller_HelpFlag_FlagProvided_OutputsUsageInformation` |
-| `NuGetInstaller-System-Validate` | `NuGetInstaller_ValidateFlag_FlagProvided_RunsValidation`, `NuGetInstaller_ValidateWithResults_TrxExtension_GeneratesTrxFile`, `NuGetInstaller_ValidateWithResults_XmlExtension_GeneratesJUnitFile` |
-| `NuGetInstaller-System-Silent` | `NuGetInstaller_SilentFlag_FlagProvided_SuppressesOutput` |
-| `NuGetInstaller-System-Log` | `NuGetInstaller_LogFlag_FlagProvided_WritesOutputToFile` |
-| `NuGetInstaller-System-ErrorHandling-ExitCode` | `NuGetInstaller_UnknownArgument_InvalidFlag_ReturnsNonZeroExitCode` |
-| `NuGetInstaller-System-ErrorHandling-Report` | `NuGetInstaller_UnknownArgument_InvalidFlag_ReturnsNonZeroExitCode`, `NuGetInstaller_UnknownArgument_InvalidFlag_ReportsErrorMessage` |
-| `NuGetInstaller-System-ErrorHandling-MissingFile` | `NuGetInstaller_InstallPackages_MissingConfigFile_ReportsErrorAndReturnsNonZeroExitCode` |
-| `NuGetInstaller-System-ErrorHandling-MalformedXml` | `NuGetInstaller_InstallPackages_MalformedConfigFile_ReportsErrorAndReturnsNonZeroExitCode` |
-| `NuGetInstaller-System-OutputDirectory` | `NuGetInstaller_InstallPackages_ValidConfig_ExtractsPackageToOutputDirectory`, `NuGetInstaller_InstallPackages_DefaultOutputDirectory_InstallsToCurrentDirectory` |
-| `NuGetInstaller-System-ExcludeVersion` | `NuGetInstaller_InstallPackages_ExcludeVersionFlag_UsesFlatFolderNaming` |
-| `NuGetInstaller-System-Depth` | `NuGetInstaller_ValidateDepth_DepthFlagProvided_AdjustsHeadingDepth` |
-| `NuGetInstaller-System-SkipExisting` | `NuGetInstaller_InstallPackages_ExistingFolder_SkipsInstallation` |
-| `NuGetInstaller-System-Install` | `NuGetInstaller_InstallPackages_ValidConfig_ExtractsPackageToOutputDirectory` |
-| `NuGetInstaller-System-CrossPlatform` | `windows@NuGetInstaller_VersionDisplay`, `ubuntu@NuGetInstaller_VersionDisplay`, `macos@NuGetInstaller_VersionDisplay` |
-| `NuGetInstaller-Platform-Windows` | `windows@NuGetInstaller_VersionDisplay`, `windows@NuGetInstaller_HelpDisplay` |
-| `NuGetInstaller-Platform-Linux` | `ubuntu@NuGetInstaller_VersionDisplay`, `ubuntu@NuGetInstaller_HelpDisplay` |
-| `NuGetInstaller-Platform-MacOS` | `macos@NuGetInstaller_VersionDisplay`, `macos@NuGetInstaller_HelpDisplay` |
-| `NuGetInstaller-Platform-Net10` | `dotnet10.x@NuGetInstaller_VersionDisplay`, `dotnet10.x@NuGetInstaller_HelpDisplay` |
-| `NuGetInstaller-Platform-Net11` | `dotnet11.x@NuGetInstaller_VersionDisplay`, `dotnet11.x@NuGetInstaller_HelpDisplay` |
+- `NuGetInstaller-System-Version`:
+  - `NuGetInstaller_VersionFlag_FlagProvided_OutputsVersion`
+- `NuGetInstaller-System-Help`:
+  - `NuGetInstaller_HelpFlag_FlagProvided_OutputsUsageInformation`
+- `NuGetInstaller-System-Validate`:
+  - `NuGetInstaller_ValidateFlag_FlagProvided_RunsValidation`
+  - `NuGetInstaller_ValidateWithResults_TrxExtension_GeneratesTrxFile`
+  - `NuGetInstaller_ValidateWithResults_XmlExtension_GeneratesJUnitFile`
+- `NuGetInstaller-System-Silent`:
+  - `NuGetInstaller_SilentFlag_FlagProvided_SuppressesOutput`
+- `NuGetInstaller-System-Log`:
+  - `NuGetInstaller_LogFlag_FlagProvided_WritesOutputToFile`
+- `NuGetInstaller-System-ErrorHandling-ExitCode`:
+  - `NuGetInstaller_UnknownArgument_InvalidFlag_ReturnsNonZeroExitCode`
+- `NuGetInstaller-System-ErrorHandling-Report`:
+  - `NuGetInstaller_UnknownArgument_InvalidFlag_ReturnsNonZeroExitCode`
+  - `NuGetInstaller_UnknownArgument_InvalidFlag_ReportsErrorMessage`
+- `NuGetInstaller-System-ErrorHandling-MissingFile`:
+  - `NuGetInstaller_InstallPackages_MissingConfigFile_ReportsErrorAndReturnsNonZeroExitCode`
+- `NuGetInstaller-System-ErrorHandling-MalformedXml`:
+  - `NuGetInstaller_InstallPackages_MalformedConfigFile_ReportsErrorAndReturnsNonZeroExitCode`
+- `NuGetInstaller-System-OutputDirectory`:
+  - `NuGetInstaller_InstallPackages_ValidConfig_ExtractsPackageToOutputDirectory`
+  - `NuGetInstaller_InstallPackages_DefaultOutputDirectory_InstallsToCurrentDirectory`
+- `NuGetInstaller-System-ExcludeVersion`:
+  - `NuGetInstaller_InstallPackages_ExcludeVersionFlag_UsesFlatFolderNaming`
+- `NuGetInstaller-System-Depth`:
+  - `NuGetInstaller_ValidateDepth_DepthFlagProvided_AdjustsHeadingDepth`
+- `NuGetInstaller-System-SkipExisting`:
+  - `NuGetInstaller_InstallPackages_ExistingFolder_SkipsInstallation`
+- `NuGetInstaller-System-Install`:
+  - `NuGetInstaller_InstallPackages_ValidConfig_ExtractsPackageToOutputDirectory`
+- `NuGetInstaller-System-CrossPlatform`:
+  - `windows@NuGetInstaller_VersionDisplay`
+  - `ubuntu@NuGetInstaller_VersionDisplay`
+  - `macos@NuGetInstaller_VersionDisplay`
+- `NuGetInstaller-Platform-Windows`:
+  - `windows@NuGetInstaller_VersionDisplay`
+  - `windows@NuGetInstaller_HelpDisplay`
+- `NuGetInstaller-Platform-Linux`:
+  - `ubuntu@NuGetInstaller_VersionDisplay`
+  - `ubuntu@NuGetInstaller_HelpDisplay`
+- `NuGetInstaller-Platform-MacOS`:
+  - `macos@NuGetInstaller_VersionDisplay`
+  - `macos@NuGetInstaller_HelpDisplay`
+- `NuGetInstaller-Platform-Net10`:
+  - `dotnet10.x@NuGetInstaller_VersionDisplay`
+  - `dotnet10.x@NuGetInstaller_HelpDisplay`
+- `NuGetInstaller-Platform-Net11`:
+  - `dotnet11.x@NuGetInstaller_VersionDisplay`
+  - `dotnet11.x@NuGetInstaller_HelpDisplay`

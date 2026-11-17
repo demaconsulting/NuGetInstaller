@@ -66,10 +66,13 @@ Test method:
 
 #### Coverage Summary
 
-| Requirement ID | Test Method(s) |
-| --- | --- |
-| `NuGetInstaller-PackageInstaller-Install` | `PackageInstaller_InstallAsync_DefaultNaming_ExtractsPackageToVersionedFolder` |
-| `NuGetInstaller-PackageInstaller-FolderNamingVersioned` | `PackageInstaller_InstallAsync_DefaultNaming_ExtractsPackageToVersionedFolder` |
-| `NuGetInstaller-PackageInstaller-FolderNamingExcludeVersion` | `PackageInstaller_InstallAsync_ExcludeVersion_UsesFlatFolderNaming` |
-| `NuGetInstaller-PackageInstaller-CreateOutputDirectory` | `PackageInstaller_InstallAsync_EmptyPackages_CreatesOutputDirectoryAndSucceeds` |
-| `NuGetInstaller-PackageInstaller-StatusMessages` | `PackageInstaller_InstallAsync_AlreadyExtracted_SkipsInstallation` |
+- `NuGetInstaller-PackageInstaller-Install`:
+  - `PackageInstaller_InstallAsync_DefaultNaming_ExtractsPackageToVersionedFolder`
+- `NuGetInstaller-PackageInstaller-FolderNamingVersioned`:
+  - `PackageInstaller_InstallAsync_DefaultNaming_ExtractsPackageToVersionedFolder`
+- `NuGetInstaller-PackageInstaller-FolderNamingExcludeVersion`:
+  - `PackageInstaller_InstallAsync_ExcludeVersion_UsesFlatFolderNaming`
+- `NuGetInstaller-PackageInstaller-CreateOutputDirectory`:
+  - `PackageInstaller_InstallAsync_EmptyPackages_CreatesOutputDirectoryAndSucceeds`
+- `NuGetInstaller-PackageInstaller-StatusMessages`:
+  - `PackageInstaller_InstallAsync_AlreadyExtracted_SkipsInstallation`

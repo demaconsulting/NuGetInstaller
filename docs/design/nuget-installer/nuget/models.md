@@ -15,17 +15,17 @@ that every entry has the minimum required metadata (Id and Version).
 
 The `Models` subsystem contains the following software unit:
 
-| Unit           | File                           | Responsibility                         |
-|----------------|--------------------------------|----------------------------------------|
+| Unit | File | Responsibility |
+| --- | --- | --- |
 | `PackageEntry` | `NuGet/Models/PackageEntry.cs` | Data model for a single package entry. |
 
 ### Interfaces
 
 The `Models` subsystem exposes the following interface to the rest of the tool:
 
-| Interface      | Direction | Description                                                  |
-|----------------|-----------|--------------------------------------------------------------|
-| `PackageEntry` | Outbound  | Immutable data class consumed by reader and installer units. |
+| Interface | Direction | Description |
+| --- | --- | --- |
+| `PackageEntry` | Outbound | Immutable data class consumed by reader and installer units. |
 
 ### Design
 

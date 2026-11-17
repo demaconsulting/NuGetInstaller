@@ -79,10 +79,13 @@ Test method:
 
 #### Coverage Summary
 
-| Requirement ID | Test Method(s) |
-| --- | --- |
-| `NuGetInstaller-PackageExtractor-Extract` | `PackageExtractor_Extract_NewDestination_ExtractsAndReturnsTrue` |
-| `NuGetInstaller-PackageExtractor-ZipSlip` | `PackageExtractor_Extract_ZipSlipEntry_ThrowsInvalidOperationException` |
-| `NuGetInstaller-PackageExtractor-SkipExisting` | `PackageExtractor_Extract_DestinationExists_ReturnsFalse` |
-| `NuGetInstaller-PackageExtractor-ZipBomb` | `PackageExtractor_Extract_ZipBombEntry_ThrowsInvalidOperationException` |
-| `NuGetInstaller-PackageExtractor-SkipDirectoryEntries` | `PackageExtractor_Extract_ArchiveWithDirectoryEntries_SkipsDirectoriesAndReturnsTrue` |
+- `NuGetInstaller-PackageExtractor-Extract`:
+  - `PackageExtractor_Extract_NewDestination_ExtractsAndReturnsTrue`
+- `NuGetInstaller-PackageExtractor-ZipSlip`:
+  - `PackageExtractor_Extract_ZipSlipEntry_ThrowsInvalidOperationException`
+- `NuGetInstaller-PackageExtractor-SkipExisting`:
+  - `PackageExtractor_Extract_DestinationExists_ReturnsFalse`
+- `NuGetInstaller-PackageExtractor-ZipBomb`:
+  - `PackageExtractor_Extract_ZipBombEntry_ThrowsInvalidOperationException`
+- `NuGetInstaller-PackageExtractor-SkipDirectoryEntries`:
+  - `PackageExtractor_Extract_ArchiveWithDirectoryEntries_SkipsDirectoriesAndReturnsTrue`

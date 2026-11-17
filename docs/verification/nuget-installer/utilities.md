@@ -46,7 +46,11 @@ Test methods:
 
 ### Coverage Summary
 
-| Requirement ID | Test Method(s) |
-| --- | --- |
-| `NuGetInstaller-Utilities-SafePaths` | `UtilitiesSubsystem_PathResolutionWorkflow_ValidPaths_ResolvesCorrectly`, `UtilitiesSubsystem_DirectoryCreationWorkflow_ValidPaths_CreatesDirectories`, `UtilitiesSubsystem_PathTraversalValidation_DangerousPaths_ThrowsException`, `UtilitiesSubsystem_SafePathCombine_RootedRelativePath_ThrowsArgumentException` |
-| `NuGetInstaller-Utilities-NullRejection` | `UtilitiesSubsystem_SafePathCombine_NullBasePath_ThrowsArgumentNullException`, `UtilitiesSubsystem_SafePathCombine_NullRelativePath_ThrowsArgumentNullException` |
+- `NuGetInstaller-Utilities-SafePaths`:
+  - `UtilitiesSubsystem_PathResolutionWorkflow_ValidPaths_ResolvesCorrectly`
+  - `UtilitiesSubsystem_DirectoryCreationWorkflow_ValidPaths_CreatesDirectories`
+  - `UtilitiesSubsystem_PathTraversalValidation_DangerousPaths_ThrowsException`
+  - `UtilitiesSubsystem_SafePathCombine_RootedRelativePath_ThrowsArgumentException`
+- `NuGetInstaller-Utilities-NullRejection`:
+  - `UtilitiesSubsystem_SafePathCombine_NullBasePath_ThrowsArgumentNullException`
+  - `UtilitiesSubsystem_SafePathCombine_NullRelativePath_ThrowsArgumentNullException`

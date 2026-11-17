@@ -82,11 +82,17 @@ Test method:
 
 ### Coverage Summary
 
-| Requirement ID | Test Method(s) |
-| --- | --- |
-| `NuGetInstaller-NuGet-ReadConfig` | `NuGetSubsystem_ReadAndInstallWorkflow_ValidConfig_ReturnsAndInstallsPackages`, `NuGetSubsystem_ConfigReadingWorkflow_ValidPackagesConfig_ReturnsEntries` |
-| `NuGetInstaller-NuGet-ExtractPackages` | `NuGetSubsystem_ReadAndInstallWorkflow_ValidConfig_ReturnsAndInstallsPackages`, `NuGetSubsystem_ExtractionWorkflow_ValidPackage_ExtractsToDirectory` |
-| `NuGetInstaller-NuGet-SkipExisting` | `NuGetSubsystem_ExtractionWorkflow_ExistingDestination_SkipsExtraction` |
-| `NuGetInstaller-NuGet-ExcludeVersion` | `NuGetSubsystem_ReadAndInstallWorkflow_ExcludeVersion_UsesFlatFolderNaming` |
-| `NuGetInstaller-NuGet-MissingFile` | `NuGetSubsystem_MissingFileWorkflow_NonexistentConfig_ThrowsInvalidOperationException` |
-| `NuGetInstaller-NuGet-MalformedXml` | `NuGetSubsystem_MalformedXmlWorkflow_InvalidXml_ThrowsXmlException` |
+- `NuGetInstaller-NuGet-ReadConfig`:
+  - `NuGetSubsystem_ReadAndInstallWorkflow_ValidConfig_ReturnsAndInstallsPackages`
+  - `NuGetSubsystem_ConfigReadingWorkflow_ValidPackagesConfig_ReturnsEntries`
+- `NuGetInstaller-NuGet-ExtractPackages`:
+  - `NuGetSubsystem_ReadAndInstallWorkflow_ValidConfig_ReturnsAndInstallsPackages`
+  - `NuGetSubsystem_ExtractionWorkflow_ValidPackage_ExtractsToDirectory`
+- `NuGetInstaller-NuGet-SkipExisting`:
+  - `NuGetSubsystem_ExtractionWorkflow_ExistingDestination_SkipsExtraction`
+- `NuGetInstaller-NuGet-ExcludeVersion`:
+  - `NuGetSubsystem_ReadAndInstallWorkflow_ExcludeVersion_UsesFlatFolderNaming`
+- `NuGetInstaller-NuGet-MissingFile`:
+  - `NuGetSubsystem_MissingFileWorkflow_NonexistentConfig_ThrowsInvalidOperationException`
+- `NuGetInstaller-NuGet-MalformedXml`:
+  - `NuGetSubsystem_MalformedXmlWorkflow_InvalidXml_ThrowsXmlException`

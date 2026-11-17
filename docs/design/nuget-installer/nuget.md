@@ -22,22 +22,22 @@ specific call sites.
 
 The `NuGet` subsystem contains the following child subsystem and units:
 
-| Item                   | Type      | Responsibility                          |
-|------------------------|-----------|-----------------------------------------|
-| `Models`               | Subsystem | Package data models (`NuGet/Models/`).  |
-| `PackagesConfigReader` | Unit      | XML parser for packages.config files.   |
-| `PackageExtractor`     | Unit      | ZIP extraction wrapper for .nupkg.      |
-| `PackageInstaller`     | Unit      | Parallel install orchestrator.          |
+| Item | Type | Responsibility |
+| --- | --- | --- |
+| `Models` | Subsystem | Package data models (`NuGet/Models/`). |
+| `PackagesConfigReader` | Unit | XML parser for packages.config files. |
+| `PackageExtractor` | Unit | ZIP extraction wrapper for .nupkg. |
+| `PackageInstaller` | Unit | Parallel install orchestrator. |
 
 ### Interfaces
 
 The `NuGet` subsystem exposes the following interfaces to the rest of the tool:
 
-| Interface                        | Direction | Description                                                           |
-|----------------------------------|-----------|-----------------------------------------------------------------------|
-| `PackagesConfigReader.Read`      | Outbound  | Parses a packages.config file and returns a list of `PackageEntry`.   |
-| `PackageInstaller.InstallAsync`  | Outbound  | Installs packages; `excludeVersion` controls versioned/flat naming.   |
-| `PackageExtractor.Extract`       | Internal  | Extracts a .nupkg; `true` if extracted, `false` if folder exists.     |
+| Interface | Direction | Description |
+| --- | --- | --- |
+| `PackagesConfigReader.Read` | Outbound | Parses a packages.config file and returns a list of `PackageEntry`. |
+| `PackageInstaller.InstallAsync` | Outbound | Installs packages; `excludeVersion` controls versioned/flat naming. |
+| `PackageExtractor.Extract` | Internal | Extracts a .nupkg; `true` if extracted, `false` if folder exists. |
 
 ### Design
 
@@ -70,21 +70,21 @@ only the package `Id` (e.g., `Newtonsoft.Json/`). When `false` (the default), it
 
 ### Interactions
 
-| Dependency     | Direction | Purpose                                                               |
-|----------------|-----------|-----------------------------------------------------------------------|
-| `Context`      | Uses      | Output channel for status messages during installation.               |
-| `NuGetCache`   | Uses      | OTS library for resolving packages in the NuGet global package cache. |
+| Dependency | Direction | Purpose |
+| --- | --- | --- |
+| `Context` | Uses | Output channel for status messages during installation. |
+| `NuGetCache` | Uses | OTS library for resolving packages in the NuGet global package cache. |
 
 ### Error Handling
 
-| Component              | Exception                   | Condition                                               |
-|------------------------|-----------------------------|-------------------------------------------------------- |
-| `PackagesConfigReader` | `InvalidOperationException` | File not found or missing `id`/`version` attribute.     |
-| `PackagesConfigReader` | `XmlException`              | File contains malformed XML.                            |
-| `PackageExtractor`     | `InvalidOperationException` | Zip-slip entry or decompressed size exceeds 1 GB.       |
-| `PackageInstaller`     | `ArgumentNullException`     | `outputDirectory` is `null`.                            |
-| `PackageInstaller`     | `ArgumentException`         | `outputDirectory` is empty.                             |
-| `PackageInstaller`     | Propagates from above       | Any exception from `PackageExtractor` or `NuGetCache`.  |
+| Component | Exception | Condition |
+| --- | --- | --- |
+| `PackagesConfigReader` | `InvalidOperationException` | File not found or missing `id`/`version` attribute. |
+| `PackagesConfigReader` | `XmlException` | File contains malformed XML. |
+| `PackageExtractor` | `InvalidOperationException` | Zip-slip entry or decompressed size exceeds 1 GB. |
+| `PackageInstaller` | `ArgumentNullException` | `outputDirectory` is `null`. |
+| `PackageInstaller` | `ArgumentException` | `outputDirectory` is empty. |
+| `PackageInstaller` | Propagates from above | Any exception from `PackageExtractor` or `NuGetCache`. |
 
 ### Security Algorithms
 

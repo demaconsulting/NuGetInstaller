@@ -87,10 +87,19 @@ Test methods:
 
 ### Coverage Summary
 
-| Requirement ID | Test Method(s) |
-| --- | --- |
-| `NuGetInstaller-Program-Version` | `Program_Run_WithVersionFlag_DisplaysVersionOnly`, `Program_Run_WithShortVersionFlag_DisplaysVersion`, `Program_Version_ReturnsNonEmptyString` |
-| `NuGetInstaller-Program-Help` | `Program_Run_WithHelpFlag_DisplaysUsageInformation`, `Program_Run_WithShortHelpFlag_QuestionMark_DisplaysUsageInformation`, `Program_Run_WithShortHelpFlag_H_DisplaysUsageInformation` |
-| `NuGetInstaller-Program-Validate` | `Program_Run_WithValidateFlag_RunsValidation` |
-| `NuGetInstaller-Program-ExitCode` | `Program_Run_WithMissingPackagesConfig_ReturnsNonZeroExitCode` |
-| `NuGetInstaller-Program-Install` | `Program_Run_WithValidPackagesConfig_InstallsPackages`, `Program_Run_WithNoFlags_InstallsPackagesFromDefaultConfigInCurrentDirectory`, `Program_Run_NoArguments_DisplaysBanner` |
+- `NuGetInstaller-Program-Version`:
+  - `Program_Run_WithVersionFlag_DisplaysVersionOnly`
+  - `Program_Run_WithShortVersionFlag_DisplaysVersion`
+  - `Program_Version_ReturnsNonEmptyString`
+- `NuGetInstaller-Program-Help`:
+  - `Program_Run_WithHelpFlag_DisplaysUsageInformation`
+  - `Program_Run_WithShortHelpFlag_QuestionMark_DisplaysUsageInformation`
+  - `Program_Run_WithShortHelpFlag_H_DisplaysUsageInformation`
+- `NuGetInstaller-Program-Validate`:
+  - `Program_Run_WithValidateFlag_RunsValidation`
+- `NuGetInstaller-Program-ExitCode`:
+  - `Program_Run_WithMissingPackagesConfig_ReturnsNonZeroExitCode`
+- `NuGetInstaller-Program-Install`:
+  - `Program_Run_WithValidPackagesConfig_InstallsPackages`
+  - `Program_Run_WithNoFlags_InstallsPackagesFromDefaultConfigInCurrentDirectory`
+  - `Program_Run_NoArguments_DisplaysBanner`
