@@ -16,8 +16,8 @@ that `Context` exposes and calling the correct handler.
 
 `Program` holds no instance state. Its single static property is:
 
-| Field     | Type     | Description                                                    |
-|-----------|----------|----------------------------------------------------------------|
+| Field | Type | Description |
+| --- | --- | --- |
 | `Version` | `string` | The tool version from `AssemblyInformationalVersionAttribute`. |
 
 ### Methods
@@ -69,13 +69,18 @@ Reads `AssemblyInformationalVersionAttribute` from the executing assembly, falli
 
 ### Error Handling
 
-| Condition                                          | Behavior                                                                                                                                                                                                                                                                |
-|----------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `packages.config` file not found                   | Calls `context.WriteError`, which sets exit code to 1 and writes to stderr and the log file (if open); suppressed on stderr, but still recorded to the log file and exit code, when `--silent` is active — see the *Cli Subsystem Design*, `--silent` and error output. |
-| `ArgumentException` or `InvalidOperationException` | Caught directly in `Main` via `Console.Error.WriteLine`; always written to stderr regardless of `--silent` (this path runs outside `Context`, either before a `Context` exists or independent of its output gating), and exits with code 1.                             |
-| Unexpected exceptions                              | Caught directly in `Main` via `Console.Error.WriteLine`; always written to stderr regardless of `--silent`; re-thrown to generate event logs.                                                                                                                           |
-| Unknown or malformed command-line argument         | `ArgumentException` caught in `Main`; `Error: <message>` always written to stderr, independent of `--silent`.                                                                                                                                                           |
-| Log file cannot be opened                          | `InvalidOperationException` caught in `Main`; `Error: <message>` always written to stderr, independent of `--silent`.                                                                                                                                                   |
+- **`packages.config` file not found**: Calls `context.WriteError`, which sets exit code to 1 and writes to stderr and
+  the log file (if open); suppressed on stderr, but still recorded to the log file and exit code, when `--silent` is
+  active — see the *Cli Subsystem Design*, `--silent` and error output.
+- **`ArgumentException` or `InvalidOperationException`**: Caught directly in `Main` via `Console.Error.WriteLine`;
+  always written to stderr regardless of `--silent` (this path runs outside `Context`, either before a `Context` exists
+  or independent of its output gating), and exits with code 1.
+- **Unexpected exceptions**: Caught directly in `Main` via `Console.Error.WriteLine`; always written to stderr
+  regardless of `--silent`; re-thrown to generate event logs.
+- **Unknown or malformed command-line argument**: `ArgumentException` caught in `Main`; `Error: <message>` always
+  written to stderr, independent of `--silent`.
+- **Log file cannot be opened**: `InvalidOperationException` caught in `Main`; `Error: <message>` always written to
+  stderr, independent of `--silent`.
 
 `Main`'s own catch blocks write directly to `Console.Error` and are never suppressed by
 `--silent`; only errors reported through `Context.WriteError` (such as the missing
@@ -84,9 +89,9 @@ Reads `AssemblyInformationalVersionAttribute` from the executing assembly, falli
 
 ### Interactions
 
-| Dependency             | Direction | Purpose                                          |
-|------------------------|-----------|--------------------------------------------------|
-| `Context`              | Uses      | Reads flags; calls `WriteLine`/`WriteError`      |
-| `Validation`           | Uses      | Calls `Validation.Run` when validate flag is set |
-| `PackagesConfigReader` | Uses      | Reads packages.config in `RunToolLogic`          |
-| `PackageInstaller`     | Uses      | Installs packages in `RunToolLogic`              |
+| Dependency | Direction | Purpose |
+| --- | --- | --- |
+| `Context` | Uses | Reads flags; calls `WriteLine`/`WriteError` |
+| `Validation` | Uses | Calls `Validation.Run` when validate flag is set |
+| `PackagesConfigReader` | Uses | Reads packages.config in `RunToolLogic` |
+| `PackageInstaller` | Uses | Installs packages in `RunToolLogic` |

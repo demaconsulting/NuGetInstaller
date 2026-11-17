@@ -58,8 +58,10 @@ Test methods:
 
 ### Coverage Summary
 
-| Requirement ID | Test Method(s) |
-| --- | --- |
-| `NuGetInstaller-SelfTest-Qualification` | `SelfTestSubsystem_ValidationWorkflow_NoResultFiles_CompletesSuccessfully` |
-| `NuGetInstaller-SelfTest-TrxOutput` | `SelfTestSubsystem_ValidationWorkflow_WithTrxFile_GeneratesResults` |
-| `NuGetInstaller-SelfTest-JUnitOutput` | `SelfTestSubsystem_ValidationWorkflow_WithJUnitFile_GeneratesResults`, `SelfTestSubsystem_ValidationWorkflow_WithBothResultFiles_GeneratesBothResults` |
+- `NuGetInstaller-SelfTest-Qualification`:
+  - `SelfTestSubsystem_ValidationWorkflow_NoResultFiles_CompletesSuccessfully`
+- `NuGetInstaller-SelfTest-TrxOutput`:
+  - `SelfTestSubsystem_ValidationWorkflow_WithTrxFile_GeneratesResults`
+- `NuGetInstaller-SelfTest-JUnitOutput`:
+  - `SelfTestSubsystem_ValidationWorkflow_WithJUnitFile_GeneratesResults`
+  - `SelfTestSubsystem_ValidationWorkflow_WithBothResultFiles_GeneratesBothResults`

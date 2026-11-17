@@ -33,8 +33,8 @@ pipeline.
 VersionMark is installed as a .NET local tool defined in `.config/dotnet-tools.json` under the
 package name `demaconsulting.versionmark` and restored with `dotnet tool restore`. Its capture
 manifest is `.versionmark.yaml` at the repository root, which lists every tool whose version
-should be recorded (dotnet, git, node, npm, dotnet-sonarscanner, pandoc, weasyprint, sarifmark,
-sonarmark, reqstream, buildmark, versionmark, reviewmark, fileassert, sysml2tools).
+should be recorded (dotnet, git, dotnet-sonarscanner, pandoc, weasyprint, sarifmark, sonarmark, reqstream,
+buildmark, versionmark, reviewmark, fileassert, textlint, lintmark, sysml2tools, canvasnet).
 
 It is used in three modes across the CI pipeline:
 

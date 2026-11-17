@@ -18,11 +18,11 @@ data carrier.
 
 #### Data Model
 
-| Field             | Type      | Description                                              |
-|-------------------|-----------|----------------------------------------------------------|
-| `Id`              | `string`  | NuGet package identifier (required).                     |
-| `Version`         | `string`  | NuGet package version string (required).                 |
-| `TargetFramework` | `string?` | Target framework from packages.config entry (optional).  |
+| Field | Type | Description |
+| --- | --- | --- |
+| `Id` | `string` | NuGet package identifier (required). |
+| `Version` | `string` | NuGet package version string (required). |
+| `TargetFramework` | `string?` | Target framework from packages.config entry (optional). |
 
 #### Key Methods
 

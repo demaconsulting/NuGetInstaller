@@ -136,21 +136,45 @@ Test methods:
 
 ### Coverage Summary
 
-| Requirement ID | Test Method(s) |
-| --- | --- |
-| `NuGetInstaller-Cli-Context` | `CliSubsystem_VersionFlow_ContextAndProgram_DisplaysVersionAndExits`, `CliSubsystem_HelpFlow_ContextAndProgram_DisplaysHelpAndExits`, `CliSubsystem_HelpFlow_ContextAndProgram_DisplaysHelpAndExits_WithShortQuestionFlag`, `CliSubsystem_HelpFlow_ContextAndProgram_DisplaysHelpAndExits_WithShortHFlag`, `CliSubsystem_ValidateFlow_ContextAndProgram_RunsValidationAndExits` |
-| `NuGetInstaller-Cli-OutputManagement` | `CliSubsystem_SilentFlow_ContextAndProgram_SuppressesOutput`, `CliSubsystem_LogFlow_ContextAndProgram_WritesLogFile` |
-| `NuGetInstaller-Cli-Version` | `CliSubsystem_VersionFlow_ContextAndProgram_DisplaysVersionAndExits`, `CliSubsystem_VersionFlow_ContextAndProgram_DisplaysVersionAndExits_WithShortVFlag` |
-| `NuGetInstaller-Cli-Help` | `CliSubsystem_HelpFlow_ContextAndProgram_DisplaysHelpAndExits`, `CliSubsystem_HelpFlow_ContextAndProgram_DisplaysHelpAndExits_WithShortQuestionFlag`, `CliSubsystem_HelpFlow_ContextAndProgram_DisplaysHelpAndExits_WithShortHFlag` |
-| `NuGetInstaller-Cli-Silent` | `CliSubsystem_SilentFlow_ContextAndProgram_SuppressesOutput` |
-| `NuGetInstaller-Cli-Validate` | `CliSubsystem_ValidateFlow_ContextAndProgram_RunsValidationAndExits` |
-| `NuGetInstaller-Cli-Results` | `CliSubsystem_ResultsFlow_ContextAndProgram_WritesResultsFile` |
-| `NuGetInstaller-Cli-ResultAlias` | `CliSubsystem_ResultAliasFlow_ContextAndProgram_WritesResultsFile` |
-| `NuGetInstaller-Cli-Depth` | `CliSubsystem_DepthFlow_ContextAndProgram_AdjustsHeadingDepth` |
-| `NuGetInstaller-Cli-Log` | `CliSubsystem_LogFlow_ContextAndProgram_WritesLogFile` |
-| `NuGetInstaller-Cli-ErrorOutput` | `CliSubsystem_ErrorOutput_ContextAndProgram_WritesErrorToStderr` |
-| `NuGetInstaller-Cli-InvalidArgs` | `CliSubsystem_InvalidArgs_ContextAndProgram_RejectsUnknownArgumentsAndExitsNonZero` |
-| `NuGetInstaller-Cli-ExitCode` | `CliSubsystem_InvalidArgs_ContextAndProgram_RejectsUnknownArgumentsAndExitsNonZero` |
-| `NuGetInstaller-Cli-PackagesConfig` | `CliSubsystem_PackagesConfigFlow_ContextAndProgram_AcceptsPositionalArgument` |
-| `NuGetInstaller-Cli-OutputDirectory` | `CliSubsystem_OutputDirectoryFlow_ContextAndProgram_SetsOutputDirectory`, `CliSubsystem_OutputDirectoryFlow_ContextAndProgram_SetsOutputDirectory_WithLongFlag` |
-| `NuGetInstaller-Cli-ExcludeVersion` | `CliSubsystem_ExcludeVersionFlow_ContextAndProgram_SetsExcludeVersion`, `CliSubsystem_ExcludeVersionFlow_ContextAndProgram_SetsExcludeVersion_WithLongFlag` |
+- `NuGetInstaller-Cli-Context`:
+  - `CliSubsystem_VersionFlow_ContextAndProgram_DisplaysVersionAndExits`
+  - `CliSubsystem_HelpFlow_ContextAndProgram_DisplaysHelpAndExits`
+  - `CliSubsystem_HelpFlow_ContextAndProgram_DisplaysHelpAndExits_WithShortQuestionFlag`
+  - `CliSubsystem_HelpFlow_ContextAndProgram_DisplaysHelpAndExits_WithShortHFlag`
+  - `CliSubsystem_ValidateFlow_ContextAndProgram_RunsValidationAndExits`
+- `NuGetInstaller-Cli-OutputManagement`:
+  - `CliSubsystem_SilentFlow_ContextAndProgram_SuppressesOutput`
+  - `CliSubsystem_LogFlow_ContextAndProgram_WritesLogFile`
+- `NuGetInstaller-Cli-Version`:
+  - `CliSubsystem_VersionFlow_ContextAndProgram_DisplaysVersionAndExits`
+  - `CliSubsystem_VersionFlow_ContextAndProgram_DisplaysVersionAndExits_WithShortVFlag`
+- `NuGetInstaller-Cli-Help`:
+  - `CliSubsystem_HelpFlow_ContextAndProgram_DisplaysHelpAndExits`
+  - `CliSubsystem_HelpFlow_ContextAndProgram_DisplaysHelpAndExits_WithShortQuestionFlag`
+  - `CliSubsystem_HelpFlow_ContextAndProgram_DisplaysHelpAndExits_WithShortHFlag`
+- `NuGetInstaller-Cli-Silent`:
+  - `CliSubsystem_SilentFlow_ContextAndProgram_SuppressesOutput`
+- `NuGetInstaller-Cli-Validate`:
+  - `CliSubsystem_ValidateFlow_ContextAndProgram_RunsValidationAndExits`
+- `NuGetInstaller-Cli-Results`:
+  - `CliSubsystem_ResultsFlow_ContextAndProgram_WritesResultsFile`
+- `NuGetInstaller-Cli-ResultAlias`:
+  - `CliSubsystem_ResultAliasFlow_ContextAndProgram_WritesResultsFile`
+- `NuGetInstaller-Cli-Depth`:
+  - `CliSubsystem_DepthFlow_ContextAndProgram_AdjustsHeadingDepth`
+- `NuGetInstaller-Cli-Log`:
+  - `CliSubsystem_LogFlow_ContextAndProgram_WritesLogFile`
+- `NuGetInstaller-Cli-ErrorOutput`:
+  - `CliSubsystem_ErrorOutput_ContextAndProgram_WritesErrorToStderr`
+- `NuGetInstaller-Cli-InvalidArgs`:
+  - `CliSubsystem_InvalidArgs_ContextAndProgram_RejectsUnknownArgumentsAndExitsNonZero`
+- `NuGetInstaller-Cli-ExitCode`:
+  - `CliSubsystem_InvalidArgs_ContextAndProgram_RejectsUnknownArgumentsAndExitsNonZero`
+- `NuGetInstaller-Cli-PackagesConfig`:
+  - `CliSubsystem_PackagesConfigFlow_ContextAndProgram_AcceptsPositionalArgument`
+- `NuGetInstaller-Cli-OutputDirectory`:
+  - `CliSubsystem_OutputDirectoryFlow_ContextAndProgram_SetsOutputDirectory`
+  - `CliSubsystem_OutputDirectoryFlow_ContextAndProgram_SetsOutputDirectory_WithLongFlag`
+- `NuGetInstaller-Cli-ExcludeVersion`:
+  - `CliSubsystem_ExcludeVersionFlow_ContextAndProgram_SetsExcludeVersion`
+  - `CliSubsystem_ExcludeVersionFlow_ContextAndProgram_SetsExcludeVersion_WithLongFlag`

@@ -17,30 +17,30 @@ flags and write output.
 
 The `Cli` subsystem contains the following software unit:
 
-| Unit      | File             | Responsibility                                    |
-|-----------|------------------|---------------------------------------------------|
+| Unit | File | Responsibility |
+| --- | --- | --- |
 | `Context` | `Cli/Context.cs` | Argument parsing, output channels, and exit code. |
 
 ### Interfaces
 
 The `Cli` subsystem exposes the following interface to the rest of the tool:
 
-| Interface                    | Direction | Description                                                            |
-|------------------------------|-----------|------------------------------------------------------------------------|
-| `Context.Create`             | Outbound  | Factory method constructing a `Context` from `string[] args`.          |
-| `Context.Version`            | Outbound  | Indicates whether the version flag was specified.                      |
-| `Context.Help`               | Outbound  | Indicates whether the help flag was specified.                         |
-| `Context.Silent`             | Outbound  | Indicates whether the silent flag was specified.                       |
-| `Context.Validate`           | Outbound  | Indicates whether the validate flag was specified.                     |
-| `Context.ResultsFile`        | Outbound  | The validation results file path (null when not specified).            |
-| `Context.PackagesConfigFile` | Outbound  | Path to the packages.config file (default: "packages.config").         |
-| `Context.OutputDirectory`    | Outbound  | Output directory for package installation (null means current dir).    |
-| `Context.ExcludeVersion`     | Outbound  | Indicates whether to use {Id}/ naming instead of {Id}.{Version}/.      |
-| `Context.WriteLine`          | Outbound  | Writes a message to console and optional log file.                     |
-| `Context.WriteError`         | Outbound  | Writes an error to stderr and sets the error exit code.                |
-| `Context.ExitCode`           | Outbound  | Returns 0 for success or 1 when errors have been reported.             |
-| `Context.HeadingDepth`       | Outbound  | Heading depth for markdown output (default 1, valid range 1–6).        |
-| `Context.Dispose`            | Outbound  | Releases resources held by the context (flushes and closes log file).  |
+| Interface | Direction | Description |
+| --- | --- | --- |
+| `Context.Create` | Outbound | Factory method constructing a `Context` from `string[] args`. |
+| `Context.Version` | Outbound | Indicates whether the version flag was specified. |
+| `Context.Help` | Outbound | Indicates whether the help flag was specified. |
+| `Context.Silent` | Outbound | Indicates whether the silent flag was specified. |
+| `Context.Validate` | Outbound | Indicates whether the validate flag was specified. |
+| `Context.ResultsFile` | Outbound | The validation results file path (null when not specified). |
+| `Context.PackagesConfigFile` | Outbound | Path to the packages.config file (default: "packages.config"). |
+| `Context.OutputDirectory` | Outbound | Output directory for package installation (null means current dir). |
+| `Context.ExcludeVersion` | Outbound | Indicates whether to use {Id}/ naming instead of {Id}.{Version}/. |
+| `Context.WriteLine` | Outbound | Writes a message to console and optional log file. |
+| `Context.WriteError` | Outbound | Writes an error to stderr and sets the error exit code. |
+| `Context.ExitCode` | Outbound | Returns 0 for success or 1 when errors have been reported. |
+| `Context.HeadingDepth` | Outbound | Heading depth for markdown output (default 1, valid range 1–6). |
+| `Context.Dispose` | Outbound | Releases resources held by the context (flushes and closes log file). |
 
 ### Design
 
@@ -68,18 +68,18 @@ to how `Context` is constructed and then consumed by the rest of the tool:
 
 The following table maps each command-line flag to its corresponding `Context` property:
 
-| Flag(s)                               | Context Property             | Notes                                    |
-|---------------------------------------|------------------------------|------------------------------------------|
-| `-v`, `--version`                     | `Context.Version`            | Boolean flag                             |
-| `-?`, `-h`, `--help`                  | `Context.Help`               | Boolean flag                             |
-| `--silent`                            | `Context.Silent`             | Boolean flag                             |
-| `--validate`                          | `Context.Validate`           | Boolean flag                             |
-| `--log <file>`                        | *(log file path)*            | Opened internally; not exposed directly  |
-| `--results <file>`, `--result <file>` | `Context.ResultsFile`        | `--result` is an alias for `--results`   |
-| `--depth <#>`                         | `Context.HeadingDepth`       | Integer 1–6, default 1                   |
-| `-o <dir>`, `-OutputDirectory <dir>`  | `Context.OutputDirectory`    | Null means current working directory     |
-| `-x`, `-ExcludeVersion`               | `Context.ExcludeVersion`     | Boolean flag                             |
-| `[packages.config]`                   | `Context.PackagesConfigFile` | Positional; default `packages.config`    |
+| Flag(s) | Context Property | Notes |
+| --- | --- | --- |
+| `-v`, `--version` | `Context.Version` | Boolean flag |
+| `-?`, `-h`, `--help` | `Context.Help` | Boolean flag |
+| `--silent` | `Context.Silent` | Boolean flag |
+| `--validate` | `Context.Validate` | Boolean flag |
+| `--log <file>` | *(log file path)* | Opened internally; not exposed directly |
+| `--results <file>`, `--result <file>` | `Context.ResultsFile` | `--result` is an alias for `--results` |
+| `--depth <#>` | `Context.HeadingDepth` | Integer 1–6, default 1 |
+| `-o <dir>`, `-OutputDirectory <dir>` | `Context.OutputDirectory` | Null means current working directory |
+| `-x`, `-ExcludeVersion` | `Context.ExcludeVersion` | Boolean flag |
+| `[packages.config]` | `Context.PackagesConfigFile` | Positional; default `packages.config` |
 
 ### Error Handling
 

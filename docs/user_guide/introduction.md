@@ -37,7 +37,7 @@ compliance evidence is generated automatically on every CI run.
 
 - **Requirements Traceability**: Every requirement is linked to passing tests, and a trace matrix is
   auto-generated on each release
-- **Linting Enforcement**: markdownlint, TextLint, and yamllint are enforced before any build proceeds
+- **Linting Enforcement**: LintMark, TextLint, and yamllint are enforced before any build proceeds
 - **Automated Audit Documentation**: Each release ships with generated requirements, justifications,
   trace matrix, and quality reports
 - **CodeQL and SonarCloud**: Security and quality analysis runs on every build
@@ -208,18 +208,18 @@ nuget-installer --log output.log
 
 The following command-line options are supported:
 
-| Option                                  | Description                                                  |
-| --------------------------------------- | ------------------------------------------------------------ |
-| `[packages.config]`                     | Path to packages.config (default: packages.config)           |
-| `-x`, `-ExcludeVersion`                 | Name output folder {Id}/ instead of {Id}.{Version}/          |
-| `-o`, `-OutputDirectory <dir>`          | Output directory (default: current directory)                |
-| `-v`, `--version`                       | Display version information                                  |
-| `-?`, `-h`, `--help`                    | Display help message                                         |
-| `--silent`                              | Suppress console output                                      |
-| `--validate`                            | Run self-validation                                          |
-| `--results <file>`, `--result <file>`   | Write validation results to file (TRX or JUnit format)       |
-| `--depth <#>`                           | Set heading depth for markdown output (default: 1)           |
-| `--log <file>`                          | Write output to log file                                     |
+| Option | Description |
+| --- | --- |
+| `[packages.config]` | Path to packages.config (default: packages.config) |
+| `-x`, `-ExcludeVersion` | Name output folder {Id}/ instead of {Id}.{Version}/ |
+| `-o`, `-OutputDirectory <dir>` | Output directory (default: current directory) |
+| `-v`, `--version` | Display version information |
+| `-?`, `-h`, `--help` | Display help message |
+| `--silent` | Suppress console output |
+| `--validate` | Run self-validation |
+| `--results <file>`, `--result <file>` | Write validation results to file (TRX or JUnit format) |
+| `--depth <#>` | Set heading depth for markdown output (default: 1) |
+| `--log <file>` | Write output to log file |
 
 # Examples
 

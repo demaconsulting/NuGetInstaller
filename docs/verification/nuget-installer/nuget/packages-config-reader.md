@@ -67,9 +67,14 @@ Test method:
 
 #### Coverage Summary
 
-| Requirement ID | Test Method(s) |
-| --- | --- |
-| `NuGetInstaller-PackagesConfigReader-Parse` | `PackagesConfigReader_Read_SinglePackage_ReturnsSingleEntry`, `PackagesConfigReader_Read_MultiplePackages_ReturnsAllEntries`, `PackagesConfigReader_Read_EmptyPackages_ReturnsEmptyList` |
-| `NuGetInstaller-PackagesConfigReader-FileNotFound` | `PackagesConfigReader_Read_FileNotFound_ThrowsInvalidOperationException` |
-| `NuGetInstaller-PackagesConfigReader-MissingAttributes` | `PackagesConfigReader_Read_MissingIdAttribute_ThrowsInvalidOperationException`, `PackagesConfigReader_Read_MissingVersionAttribute_ThrowsInvalidOperationException` |
-| `NuGetInstaller-PackagesConfigReader-MalformedXml` | `PackagesConfigReader_Read_MalformedXml_ThrowsXmlException` |
+- `NuGetInstaller-PackagesConfigReader-Parse`:
+  - `PackagesConfigReader_Read_SinglePackage_ReturnsSingleEntry`
+  - `PackagesConfigReader_Read_MultiplePackages_ReturnsAllEntries`
+  - `PackagesConfigReader_Read_EmptyPackages_ReturnsEmptyList`
+- `NuGetInstaller-PackagesConfigReader-FileNotFound`:
+  - `PackagesConfigReader_Read_FileNotFound_ThrowsInvalidOperationException`
+- `NuGetInstaller-PackagesConfigReader-MissingAttributes`:
+  - `PackagesConfigReader_Read_MissingIdAttribute_ThrowsInvalidOperationException`
+  - `PackagesConfigReader_Read_MissingVersionAttribute_ThrowsInvalidOperationException`
+- `NuGetInstaller-PackagesConfigReader-MalformedXml`:
+  - `PackagesConfigReader_Read_MalformedXml_ThrowsXmlException`

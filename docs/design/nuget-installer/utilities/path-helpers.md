@@ -60,10 +60,10 @@ the base directory.
 
 #### Error Handling
 
-| Exception                 | Condition                                                                  |
-|---------------------------|----------------------------------------------------------------------------|
-| `ArgumentNullException`   | `basePath` or `relativePath` is null.                                      |
-| `ArgumentException`       | Resolved path escapes the base directory (traversal or rooted path).       |
-| `ArgumentException`       | A path component is invalid (from `Path.Combine` or `Path.GetFullPath`).   |
-| `NotSupportedException`   | A supplied path contains an unsupported format (propagated from `Path`).   |
-| `PathTooLongException`    | The combined or resolved path exceeds the system-defined maximum length.   |
+| Exception | Condition |
+| --- | --- |
+| `ArgumentNullException` | `basePath` or `relativePath` is null. |
+| `ArgumentException` | Resolved path escapes the base directory (traversal or rooted path). |
+| `ArgumentException` | A path component is invalid (from `Path.Combine` or `Path.GetFullPath`). |
+| `NotSupportedException` | A supplied path contains an unsupported format (propagated from `Path`). |
+| `PathTooLongException` | The combined or resolved path exceeds the system-defined maximum length. |

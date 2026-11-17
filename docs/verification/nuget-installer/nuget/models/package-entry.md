@@ -36,6 +36,6 @@ Test methods:
 
 #### Coverage Summary
 
-| Requirement ID | Test Method(s) |
-| --- | --- |
-| `NuGetInstaller-PackageEntry-DataModel` | `ModelsSubsystem_PackageEntry_AllProperties_StoresCorrectly`, `ModelsSubsystem_PackageEntry_OptionalTargetFramework_IsNullWhenNotSet` |
+- `NuGetInstaller-PackageEntry-DataModel`:
+  - `ModelsSubsystem_PackageEntry_AllProperties_StoresCorrectly`
+  - `ModelsSubsystem_PackageEntry_OptionalTargetFramework_IsNullWhenNotSet`

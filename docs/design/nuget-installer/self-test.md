@@ -16,17 +16,17 @@ test results to a file in TRX or JUnit XML format for integration with CI/CD pip
 
 The `SelfTest` subsystem contains the following software unit:
 
-| Unit         | File                     | Responsibility                                     |
-|--------------|--------------------------|----------------------------------------------------|
+| Unit | File | Responsibility |
+| --- | --- | --- |
 | `Validation` | `SelfTest/Validation.cs` | Orchestrating and executing self-validation tests. |
 
 ### Interfaces
 
 The `SelfTest` subsystem exposes the following interface to the rest of the tool:
 
-| Interface        | Direction | Description                                                           |
-|------------------|-----------|-----------------------------------------------------------------------|
-| `Validation.Run` | Outbound  | Runs all self-validation tests, prints a summary, and writes results. |
+| Interface | Direction | Description |
+| --- | --- | --- |
+| `Validation.Run` | Outbound | Runs all self-validation tests, prints a summary, and writes results. |
 
 ### Design
 
@@ -40,11 +40,11 @@ individual test failures, and the internal/external collaborations involved.
 
 The `SelfTest` subsystem executes three built-in tests covering the tool's core behaviors:
 
-| Test Name                          | Behavior Verified                                     |
-|------------------------------------|-------------------------------------------------------|
-| `NuGetInstaller_VersionDisplay`    | `--version` outputs a valid version string.           |
-| `NuGetInstaller_HelpDisplay`       | `--help` outputs usage and options information.       |
-| `NuGetInstaller_InstallPackage`    | Installs a known package from a packages.config file. |
+| Test Name | Behavior Verified |
+| --- | --- |
+| `NuGetInstaller_VersionDisplay` | `--version` outputs a valid version string. |
+| `NuGetInstaller_HelpDisplay` | `--help` outputs usage and options information. |
+| `NuGetInstaller_InstallPackage` | Installs a known package from a packages.config file. |
 
 Each test runner creates a temporary directory via the private `TemporaryDirectory` helper (an
 `IDisposable` wrapper that deletes the directory on disposal). Results are accumulated into a
@@ -62,11 +62,11 @@ and produce evidence.
 
 #### Interactions
 
-| Dependency                   | Direction | Purpose                                                      |
-|------------------------------|-----------|--------------------------------------------------------------|
-| `Context`                    | Uses      | Output channel for header lines, test summaries, and errors. |
-| `Program`                    | Uses      | `Program.Run` is called internally to exercise the tool.     |
-| `PathHelpers`                | Uses      | `SafePathCombine` for constructing log file paths in tests.  |
-| `PackagesConfigReader`       | Uses      | Reads packages.config in the install-package self-test.      |
-| `PackageInstaller`           | Uses      | Installs packages in the install-package self-test.          |
-| `DemaConsulting.TestResults` | Uses      | Result model and TRX/JUnit serialization.                    |
+| Dependency | Direction | Purpose |
+| --- | --- | --- |
+| `Context` | Uses | Output channel for header lines, test summaries, and errors. |
+| `Program` | Uses | `Program.Run` is called internally to exercise the tool. |
+| `PathHelpers` | Uses | `SafePathCombine` for constructing log file paths in tests. |
+| `PackagesConfigReader` | Uses | Reads packages.config in the install-package self-test. |
+| `PackageInstaller` | Uses | Installs packages in the install-package self-test. |
+| `DemaConsulting.TestResults` | Uses | Result model and TRX/JUnit serialization. |

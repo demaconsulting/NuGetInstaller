@@ -29,7 +29,21 @@ representative test methods are linked as evidence for both requirements:
 
 ### Coverage Summary
 
-| Requirement ID | Test Method(s) |
-| --- | --- |
-| `NuGetInstaller-OTS-XUnit-TestExecution` | `Context_Create_NoArguments_ReturnsDefaultContext`, `Context_Create_VersionFlag_SetsVersionTrue`, `Context_Create_SilentFlag_SetsSilentTrue`, `Context_Create_LogFlag_OpensLogFile`, `Context_Create_UnknownArgument_ThrowsArgumentException`, `PathHelpers_SafePathCombine_ValidPaths_CombinesCorrectly`, `Program_Run_WithVersionFlag_DisplaysVersionOnly`, `Validation_Run_WithSilentContext_PrintsSummary` |
-| `NuGetInstaller-OTS-XUnit-TrxReporting` | `Context_Create_NoArguments_ReturnsDefaultContext`, `Context_Create_VersionFlag_SetsVersionTrue`, `Context_Create_SilentFlag_SetsSilentTrue`, `Context_Create_LogFlag_OpensLogFile`, `Context_Create_UnknownArgument_ThrowsArgumentException`, `PathHelpers_SafePathCombine_ValidPaths_CombinesCorrectly`, `Program_Run_WithVersionFlag_DisplaysVersionOnly`, `Validation_Run_WithSilentContext_PrintsSummary` |
+- `NuGetInstaller-OTS-XUnit-TestExecution`:
+  - `Context_Create_NoArguments_ReturnsDefaultContext`
+  - `Context_Create_VersionFlag_SetsVersionTrue`
+  - `Context_Create_SilentFlag_SetsSilentTrue`
+  - `Context_Create_LogFlag_OpensLogFile`
+  - `Context_Create_UnknownArgument_ThrowsArgumentException`
+  - `PathHelpers_SafePathCombine_ValidPaths_CombinesCorrectly`
+  - `Program_Run_WithVersionFlag_DisplaysVersionOnly`
+  - `Validation_Run_WithSilentContext_PrintsSummary`
+- `NuGetInstaller-OTS-XUnit-TrxReporting`:
+  - `Context_Create_NoArguments_ReturnsDefaultContext`
+  - `Context_Create_VersionFlag_SetsVersionTrue`
+  - `Context_Create_SilentFlag_SetsSilentTrue`
+  - `Context_Create_LogFlag_OpensLogFile`
+  - `Context_Create_UnknownArgument_ThrowsArgumentException`
+  - `PathHelpers_SafePathCombine_ValidPaths_CombinesCorrectly`
+  - `Program_Run_WithVersionFlag_DisplaysVersionOnly`
+  - `Validation_Run_WithSilentContext_PrintsSummary`

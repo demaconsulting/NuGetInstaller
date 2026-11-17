@@ -32,6 +32,15 @@ Test evidence names:
 
 ### Coverage Summary
 
-| Requirement ID | Test Method(s) |
-| --- | --- |
-| `NuGetInstaller-OTS-FileAssert` | `FileAssert_VersionDisplay`, `FileAssert_HelpDisplay`, `FileAssert_File`, `FileAssert_Text`, `FileAssert_Html`, `FileAssert_Xml`, `FileAssert_Yaml`, `FileAssert_Json`, `FileAssert_Pdf`, `FileAssert_Zip`, `FileAssert_Results` |
+- `NuGetInstaller-OTS-FileAssert`:
+  - `FileAssert_VersionDisplay`
+  - `FileAssert_HelpDisplay`
+  - `FileAssert_File`
+  - `FileAssert_Text`
+  - `FileAssert_Html`
+  - `FileAssert_Xml`
+  - `FileAssert_Yaml`
+  - `FileAssert_Json`
+  - `FileAssert_Pdf`
+  - `FileAssert_Zip`
+  - `FileAssert_Results`

@@ -16,17 +16,17 @@ external inputs.
 
 The `Utilities` subsystem contains the following software unit:
 
-| Unit          | File                       | Responsibility                              |
-|---------------|----------------------------|---------------------------------------------|
+| Unit | File | Responsibility |
+| --- | --- | --- |
 | `PathHelpers` | `Utilities/PathHelpers.cs` | Safe path combination and traversal checks. |
 
 ### Interfaces
 
 The `Utilities` subsystem exposes the following interface to the rest of the tool:
 
-| Interface                     | Direction | Description                                                       |
-|-------------------------------|-----------|-------------------------------------------------------------------|
-| `PathHelpers.SafePathCombine` | Outbound  | Combines paths, rejecting null inputs and traversal sequences.    |
+| Interface | Direction | Description |
+| --- | --- | --- |
+| `PathHelpers.SafePathCombine` | Outbound | Combines paths, rejecting null inputs and traversal sequences. |
 
 ### Design
 
@@ -44,13 +44,13 @@ class library types (`Path`, `ArgumentNullException`).
 
 `SafePathCombine` throws the following exceptions:
 
-| Exception                | Condition                                                                           |
-|--------------------------|-------------------------------------------------------------------------------------|
-| `ArgumentNullException`  | Either `basePath` or `relativePath` is `null`.                                      |
-| `ArgumentException`      | The combined path would escape the base directory (path traversal detected).        |
-| `ArgumentException`      | The resolved relative path is rooted (e.g., cross-drive reference on Windows).      |
-| `NotSupportedException`  | A path component contains an unsupported character.                                 |
-| `PathTooLongException`   | The resulting path exceeds the system's maximum path length.                        |
+| Exception | Condition |
+| --- | --- |
+| `ArgumentNullException` | Either `basePath` or `relativePath` is `null`. |
+| `ArgumentException` | The combined path would escape the base directory (path traversal detected). |
+| `ArgumentException` | The resolved relative path is rooted (e.g., cross-drive reference on Windows). |
+| `NotSupportedException` | A path component contains an unsupported character. |
+| `PathTooLongException` | The resulting path exceeds the system's maximum path length. |
 
 #### Algorithm
 

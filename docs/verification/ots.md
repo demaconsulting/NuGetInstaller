@@ -28,16 +28,16 @@ file. Test evidence is recorded in the ReqStream requirements traceability matri
 The following table lists all OTS items and their primary evidence type. Full verification
 details for each item are provided in the individual OTS item verification documents under `docs/verification/ots/`.
 
-| OTS Item    | Primary Evidence Type                                                  |
-| ----------- | ---------------------------------------------------------------------- |
-| BuildMark   | CI pipeline step evidence                                              |
-| FileAssert  | Self-validation                                                        |
-| xUnit       | Integration test evidence                                              |
-| Pandoc      | CI pipeline step evidence combined with FileAssert document validation |
-| ReqStream   | CI pipeline step evidence                                              |
-| ReviewMark  | CI pipeline step evidence                                              |
-| SarifMark   | CI pipeline step evidence                                              |
-| SonarMark   | CI pipeline step evidence                                              |
-| SysML2Tools | Self-validation combined with CI pipeline lint and render evidence     |
-| VersionMark | CI pipeline step evidence                                              |
-| WeasyPrint  | CI pipeline step evidence combined with FileAssert document validation |
+| OTS Item | Primary Evidence Type |
+| --- | --- |
+| BuildMark | CI pipeline step evidence |
+| FileAssert | Self-validation |
+| xUnit | Integration test evidence |
+| Pandoc | CI pipeline step evidence combined with FileAssert document validation |
+| ReqStream | CI pipeline step evidence |
+| ReviewMark | CI pipeline step evidence |
+| SarifMark | CI pipeline step evidence |
+| SonarMark | CI pipeline step evidence |
+| SysML2Tools | Self-validation combined with CI pipeline lint and render evidence |
+| VersionMark | CI pipeline step evidence |
+| WeasyPrint | CI pipeline step evidence combined with FileAssert document validation |

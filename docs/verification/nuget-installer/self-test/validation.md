@@ -84,11 +84,16 @@ Test method:
 
 #### Coverage Summary
 
-| Requirement ID | Test Method(s) |
-| --- | --- |
-| `NuGetInstaller-Validation-Run` | `Validation_Run_WithSilentContext_PrintsSummary`, `Validation_Run_WithSilentContext_ExitCodeIsZero` |
-| `NuGetInstaller-Validation-VersionTest` | `Validation_Run_WithSilentContext_PrintsSummary` |
-| `NuGetInstaller-Validation-HelpTest` | `Validation_Run_WithSilentContext_PrintsSummary` |
-| `NuGetInstaller-Validation-TrxResults` | `Validation_Run_WithTrxResultsFile_WritesTrxFile` |
-| `NuGetInstaller-Validation-JUnitResults` | `Validation_Run_WithXmlResultsFile_WritesXmlFile` |
-| `NuGetInstaller-Validation-InstallPackage` | `Validation_Run_WithSilentContext_PrintsInstallPackageTestResult` |
+- `NuGetInstaller-Validation-Run`:
+  - `Validation_Run_WithSilentContext_PrintsSummary`
+  - `Validation_Run_WithSilentContext_ExitCodeIsZero`
+- `NuGetInstaller-Validation-VersionTest`:
+  - `Validation_Run_WithSilentContext_PrintsSummary`
+- `NuGetInstaller-Validation-HelpTest`:
+  - `Validation_Run_WithSilentContext_PrintsSummary`
+- `NuGetInstaller-Validation-TrxResults`:
+  - `Validation_Run_WithTrxResultsFile_WritesTrxFile`
+- `NuGetInstaller-Validation-JUnitResults`:
+  - `Validation_Run_WithXmlResultsFile_WritesXmlFile`
+- `NuGetInstaller-Validation-InstallPackage`:
+  - `Validation_Run_WithSilentContext_PrintsInstallPackageTestResult`
