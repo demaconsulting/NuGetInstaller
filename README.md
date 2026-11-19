@@ -9,6 +9,13 @@
 [![Security][badge-security]][link-security]
 [![NuGet][badge-nuget]][link-nuget]
 
+![NuGet Installer banner: the NuGetInstaller name with the tagline 'List packages once. Install them anywhere.' and
+the command nuget-installer -o packages -x packages.config. A packages.config listing packages by id and version, a
+nuget.config naming the package feeds, NuGet feeds such as nuget.org serving .nupkg files, and the -o, -x, and --log
+options flow on curved arrows into the nuget-installer .NET tool, and arrows lead out to extracted package folders
+named Id.Version, version-less Id folders with -x, the populated NuGet global packages cache, and a pass/fail exit
+code][hero]
+
 NuGet Installer is a cross-platform .NET tool that installs NuGet packages listed in a
 `packages.config` file into a local output directory, mirroring the behavior of `nuget.exe install`.
 
@@ -182,6 +189,7 @@ By contributing to this project, you agree that your contributions will be licen
 
 <!-- Link References -->
 [link-contributing]: https://github.com/demaconsulting/NuGetInstaller/blob/main/CONTRIBUTING.md
+[hero]: https://raw.githubusercontent.com/demaconsulting/NuGetInstaller/main/docs/images/hero.png
 [workflow]: https://raw.githubusercontent.com/demaconsulting/NuGetInstaller/main/docs/images/workflow.png
 [link-forks]: https://github.com/demaconsulting/NuGetInstaller/network/members
 [link-stars]: https://github.com/demaconsulting/NuGetInstaller/stargazers
