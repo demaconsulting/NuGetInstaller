@@ -1,0 +1,293 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="640" viewBox="0 0 1600 640">
+  <!-- The README hero banner. A packages.config, a nuget.config, NuGet feeds, and the command-line options flow
+       into the nuget-installer tool, which extracts each package into a {Id}.{Version}/ folder (or a version-less
+       {Id}/ folder with -x), fills the NuGet global packages cache, and returns a pass/fail exit code.
+       The definitions and the left panel follow the shared DEMA Consulting hero (CanvasNet and BuildMark).
+       This file is docs/images/hero.svg, beside its rendered docs/images/hero.png (matching base names, per the
+       diagram documentation standard); the files it embeds are in docs/images/hero/. -->
+  <defs>
+    <style>
+      .word { font: bold 92px sans-serif; fill: #ffffff; }
+      .eyebrow { font: bold 25px sans-serif; fill: #a5b4fc; }
+      .tag { font: bold 40px sans-serif; fill: #f8fafc; }
+      .body { font: 25px sans-serif; fill: #cbd5e1; }
+      .cmd { font: 25px monospace; fill: #e2e8f0; }
+      .prompt { fill: #5eead4; }
+      .file { fill: #f9a8d4; }
+      .brandText { fill: url(#brand); }
+      .note { font: italic 25px sans-serif; fill: #94a3b8; }
+      .label { font: bold 25px sans-serif; fill: #f1f5f9; text-anchor: middle; }
+      .engine { font: bold 32px monospace; fill: #ffffff; }
+      .api { font: bold 25px sans-serif; fill: #c4b5fd; }
+      .card { fill: url(#glass); stroke: url(#rim); stroke-width: 1.5; filter: url(#shadow); }
+      .panel { fill: #0a1022; stroke: #ffffff; stroke-opacity: 0.06; }
+      .flow { fill: none; stroke-width: 3; stroke-linecap: round; }
+      .page { fill: #ffffff; filter: url(#paper); }
+    </style>
+
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#070b1f"/>
+      <stop offset="0.55" stop-color="#130f3b"/>
+      <stop offset="1" stop-color="#071a2e"/>
+    </linearGradient>
+    <radialGradient id="glowViolet" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#7c3aed" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#7c3aed" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowCyan" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#06b6d4" stop-opacity="0.45"/>
+      <stop offset="1" stop-color="#06b6d4" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowPink" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#db2777" stop-opacity="0.4"/>
+      <stop offset="1" stop-color="#db2777" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="dots" width="24" height="24" patternUnits="userSpaceOnUse">
+      <circle cx="12" cy="12" r="1.2" fill="#a5b4fc" fill-opacity="0.16"/>
+    </pattern>
+    <linearGradient id="brand" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#22d3ee"/>
+      <stop offset="0.5" stop-color="#a78bfa"/>
+      <stop offset="1" stop-color="#f472b6"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.12"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0.04"/>
+    </linearGradient>
+    <linearGradient id="rim" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.38"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0.08"/>
+    </linearGradient>
+    <linearGradient id="engineFill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1e1b4b"/>
+      <stop offset="1" stop-color="#0b1022"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#000000" flood-opacity="0.45"/>
+    </filter>
+    <filter id="paper" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#000000" flood-opacity="0.5"/>
+    </filter>
+    <filter id="blur" x="-30%" y="-150%" width="160%" height="400%">
+      <feGaussianBlur stdDeviation="14"/>
+    </filter>
+    <filter id="heat" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="6"/>
+    </filter>
+
+    <marker id="headPink" viewBox="0 0 10 10" refX="2.5" refY="5" markerWidth="4" markerHeight="4" orient="auto">
+      <path d="M0,0 L10,5 L0,10 L2.5,5 z" fill="#f472b6"/>
+    </marker>
+    <marker id="headAmber" viewBox="0 0 10 10" refX="2.5" refY="5" markerWidth="4" markerHeight="4" orient="auto">
+      <path d="M0,0 L10,5 L0,10 L2.5,5 z" fill="#fbbf24"/>
+    </marker>
+    <marker id="headCyan" viewBox="0 0 10 10" refX="2.5" refY="5" markerWidth="4" markerHeight="4" orient="auto">
+      <path d="M0,0 L10,5 L0,10 L2.5,5 z" fill="#22d3ee"/>
+    </marker>
+    <marker id="headViolet" viewBox="0 0 10 10" refX="2.5" refY="5" markerWidth="4" markerHeight="4" orient="auto">
+      <path d="M0,0 L10,5 L0,10 L2.5,5 z" fill="#a78bfa"/>
+    </marker>
+    <marker id="headBlue" viewBox="0 0 10 10" refX="2.5" refY="5" markerWidth="4" markerHeight="4" orient="auto">
+      <path d="M0,0 L10,5 L0,10 L2.5,5 z" fill="#60a5fa"/>
+    </marker>
+    <marker id="headMint" viewBox="0 0 10 10" refX="2.5" refY="5" markerWidth="4" markerHeight="4" orient="auto">
+      <path d="M0,0 L10,5 L0,10 L2.5,5 z" fill="#5eead4"/>
+    </marker>
+
+    <!-- The text and shapes inside the mini illustrations -->
+    <style>
+      .mini { font: bold 22px sans-serif; }
+      .miniMono { font: bold 22px monospace; }
+      .bar { fill: #cbd5e1; }
+      .ink { fill: #1e293b; }
+    </style>
+  </defs>
+
+  <!-- Background: deep gradient, soft glows, and a dot grid -->
+  <rect width="1600" height="640" fill="url(#bg)"/>
+  <ellipse cx="250" cy="170" rx="420" ry="300" fill="url(#glowViolet)"/>
+  <ellipse cx="1070" cy="294" rx="420" ry="220" fill="url(#glowCyan)"/>
+  <ellipse cx="1480" cy="620" rx="380" ry="260" fill="url(#glowPink)"/>
+  <rect width="1600" height="640" fill="url(#dots)"/>
+
+  <!-- Background: deep gradient, soft glows, and a dot grid -->
+  <rect width="1600" height="640" fill="url(#bg)"/>
+  <ellipse cx="250" cy="170" rx="420" ry="300" fill="url(#glowViolet)"/>
+  <ellipse cx="1070" cy="294" rx="420" ry="220" fill="url(#glowCyan)"/>
+  <ellipse cx="1480" cy="620" rx="380" ry="260" fill="url(#glowPink)"/>
+  <rect width="1600" height="640" fill="url(#dots)"/>
+
+  <!-- Wordmark and tagline -->
+  <image href="hero/dc-logo-dark.svg" x="46" y="54" width="50" height="50"/>
+  <text class="eyebrow" x="100" y="90">DEMA Consulting</text>
+  <text class="word" x="52" y="176" style="font-size:71px">NuGet</text>
+  <text class="word brandText" x="265" y="176" style="font-size:71px">Installer</text>
+  <rect x="58" y="200" width="132" height="6" rx="3" fill="url(#brand)"/>
+  <text class="tag" x="56" y="266">List packages once.</text>
+  <text class="tag brandText" x="56" y="316">Install them anywhere.</text>
+  <text class="body" x="58" y="368">Installs the NuGet packages listed in</text>
+  <text class="body" x="58" y="402">packages.config into a local folder,</text>
+  <text class="body" x="58" y="436">on Windows, Linux, and macOS.</text>
+  <rect x="56" y="468" width="480" height="90" rx="12" fill="#0a1022" fill-opacity="0.8" stroke="#a78bfa" stroke-opacity="0.45" stroke-width="1.5"/>
+  <text class="cmd prompt" x="78" y="503">$</text>
+  <text class="cmd" x="108" y="503">nuget-installer -o</text>
+  <text class="cmd file" x="393" y="503">packages</text>
+  <text class="cmd" x="138" y="539">-x</text>
+  <text class="cmd file" x="183" y="539">packages.config</text>
+  <text class="note" x="58" y="604">Mirrors nuget.exe install.</text>
+
+  <!-- Input cards -->
+  <g>
+    <!-- packages.config: the package list, by id and version -->
+    <rect class="card" x="580" y="40" width="316" height="160" rx="16"/>
+    <rect x="682" y="40" width="112" height="3" rx="1.5" fill="#fbbf24"/>
+    <rect class="panel" x="588" y="48" width="300" height="112" rx="10"/>
+    <g transform="translate(588 48)">
+      <text class="miniMono" x="16" y="32" fill="#fbbf24">&lt;packages&gt;</text>
+      <text class="miniMono" x="36" y="66" fill="#fbbf24">&lt;package</text>
+      <text class="miniMono" x="155" y="66" fill="#f8fafc">id="Lib"</text>
+      <text class="miniMono" x="56" y="100" fill="#f8fafc">version="1.2.0"</text>
+      <text class="miniMono" x="255" y="100" fill="#fbbf24">/&gt;</text>
+    </g>
+    <text class="label" x="738" y="190">packages.config</text>
+
+    <!-- nuget.config: the package sources, discovered as dotnet restore does -->
+    <rect class="card" x="908" y="40" width="196" height="160" rx="16"/>
+    <rect x="950" y="40" width="112" height="3" rx="1.5" fill="#22d3ee"/>
+    <rect class="panel" x="916" y="48" width="180" height="112" rx="10"/>
+    <g transform="translate(916 48)">
+      <path class="page" d="M16 12 L56 12 L72 28 L72 100 L16 100 Z"/>
+      <path d="M56 12 L56 28 L72 28 Z" fill="#cbd5e1"/>
+      <rect x="26" y="40" width="36" height="5" rx="2.5" fill="#22d3ee"/>
+      <rect class="bar" x="26" y="52" width="36" height="5" rx="2.5"/>
+      <rect class="bar" x="26" y="64" width="26" height="5" rx="2.5"/>
+      <rect class="bar" x="26" y="76" width="32" height="5" rx="2.5"/>
+      <rect x="82" y="18" width="88" height="32" rx="7" fill="#22d3ee" fill-opacity="0.16" stroke="#22d3ee" stroke-width="1.5"/>
+      <text class="mini" x="126" y="42" fill="#a5f3fc" text-anchor="middle">feeds</text>
+      <rect class="bar" x="82" y="66" width="88" height="8" rx="4" fill-opacity="0.75"/>
+      <rect class="bar" x="82" y="84" width="60" height="8" rx="4" fill-opacity="0.75"/>
+    </g>
+    <text class="label" x="1006" y="190">nuget.config</text>
+
+    <!-- NuGet feeds: nuget.org or a private feed serving .nupkg files -->
+    <rect class="card" x="1116" y="40" width="236" height="160" rx="16"/>
+    <rect x="1178" y="40" width="112" height="3" rx="1.5" fill="#f472b6"/>
+    <rect class="panel" x="1124" y="48" width="220" height="112" rx="10"/>
+    <g transform="translate(1124 48)">
+      <path d="M36 64 C10 64 8 34 34 32 C38 10 76 4 94 20 C108 4 154 6 160 30 C188 28 196 64 168 64 Z" fill="#f472b6" fill-opacity="0.18" stroke="#f472b6" stroke-width="2"/>
+      <text class="miniMono" x="102" y="54" fill="#fbcfe8" text-anchor="middle">nuget.org</text>
+      <path d="M102 68 L102 76" stroke="#f472b6" stroke-width="3" stroke-linecap="round" marker-end="url(#headPink)"/>
+      <rect x="45" y="78" width="114" height="30" rx="15" fill="#ffffff" fill-opacity="0.08" stroke="#f472b6" stroke-opacity="0.7" stroke-width="1.5"/>
+      <text class="miniMono" x="102" y="101" fill="#f8fafc" text-anchor="middle">.nupkg</text>
+    </g>
+    <text class="label" x="1234" y="190">NuGet feeds</text>
+
+    <!-- Options: the output directory, version-less folders, and a log file -->
+    <rect class="card" x="1364" y="40" width="196" height="160" rx="16"/>
+    <rect x="1406" y="40" width="112" height="3" rx="1.5" fill="#60a5fa"/>
+    <rect class="panel" x="1372" y="48" width="180" height="112" rx="10"/>
+    <g transform="translate(1372 48)">
+      <text class="miniMono" x="16" y="34" fill="#93c5fd">-o</text>
+      <text class="miniMono" x="56" y="34" fill="#f8fafc">packages</text>
+      <text class="miniMono" x="16" y="68" fill="#93c5fd">-x</text>
+      <text class="miniMono" x="56" y="68" fill="#f8fafc">Id/</text>
+      <text class="miniMono" x="16" y="102" fill="#93c5fd">--log</text>
+      <text class="miniMono" x="96" y="102" fill="#f8fafc">x.log</text>
+    </g>
+    <text class="label" x="1462" y="190">Options</text>
+  </g>
+
+  <!-- Flows into the engine -->
+  <g class="flow">
+    <path d="M738,206 C738,236 950,226 950,253" stroke="#fbbf24" marker-end="url(#headAmber)"/>
+    <path d="M1006,206 C1006,236 1030,226 1030,253" stroke="#22d3ee" marker-end="url(#headCyan)"/>
+    <path d="M1234,206 C1234,236 1110,226 1110,253" stroke="#f472b6" marker-end="url(#headPink)"/>
+    <path d="M1462,206 C1462,236 1190,226 1190,253" stroke="#60a5fa" marker-end="url(#headBlue)"/>
+  </g>
+  <g stroke="#0a1022" stroke-width="2">
+    <circle cx="738" cy="206" r="5" fill="#fbbf24"/>
+    <circle cx="1006" cy="206" r="5" fill="#22d3ee"/>
+    <circle cx="1234" cy="206" r="5" fill="#f472b6"/>
+    <circle cx="1462" cy="206" r="5" fill="#60a5fa"/>
+  </g>
+  <!-- The engine: the nuget-installer command, widened for its 15-character name -->
+  <rect x="805" y="262" width="530" height="64" rx="32" fill="url(#brand)" opacity="0.55" filter="url(#blur)"/>
+  <rect x="805" y="262" width="530" height="64" rx="32" fill="url(#engineFill)" stroke="url(#brand)" stroke-width="2.5"/>
+  <rect x="829" y="276" width="36" height="36" rx="9" fill="url(#brand)"/>
+  <path d="M838 282 L851 282 L857 288 L857 306 L838 306 Z" fill="#ffffff"/>
+  <g fill="#7c3aed">
+    <rect x="842" y="290" width="11" height="2.5" rx="1.2"/>
+    <rect x="842" y="295" width="11" height="2.5" rx="1.2"/>
+    <rect x="842" y="300" width="7" height="2.5" rx="1.2"/>
+  </g>
+  <text class="engine" x="881" y="305">nuget-installer</text>
+  <line x1="1181" y1="278" x2="1181" y2="310" stroke="#ffffff" stroke-opacity="0.25" stroke-width="1.5"/>
+  <text class="api" x="1201" y="303">.NET tool</text>
+
+  <!-- Flows out of the engine -->
+  <g class="flow" stroke="#5eead4">
+    <path d="M980,330 C980,356 728,356 728,381" marker-end="url(#headMint)"/>
+    <path d="M1040,330 C1040,356 999,356 999,381" marker-end="url(#headMint)"/>
+    <path d="M1100,330 C1100,356 1232,356 1232,381" marker-end="url(#headMint)"/>
+    <path d="M1160,330 C1160,356 1457,356 1457,381" marker-end="url(#headMint)"/>
+  </g>
+  <g fill="#5eead4" stroke="#0a1022" stroke-width="2">
+    <circle cx="980" cy="330" r="5"/>
+    <circle cx="1040" cy="330" r="5"/>
+    <circle cx="1100" cy="330" r="5"/>
+    <circle cx="1160" cy="330" r="5"/>
+  </g>
+
+  <!-- Output tiles -->
+  <g>
+    <!-- Package folders: each package extracted to {Id}.{Version}/ in the output directory -->
+    <rect class="card" x="580" y="390" width="296" height="210" rx="16"/>
+    <rect class="panel" x="588" y="398" width="280" height="152" rx="10"/>
+    <g stroke="#94a3b8" stroke-width="2" fill="none">
+      <path d="M614 444 L614 518 L636 518"/>
+      <path d="M614 474 L636 474"/>
+    </g>
+    <path d="M604 416 L614 416 L618 421 L630 421 L630 438 L604 438 Z" fill="#fbbf24"/>
+    <text class="miniMono" x="640" y="436" fill="#f8fafc">packages/</text>
+    <path d="M640 464 L650 464 L654 469 L666 469 L666 484 L640 484 Z" fill="#5eead4"/>
+    <text class="miniMono" x="676" y="482" fill="#f8fafc">Lib.1.2.0/</text>
+    <path d="M640 508 L650 508 L654 513 L666 513 L666 528 L640 528 Z" fill="#5eead4"/>
+    <text class="miniMono" x="676" y="526" fill="#f8fafc">Tool.2.0.1/</text>
+    <text class="label" x="728" y="585">Package folders</text>
+
+    <!-- Version-less: with -x each package goes to {Id}/ instead -->
+    <rect class="card" x="889" y="390" width="220" height="210" rx="16"/>
+    <rect class="panel" x="897" y="398" width="204" height="152" rx="10"/>
+    <text class="miniMono" x="999" y="436" fill="#fca5a5" text-anchor="middle">Lib.1.2.0/</text>
+    <line x1="933" y1="429" x2="1065" y2="429" stroke="#fca5a5" stroke-width="2"/>
+    <path d="M999 450 L999 482" stroke="#5eead4" stroke-width="3" stroke-linecap="round" marker-end="url(#headMint)"/>
+    <rect x="949" y="498" width="100" height="36" rx="18" fill="#4ade80" fill-opacity="0.18" stroke="#4ade80" stroke-width="1.5"/>
+    <text class="miniMono" x="999" y="523" fill="#bbf7d0" text-anchor="middle">Lib/</text>
+    <text class="label" x="999" y="585">Version-less</text>
+
+    <!-- NuGet cache: packages downloaded once into the NuGet global packages folder -->
+    <rect class="card" x="1122" y="390" width="220" height="210" rx="16"/>
+    <rect class="panel" x="1130" y="398" width="204" height="152" rx="10"/>
+    <g stroke="#0a1022" stroke-width="1.5">
+      <rect x="1176" y="452" width="50" height="40" rx="5" fill="#a78bfa"/>
+      <rect x="1238" y="452" width="50" height="40" rx="5" fill="#60a5fa"/>
+      <rect x="1207" y="410" width="50" height="40" rx="5" fill="#f472b6"/>
+    </g>
+    <g fill="#ffffff" fill-opacity="0.55">
+      <rect x="1196" y="452" width="10" height="14"/>
+      <rect x="1258" y="452" width="10" height="14"/>
+      <rect x="1227" y="410" width="10" height="14"/>
+    </g>
+    <text class="miniMono" x="1232" y="530" fill="#e2e8f0" text-anchor="middle">~/.nuget</text>
+    <text class="label" x="1232" y="585">NuGet cache</text>
+
+    <!-- Exit code: 0 when every package is installed -->
+    <rect class="card" x="1355" y="390" width="205" height="210" rx="16"/>
+    <rect class="panel" x="1363" y="398" width="189" height="152" rx="10"/>
+    <circle cx="1457" cy="448" r="26" fill="#4ade80" fill-opacity="0.18" stroke="#4ade80" stroke-width="2.5"/>
+    <path d="M1444 448 L1453 458 L1471 437" fill="none" stroke="#4ade80" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="1395" y="494" width="124" height="38" rx="8" fill="#ffffff" fill-opacity="0.08" stroke="#5eead4" stroke-opacity="0.6" stroke-width="1.5"/>
+    <text class="miniMono" x="1457" y="520" fill="#e2e8f0" text-anchor="middle">exit 0</text>
+    <text class="label" x="1457" y="585">Exit code</text>
+  </g>
+</svg>

@@ -83,6 +83,7 @@ from `.github/standards/`. Use this matrix to determine which to load:
 - **Review configuration**: `software-items.md`, `reviewmark-usage.md`
 - **Software structure**: `sysml2-modeling.md`
 - **Any documentation**: `technical-documentation.md`
+- **Reading PDF or Office documents**: the `docdown` skill
 
 Load only the standards relevant to your specific task scope.
 
