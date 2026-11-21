@@ -9,7 +9,7 @@
     <style>
       .word { font: bold 92px sans-serif; fill: #ffffff; }
       .eyebrow { font: bold 25px sans-serif; fill: #a5b4fc; }
-      .tag { font: bold 40px sans-serif; fill: #f8fafc; }
+      .tag { font: bold 36px sans-serif; fill: #f8fafc; }
       .body { font: 25px sans-serif; fill: #cbd5e1; }
       .cmd { font: 25px monospace; fill: #e2e8f0; }
       .prompt { fill: #5eead4; }
@@ -110,31 +110,24 @@
   <ellipse cx="1480" cy="620" rx="380" ry="260" fill="url(#glowPink)"/>
   <rect width="1600" height="640" fill="url(#dots)"/>
 
-  <!-- Background: deep gradient, soft glows, and a dot grid -->
-  <rect width="1600" height="640" fill="url(#bg)"/>
-  <ellipse cx="250" cy="170" rx="420" ry="300" fill="url(#glowViolet)"/>
-  <ellipse cx="1070" cy="294" rx="420" ry="220" fill="url(#glowCyan)"/>
-  <ellipse cx="1480" cy="620" rx="380" ry="260" fill="url(#glowPink)"/>
-  <rect width="1600" height="640" fill="url(#dots)"/>
-
   <!-- Wordmark and tagline -->
   <image href="hero/dc-logo-dark.svg" x="46" y="54" width="50" height="50"/>
   <text class="eyebrow" x="100" y="90">DEMA Consulting</text>
   <text class="word" x="52" y="176" style="font-size:71px">NuGet</text>
   <text class="word brandText" x="265" y="176" style="font-size:71px">Installer</text>
   <rect x="58" y="200" width="132" height="6" rx="3" fill="url(#brand)"/>
-  <text class="tag" x="56" y="266">List packages once.</text>
-  <text class="tag brandText" x="56" y="316">Install them anywhere.</text>
-  <text class="body" x="58" y="368">Installs the NuGet packages listed in</text>
-  <text class="body" x="58" y="402">packages.config into a local folder,</text>
-  <text class="body" x="58" y="436">on Windows, Linux, and macOS.</text>
+  <text class="tag" x="56" y="266">NuGet package installer</text>
+  <text class="tag" x="56" y="314" style="fill: #a5b4fc">for packages.config.</text>
+  <text class="body" x="58" y="368">Reads package ids and versions; uses</text>
+  <text class="body" x="58" y="402">the feeds in nuget.config; extracts</text>
+  <text class="body" x="58" y="436">each package to an Id.Version folder.</text>
   <rect x="56" y="468" width="480" height="90" rx="12" fill="#0a1022" fill-opacity="0.8" stroke="#a78bfa" stroke-opacity="0.45" stroke-width="1.5"/>
   <text class="cmd prompt" x="78" y="503">$</text>
   <text class="cmd" x="108" y="503">nuget-installer -o</text>
   <text class="cmd file" x="393" y="503">packages</text>
   <text class="cmd" x="138" y="539">-x</text>
   <text class="cmd file" x="183" y="539">packages.config</text>
-  <text class="note" x="58" y="604">Mirrors nuget.exe install.</text>
+  <text class="note" x="58" y="604">.NET 10 and 11 &#183; Windows, Linux, macOS</text>
 
   <!-- Input cards -->
   <g>
@@ -281,7 +274,7 @@
     <text class="miniMono" x="1232" y="530" fill="#e2e8f0" text-anchor="middle">~/.nuget</text>
     <text class="label" x="1232" y="585">NuGet cache</text>
 
-    <!-- Exit code: 0 when every package is installed -->
+    <!-- Exit code: 0 when the installation succeeds -->
     <rect class="card" x="1355" y="390" width="205" height="210" rx="16"/>
     <rect class="panel" x="1363" y="398" width="189" height="152" rx="10"/>
     <circle cx="1457" cy="448" r="26" fill="#4ade80" fill-opacity="0.18" stroke="#4ade80" stroke-width="2.5"/>

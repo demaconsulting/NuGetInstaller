@@ -1,4 +1,4 @@
-# NuGet Installer
+# ![NuGet Installer: NuGet package installer for packages.config. Reads package ids and versions; uses the feeds in nuget.config; extracts each package to an Id.Version folder. Shown with the command 'nuget-installer -o packages -x packages.config' and the note '.NET 10 and 11, Windows, Linux, macOS'. A packages.config listing packages by id and version, a nuget.config naming the package feeds, NuGet feeds such as nuget.org serving .nupkg files, and the -o, -x, and --log options flow into the nuget-installer .NET tool, and arrows lead out to extracted package folders named Id.Version, version-less Id folders with -x, the populated NuGet global packages cache, and a pass/fail exit code][hero]
 
 [![GitHub forks][badge-forks]][link-forks]
 [![GitHub stars][badge-stars]][link-stars]
@@ -8,13 +8,6 @@
 [![Quality Gate][badge-quality]][link-quality]
 [![Security][badge-security]][link-security]
 [![NuGet][badge-nuget]][link-nuget]
-
-![NuGet Installer banner: the NuGetInstaller name with the tagline 'List packages once. Install them anywhere.' and
-the command nuget-installer -o packages -x packages.config. A packages.config listing packages by id and version, a
-nuget.config naming the package feeds, NuGet feeds such as nuget.org serving .nupkg files, and the -o, -x, and --log
-options flow on curved arrows into the nuget-installer .NET tool, and arrows lead out to extracted package folders
-named Id.Version, version-less Id folders with -x, the populated NuGet global packages cache, and a pass/fail exit
-code][hero]
 
 NuGet Installer is a cross-platform .NET tool that installs NuGet packages listed in a
 `packages.config` file into a local output directory, mirroring the behavior of `nuget.exe install`.
