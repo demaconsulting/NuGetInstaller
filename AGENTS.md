@@ -79,10 +79,10 @@ from `.github/standards/`. Use this matrix to determine which to load:
 - **Requirements**: `requirements-principles.md`, `software-items.md`, `reqstream-usage.md`
 - **Design docs**: `software-items.md`, `design-documentation.md`, `technical-documentation.md`
 - **Verification docs**: `software-items.md`, `verification-documentation.md`, `technical-documentation.md`
-- **Diagrams in documentation**: `diagram-documentation.md` (and the `canvasnet` skill for tooling)
 - **Review configuration**: `software-items.md`, `reviewmark-usage.md`
 - **Software structure**: `sysml2-modeling.md`
 - **Any documentation**: `technical-documentation.md`
+- **Diagrams in documentation**: `diagram-documentation.md` (and the `canvasnet` skill for tooling)
 - **Reading PDF or Office documents**: the `docdown` skill
 
 Load only the standards relevant to your specific task scope.
@@ -159,7 +159,17 @@ requires it and the modification preserves the documented design intent:
 
 - `.reviewmark.yaml`, `.textlint.yaml`, `.editorconfig`
 - `.lintmark.yaml`, `.yamllint.yaml`
-- `requirements.yaml`, `fix.ps1`, `lint.ps1`
+- `requirements.yaml`
+
+# Project Scripts
+
+`build.ps1`, `lint.ps1`, and `fix.ps1` belong to the project: extend them as it grows. Add project-specific
+steps, update tool versions, and add optional parameters that focus a run (for example one library in a
+multi-library repository, or headless tests without GUI automation). Two rules keep them trustworthy:
+
+- Run with no arguments, each script still does its full job (CI and the agents rely on that); slow or
+  environment-dependent test tiers may be opt-in switches of `build.ps1`.
+- Never remove or weaken a check to make lint or tests pass.
 
 # Continuous Compliance Overview
 
