@@ -1,4 +1,4 @@
-# ![NuGet Installer: NuGet package installer for packages.config. Reads package ids and versions; uses the feeds in nuget.config; extracts each package to an Id.Version folder. Shown with the command 'nuget-installer -o packages -x packages.config' and the note '.NET 10 and 11, Windows, Linux, macOS'. A packages.config listing packages by id and version, a nuget.config naming the package feeds, NuGet feeds such as nuget.org serving .nupkg files, and the -o, -x, and --log options flow into the nuget-installer .NET tool, and arrows lead out to extracted package folders named Id.Version, version-less Id folders with -x, the populated NuGet global packages cache, and a pass/fail exit code][hero]
+# ![NuGet Installer: NuGet package installer for packages.config][hero]
 
 [![GitHub forks][badge-forks]][link-forks]
 [![GitHub stars][badge-stars]][link-stars]
