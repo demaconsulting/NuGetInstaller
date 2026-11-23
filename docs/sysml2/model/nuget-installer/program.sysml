@@ -1,4 +1,4 @@
-package NuGetInstaller {
+package NuGetInstaller_Program {
     private import SoftwareItemMetadata::*;
 
     part def Program {

@@ -1,4 +1,9 @@
 package NuGetInstaller {
+    public import NuGetInstaller_Program::*;
+    public import NuGetInstaller_CliSubsystem::*;
+    public import NuGetInstaller_NuGetSubsystem::*;
+    public import NuGetInstaller_SelfTestSubsystem::*;
+    public import NuGetInstaller_UtilitiesSubsystem::*;
     private import SoftwareItemMetadata::*;
 
     doc

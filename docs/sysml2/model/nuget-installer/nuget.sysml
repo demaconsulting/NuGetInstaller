@@ -1,4 +1,8 @@
-package NuGetInstaller {
+package NuGetInstaller_NuGetSubsystem {
+    public import NuGetInstaller_ModelsSubsystem::*;
+    public import NuGetInstaller_PackagesConfigReader::*;
+    public import NuGetInstaller_PackageExtractor::*;
+    public import NuGetInstaller_PackageInstaller::*;
     private import SoftwareItemMetadata::*;
 
     part def NuGetSubsystem {

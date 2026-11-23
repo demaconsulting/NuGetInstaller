@@ -47,6 +47,7 @@ words:
   - DEMA
   - Dema
   - demaconsulting
+  - distinguishability
   - excludeversion
   - fontconfig
   - lintmark
@@ -58,11 +59,13 @@ words:
   - sarif
   - Sarif
   - SARIF
+  - Sensmetry
   - Setext
   - shopt
   - slnx
   - snupkg
   - sonarscanner
+  - Syside
   - thirdparty
   - unidirectionality
   - venv

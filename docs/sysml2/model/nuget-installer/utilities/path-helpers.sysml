@@ -1,4 +1,4 @@
-package NuGetInstaller {
+package NuGetInstaller_PathHelpers {
     private import SoftwareItemMetadata::*;
 
     part def PathHelpers {

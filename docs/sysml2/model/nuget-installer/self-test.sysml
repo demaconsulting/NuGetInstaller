@@ -1,4 +1,5 @@
-package NuGetInstaller {
+package NuGetInstaller_SelfTestSubsystem {
+    public import NuGetInstaller_Validation::*;
     private import SoftwareItemMetadata::*;
 
     part def SelfTestSubsystem {

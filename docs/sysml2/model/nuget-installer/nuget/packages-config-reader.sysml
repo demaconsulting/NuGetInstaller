@@ -1,4 +1,4 @@
-package NuGetInstaller {
+package NuGetInstaller_PackagesConfigReader {
     private import SoftwareItemMetadata::*;
 
     part def PackagesConfigReader {
