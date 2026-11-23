@@ -1,4 +1,5 @@
-package NuGetInstaller {
+package NuGetInstaller_UtilitiesSubsystem {
+    public import NuGetInstaller_PathHelpers::*;
     private import SoftwareItemMetadata::*;
 
     part def UtilitiesSubsystem {

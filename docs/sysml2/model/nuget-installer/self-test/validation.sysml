@@ -1,4 +1,4 @@
-package NuGetInstaller {
+package NuGetInstaller_Validation {
     private import SoftwareItemMetadata::*;
 
     part def Validation {

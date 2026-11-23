@@ -1,4 +1,5 @@
-package NuGetInstaller {
+package NuGetInstaller_ModelsSubsystem {
+    public import NuGetInstaller_PackageEntry::*;
     private import SoftwareItemMetadata::*;
 
     part def ModelsSubsystem {

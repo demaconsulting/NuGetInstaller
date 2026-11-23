@@ -1,4 +1,4 @@
-package NuGetInstaller {
+package NuGetInstaller_Context {
     private import SoftwareItemMetadata::*;
 
     part def Context {

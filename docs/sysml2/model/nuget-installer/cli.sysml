@@ -1,4 +1,5 @@
-package NuGetInstaller {
+package NuGetInstaller_CliSubsystem {
+    public import NuGetInstaller_Context::*;
     private import SoftwareItemMetadata::*;
 
     part def CliSubsystem {

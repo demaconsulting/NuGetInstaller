@@ -1,13 +1,13 @@
 // Views rendered into docs/design/generated/ for the Design document.
-// Reopens the NuGetInstaller package so each 'expose' statement can reference
-// its target part def directly. Per SysML2Tools syntax, 'expose' is only valid
-// inside a named 'view' usage (not a 'view def' definition), and it - not
-// 'render' - is what scopes the rendered diagram content.
-package NuGetInstaller {
+// Per SysML2Tools syntax, 'expose' is only valid inside a named 'view' usage
+// (not a 'view def' definition), and it - not 'render' - is what scopes the
+// rendered diagram content.
+package NuGetInstallerDesignViews {
     private import StandardViewDefinitions::*;
+    private import NuGetInstaller::*;
 
     view SoftwareStructureView : InterconnectionView {
-        expose NuGetInstaller::**;
+        expose NuGetInstaller::NuGetInstallerSystem;
     }
 
     view NuGetInstallerView {
