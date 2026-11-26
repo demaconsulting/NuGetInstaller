@@ -1,9 +1,10 @@
 package NuGetInstaller_CliSubsystem {
     public import NuGetInstaller_Context::*;
+    public import NuGetInstaller_HelpCommand::*;
     private import SoftwareItemMetadata::*;
 
     part def CliSubsystem {
-        doc /* Command-line interface subsystem: parses user arguments, routes output to the console and an optional log file, and owns process I/O for the rest of the system. */
+        doc /* Command-line interface subsystem: parses user arguments, routes output to the console and an optional log file, owns process I/O for the rest of the system, and answers the built-in help command. */
 
         metadata info : SoftwareInfo {
             testFiles = ("test/DemaConsulting.NuGetInstaller.Tests/Cli/CliSubsystemTests.cs");
@@ -13,5 +14,6 @@ package NuGetInstaller_CliSubsystem {
         }
 
         part context : Context;
+        part helpCommand : HelpCommand;
     }
 }

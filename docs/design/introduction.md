@@ -3,7 +3,7 @@
 This document provides the detailed design for the NuGet Installer, a .NET command-line
 application that installs the NuGet packages listed in a `packages.config` file into a local
 output directory. It covers local software items (the system, its subsystems, and units) and
-the OTS software items consumed by this project's build pipeline.
+the OTS software items consumed by the tool and by this project's build pipeline.
 
 ## Purpose
 
@@ -21,11 +21,11 @@ Local items:
 
 - **NuGetInstaller**: system, subsystem, and unit design for all local components.
 
-OTS items (build-time and pipeline tools) are also in scope; each has integration and usage
-design documented under `docs/design/ots/`:
+OTS items (the HelpCards runtime library, and build-time and pipeline tools) are also in scope;
+each has integration and usage design documented under `docs/design/ots/`:
 
-- **BuildMark**, **FileAssert**, **Pandoc**, **ReqStream**, **ReviewMark**, **SarifMark**,
-  **SonarMark**, **SysML2Tools**, **VersionMark**, **WeasyPrint**, **xUnit**.
+- **BuildMark**, **FileAssert**, **HelpCards**, **Pandoc**, **ReqStream**, **ReviewMark**,
+  **SarifMark**, **SonarMark**, **SysML2Tools**, **VersionMark**, **WeasyPrint**, **xUnit**.
 
 The following topics are out of scope:
 
@@ -40,8 +40,10 @@ The software structure is modeled in SysML2 under `docs/sysml2/` and rendered to
 diagram below by SysML2Tools as part of the build pipeline. AI agents should query the
 SysML2 model directly (see the `sysml2tools-query` skill) rather than parsing this
 diagram or the prose below. The model covers the `NuGetInstaller` system and its
-subsystems/units only; the OTS build-time and pipeline tools listed above are not
-modeled as SysML2 parts because they are not runtime dependencies of the shipped
+subsystems/units. HelpCards, the one runtime OTS library that is modeled, is declared in
+`docs/sysml2/model/ots.sysml` and drawn in the OTS view of the *OTS Integration Design*
+rather than in the overview below. The OTS build-time and pipeline tools listed above are
+not modeled as SysML2 parts because they are not runtime dependencies of the shipped
 system — their integration and usage are documented as prose design under
 `docs/design/ots/` instead.
 
@@ -67,7 +69,9 @@ reviewers an explicit navigation aid from design to code:
 src/DemaConsulting.NuGetInstaller/
 ├── Program.cs                  — entry point and execution orchestrator
 ├── Cli/
-│   └── Context.cs              — command-line argument parser and I/O owner
+│   ├── Context.cs              — command-line argument parser and I/O owner
+│   └── HelpCommand.cs          — built-in help command
+├── Help/                       — built-in help cards (Markdown), embedded in the assembly
 ├── NuGet/
 │   ├── Models/
 │   │   └── PackageEntry.cs     — package entry data model

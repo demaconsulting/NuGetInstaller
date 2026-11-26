@@ -15,6 +15,7 @@ includes:
   - docs/reqstream/nuget-installer/program.yaml
   - docs/reqstream/nuget-installer/cli.yaml
   - docs/reqstream/nuget-installer/cli/context.yaml
+  - docs/reqstream/nuget-installer/cli/help-command.yaml
   - docs/reqstream/nuget-installer/nuget.yaml
   - docs/reqstream/nuget-installer/nuget/models.yaml
   - docs/reqstream/nuget-installer/nuget/models/package-entry.yaml
@@ -36,4 +37,5 @@ includes:
   - docs/reqstream/ots/pandoc.yaml
   - docs/reqstream/ots/weasyprint.yaml
   - docs/reqstream/ots/fileassert.yaml
+  - docs/reqstream/ots/help-cards.yaml
   - docs/reqstream/ots/sysml2tools.yaml

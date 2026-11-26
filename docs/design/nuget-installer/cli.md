@@ -4,7 +4,7 @@
 
 The `Cli` subsystem provides the command-line interface for the NuGet Installer.
 It is responsible for accepting user input from the command line and routing output to
-the console and an optional log file.
+the console and an optional log file. It also answers the built-in `help` command.
 
 ### Overview
 
@@ -15,11 +15,12 @@ flags and write output.
 
 ### Units
 
-The `Cli` subsystem contains the following software unit:
+The `Cli` subsystem contains the following software units:
 
 | Unit | File | Responsibility |
 | --- | --- | --- |
 | `Context` | `Cli/Context.cs` | Argument parsing, output channels, and exit code. |
+| `HelpCommand` | `Cli/HelpCommand.cs` | The built-in `help` command, served from embedded help cards. |
 
 ### Interfaces
 
@@ -41,13 +42,25 @@ The `Cli` subsystem exposes the following interface to the rest of the tool:
 | `Context.ExitCode` | Outbound | Returns 0 for success or 1 when errors have been reported. |
 | `Context.HeadingDepth` | Outbound | Heading depth for markdown output (default 1, valid range 1–6). |
 | `Context.Dispose` | Outbound | Releases resources held by the context (flushes and closes log file). |
+| `HelpCommand.TryRun` | Outbound | Answers the `help` command; returns `false`, writing nothing, otherwise. |
+| `HelpCommand.Footer` | Outbound | The sentence that ends the usage text and points to the help command. |
+
+`HelpCommand.TryRun` is called on the shared `HelpCommand.Default` instance. When the first argument
+is `help`, it writes the answer to the console, returns `true`, and sets the exit code (see *Help
+Command* in the system design). It does not throw for user input and does not use `Context`.
+Reading `HelpCommand.Footer` never builds the help catalog.
 
 ### Design
 
-The `Cli` subsystem contains a single unit, `Context`, so internal collaboration is limited
-to how `Context` is constructed and then consumed by the rest of the tool:
+The `Cli` subsystem contains two units, `Context` and `HelpCommand`, which do not call each
+other. Internal collaboration is limited to how they are used by the rest of the tool:
 
-- `Program.Main` calls `Context.Create(args)` once at startup. `Create` parses the raw
+- `Program.Main` first offers the arguments to `HelpCommand.Default.TryRun`. When the help
+  command answers, the invocation ends with its exit code and no `Context` is created.
+  `HelpCommand` writes its answers to the console itself; it is the one exception to
+  `Context` owning all output, because the `help` command is answered before a `Context`
+  exists.
+- Otherwise, `Program.Main` calls `Context.Create(args)` once at startup. `Create` parses the raw
   `string[]` argument array into a nested `ArgumentParser` helper type, validates each flag
   (raising `ArgumentException` for unknown flags or missing required values), and then
   copies the parsed values into an immutable `Context` instance using `init`-only properties.
@@ -97,6 +110,9 @@ Additional error cases handled by `Context.Create`:
   opened (e.g., directory does not exist, insufficient permissions), `Context.Create`
   throws `InvalidOperationException`. `Program.Main` catches this and writes
   `Error: <message>` to stderr, returning exit code 1.
+- **Argument errors and `--silent`/`--log`**: The exceptions above are thrown while the
+  arguments are parsed, before `--silent` and `--log` take effect, so `Program.Main` always
+  prints them to stderr and they are never logged.
 - **`--silent` and error output**: `--silent` suppresses all console output, including
   error messages written through `Context.WriteError`. When `--silent` is active,
   errors are recorded internally (setting `ExitCode` to 1) and written to the log file
@@ -105,6 +121,8 @@ Additional error cases handled by `Context.Create`:
 
 ### Interactions
 
-The `Cli` subsystem has no dependencies on other tool subsystems. It uses only .NET base
-class library types. The `Program` unit at system level creates the `Context` and passes it
-to all subsystems that need to produce output.
+The `Cli` subsystem has no dependencies on other tool subsystems. `Context` uses only .NET base
+class library types; `HelpCommand` uses the HelpCards OTS library and reads the tool version
+from `Program.Version`. The `Program` unit at system level offers the arguments to
+`HelpCommand`, then creates the `Context` and passes it to all subsystems that need to produce
+output.

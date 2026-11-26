@@ -1,12 +1,14 @@
 # OTS Integration Design
 
-The NuGet Installer relies on eleven off-the-shelf (OTS) tools and libraries that support CI/CD
-automation, documentation generation, compliance checking, and testing. This chapter describes
-the overall OTS integration strategy and introduces each item's role in the pipeline.
+![OTS Items](OtsView.svg)
+
+The NuGet Installer relies on twelve off-the-shelf (OTS) tools and libraries that support CI/CD
+automation, documentation generation, compliance checking, testing, and the built-in help of the
+tool. This chapter describes the overall OTS integration strategy and introduces each item's role.
 
 ## Integration Strategy
 
-The OTS items used by this project fall into three functional groups:
+The OTS items used by this project fall into four functional groups:
 
 - **Build pipeline tools** — dotnet global tools installed via `.config/dotnet-tools.json` and
   invoked by the GitHub Actions workflow. Each tool performs a distinct step such as capturing
@@ -16,6 +18,9 @@ The OTS items used by this project fall into three functional groups:
   automatically by `dotnet test`.
 - **Document generation** — Pandoc converts Markdown to HTML and WeasyPrint converts HTML to
   PDF; both are installed as dotnet global tools via `.config/dotnet-tools.json`.
+- **Runtime library** — the HelpCards NuGet package referenced by the tool project, which serves
+  the built-in `help` command from help cards embedded in the tool assembly. It is modeled in
+  the SysML2 OTS view shown above.
 
 All dotnet global tools are pinned to specific versions in `.config/dotnet-tools.json` and
 restored with `dotnet tool restore` at the beginning of each CI job. This ensures reproducible
@@ -27,6 +32,7 @@ builds and provides an audit record of which tool version produced each release 
 | :--- | :--- |
 | BuildMark | Generates build-notes documentation from GitHub Actions metadata |
 | FileAssert | Asserts content of generated HTML and PDF documents in the build pipeline |
+| HelpCards | Serves the built-in `help` command and tests the help cards (runtime library) |
 | Pandoc | Converts Markdown source documents to HTML for each document collection |
 | ReqStream | Enforces requirements traceability against TRX test-result files |
 | ReviewMark | Generates review plan and review report from the review configuration |
@@ -43,6 +49,7 @@ Detailed design for each OTS item is provided in the following sections of this 
 
 - See *BuildMark OTS Design* for the build-notes generation tool.
 - See *FileAssert OTS Design* for the document assertion tool.
+- See *HelpCards OTS Design* for the built-in help library.
 - See *Pandoc OTS Design* for the Markdown-to-HTML conversion tool.
 - See *ReqStream OTS Design* for the requirements traceability enforcement tool.
 - See *ReviewMark OTS Design* for the review plan and report generation tool.
@@ -95,6 +102,8 @@ OTS items in this project fall into two integration categories:
 - **NuGet packages** (xUnit) — referenced in the test project file and consumed through standard
   .NET package restore. No explicit initialization or configuration code is required beyond the
   test-project target framework declaration.
+- **Runtime NuGet package** (HelpCards) — referenced in the tool project file, shipped with the
+  tool, and used only by the HelpCommand unit; see *HelpCards OTS Design*.
 
 Error handling across all tool invocations relies on exit-code contracts documented in each
 tool's own user guide. No custom error-recovery logic is applied.
@@ -110,6 +119,9 @@ approaches:
   (e.g., Pandoc HTML output validated by FileAssert assertions, ReqStream traceability checked
   against TRX results), the CI pipeline acts as an integration harness — a tool that produces
   incorrect output will cause a downstream step to fail.
+- **Help tests** (HelpCards): the help tests of the tool validate the shipped help cards and run
+  every command example against the built tool, so a HelpCards defect that affects the tool fails
+  the build.
 - **Local unit tests** (xUnit): the xUnit framework is implicitly qualified by the passing of all
   unit and integration tests in each CI run. A test framework that cannot discover, execute, or
   report tests correctly would cause the CI pipeline to fail before any artifacts are published.

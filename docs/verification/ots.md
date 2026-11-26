@@ -2,8 +2,8 @@
 
 ## Overview
 
-The NuGet Installer uses eleven OTS (Off-The-Shelf) software items to provide build, test,
-documentation, and quality-reporting functionality. OTS items are not developed in-house;
+The NuGet Installer uses twelve OTS (Off-The-Shelf) software items to provide build, test,
+documentation, quality-reporting, and built-in help functionality. OTS items are not developed in-house;
 their integration and usage design is documented at `docs/design/ots/{name}.md`. Verification
 evidence is collected from CI pipeline run results, self-validation output, and integration
 test execution rather than from unit tests of internal implementation.
@@ -32,6 +32,7 @@ details for each item are provided in the individual OTS item verification docum
 | --- | --- |
 | BuildMark | CI pipeline step evidence |
 | FileAssert | Self-validation |
+| HelpCards | Integration test evidence |
 | xUnit | Integration test evidence |
 | Pandoc | CI pipeline step evidence combined with FileAssert document validation |
 | ReqStream | CI pipeline step evidence |

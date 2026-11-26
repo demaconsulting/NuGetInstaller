@@ -61,6 +61,17 @@ sections:
           - CliSubsystem_HelpFlow_ContextAndProgram_DisplaysHelpAndExits_WithShortQuestionFlag
           - CliSubsystem_HelpFlow_ContextAndProgram_DisplaysHelpAndExits_WithShortHFlag
 
+      - id: NuGetInstaller-Cli-HelpTopics
+        title: The Cli subsystem shall answer the `help` command from built-in help cards.
+        justification: |
+          Users and AI agents need help topics with worked examples from the installed tool.
+        children:
+          - NuGetInstaller-HelpCommand-HelpVerb
+          - NuGetInstaller-HelpCommand-ValidCards
+          - NuGetInstaller-HelpCommand-LineWidth
+        tests:
+          - CliSubsystem_HelpCommand_TopicRequested_PrintsTopic
+
       - id: NuGetInstaller-Cli-Silent
         title: The Cli subsystem shall support --silent flag to suppress console output.
         justification: |
