@@ -24,6 +24,7 @@ This user guide covers:
 - Package installation from packages.config
 - Usage examples for common tasks
 - Command-line options reference
+- Built-in help topics and exit codes
 - Self-validation and compliance features
 - Practical examples for various scenarios
 
@@ -97,6 +98,28 @@ Display usage information:
 ```bash
 nuget-installer --help
 ```
+
+The usage information ends with a pointer to the built-in help.
+
+## Built-in Help
+
+The `help` command prints help topics that explain each task with worked examples, for people and
+for AI agents that have only the installed tool. List the topics, then print one with its examples:
+
+```bash
+nuget-installer help
+nuget-installer help getting-started
+```
+
+The topics cover getting started, the command-line options, the `packages.config` file, package
+sources and `nuget.config`, output folders, self-validation, and troubleshooting. Add
+`--search <words>` to find a topic, `--example <name>` to print one example of a topic, and
+`--json` to get any help answer as JSON. `help` is a command, not an option: it must be the first
+argument, and `--silent` and `--log` do not apply to it. It exits with code 0 on success, and with
+code 2 after printing a hint for an unknown topic or a wrong help argument (see *Exit Codes*).
+
+Because `help` as the first argument is the help command, a `packages.config` file that is named
+`help` must be given with a path, such as `nuget-installer ./help`.
 
 ## Self-Validation
 
@@ -188,13 +211,16 @@ overwrite packages that have already been installed.
 ## Error Handling
 
 When unrecognized arguments are provided, the tool prints an error message to stderr and
-returns a non-zero exit code:
+returns exit code 1 (see *Exit Codes*):
 
 ```bash
 nuget-installer --unknown-flag
-# Error: Unknown argument: --unknown-flag
+# Error: Unsupported argument '--unknown-flag' (Parameter 'args')
 # Exit code: 1
 ```
+
+Argument errors are found before `--silent` and `--log` take effect, so they are always
+printed and never logged.
 
 ## Logging
 
@@ -220,6 +246,14 @@ The following command-line options are supported:
 | `--results <file>`, `--result <file>` | Write validation results to file (TRX or JUnit format) |
 | `--depth <#>` | Set heading depth for markdown output (default: 1) |
 | `--log <file>` | Write output to log file |
+
+## Exit Codes
+
+| Code | Meaning |
+| --- | --- |
+| `0` | Success |
+| `1` | Error — invalid arguments, a missing or invalid `packages.config`, a missing package, or a failed self-test |
+| `2` | Unknown help topic or wrong `help` argument |
 
 # Examples
 

@@ -11,6 +11,8 @@ dispatch logic (`Program.Run`) — without mocking any internal components. Unit
 assertions against `Context` in isolation (with no interaction with `Program`) belong in
 `ContextTests.cs`, not in this subsystem test file.
 
+The help command is verified through `HelpCommand.Create`, which writes to in-memory writers.
+
 ### Test Environment
 
 Tests run under the standard xUnit test runner with no external services. Some scenarios
@@ -134,6 +136,16 @@ Test methods:
 - `CliSubsystem_ExcludeVersionFlow_ContextAndProgram_SetsExcludeVersion`
 - `CliSubsystem_ExcludeVersionFlow_ContextAndProgram_SetsExcludeVersion_WithLongFlag`
 
+#### Help Command Scenario
+
+Tests verify that the `help` command prints a requested topic from the built-in help cards:
+arguments `["help", "command-line"]` are offered to `HelpCommand.TryRun`, which answers with
+the command-line topic and exit code 0.
+
+Test method:
+
+- `CliSubsystem_HelpCommand_TopicRequested_PrintsTopic`
+
 ### Coverage Summary
 
 - `NuGetInstaller-Cli-Context`:
@@ -178,3 +190,5 @@ Test methods:
 - `NuGetInstaller-Cli-ExcludeVersion`:
   - `CliSubsystem_ExcludeVersionFlow_ContextAndProgram_SetsExcludeVersion`
   - `CliSubsystem_ExcludeVersionFlow_ContextAndProgram_SetsExcludeVersion_WithLongFlag`
+- `NuGetInstaller-Cli-HelpTopics`:
+  - `CliSubsystem_HelpCommand_TopicRequested_PrintsTopic`

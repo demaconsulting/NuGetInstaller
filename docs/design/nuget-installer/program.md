@@ -2,9 +2,9 @@
 
 ![NuGet Installer System Structure](NuGetInstallerView.svg)
 
-The `Program` class is the main entry point for the NuGet Installer. It creates a `Context`
-from command-line arguments, dispatches to the appropriate logic based on the flags, and returns
-the exit code.
+The `Program` class is the main entry point for the NuGet Installer. It hands the `help`
+command to `HelpCommand`; otherwise it creates a `Context` from command-line arguments,
+dispatches to the appropriate logic based on the flags, and returns the exit code.
 
 ### Overview
 
@@ -24,12 +24,16 @@ that `Context` exposes and calling the correct handler.
 
 #### Main(string[] args)
 
-Entry point. Creates a `Context`, calls `Run`, and returns `context.ExitCode`.
-Catches `ArgumentException` and `InvalidOperationException` — writes the message to stderr
-and returns exit code 1. Catches unexpected exceptions — writes the message to stderr and
-re-throws to generate event logs.
+Entry point, `internal` so that the unit tests can call it. First calls
+`HelpCommand.Default.TryRun(args, out exitCode)`: the `help` command is not an option, so
+`Context.Create` would take it for the packages.config path; when the help command answers,
+`Main` returns its exit code as is. Otherwise creates a `Context`, calls `Run`, and returns
+`context.ExitCode`. Catches `ArgumentException` and `InvalidOperationException` — writes the
+message to stderr and returns exit code 1. Catches unexpected exceptions — writes the message
+to stderr and re-throws to generate event logs.
 
-**Returns:** `int` — 0 for success, non-zero for failure.
+**Returns:** `int` — 0 for success, non-zero for failure; for the `help` command, the exit code
+of `HelpCommand` (see *Help Command* in the system design).
 
 #### PrintBanner(Context context)
 
@@ -39,7 +43,9 @@ dispatching to `PrintHelp`, `Validation.Run`, or `RunToolLogic`. Not called when
 
 #### PrintHelp(Context context)
 
-Prints the usage information and available options to the context output.
+Prints the usage synopsis (including `nuget-installer help [topic]`) and the available options
+to the context output, and ends with `HelpCommand.Default.Footer`, the pointer to the help
+command.
 
 #### Run(Context context)
 
@@ -91,6 +97,7 @@ Reads `AssemblyInformationalVersionAttribute` from the executing assembly, falli
 
 | Dependency | Direction | Purpose |
 | --- | --- | --- |
+| `HelpCommand` | Uses | Offers the arguments to `TryRun` first; `PrintHelp` writes `Footer` |
 | `Context` | Uses | Reads flags; calls `WriteLine`/`WriteError` |
 | `Validation` | Uses | Calls `Validation.Run` when validate flag is set |
 | `PackagesConfigReader` | Uses | Reads packages.config in `RunToolLogic` |

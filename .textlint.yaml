@@ -44,6 +44,7 @@ enableGlobDot: true
 
 # Project-specific technical terms and tool names
 words:
+  - configfile
   - DEMA
   - Dema
   - demaconsulting

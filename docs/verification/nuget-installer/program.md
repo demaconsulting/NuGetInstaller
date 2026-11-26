@@ -3,7 +3,8 @@
 ### Verification Strategy
 
 The Program unit is verified using xUnit unit tests in `ProgramTests.cs`. Tests call the
-`Program.Run` static method directly; console output is captured by redirecting `Console.Out`
+`Program.Run` static method directly, or `Program.Main` for the `help` command, which is
+answered before a `Context` exists; console output is captured by redirecting `Console.Out`
 to a `StringWriter` before creating the `Context`. Temporary directories and fixture
 `packages.config` files are created on disk where the install path requires real files. No
 external network access is required because all package resolution uses the local NuGet cache.
@@ -45,10 +46,23 @@ and return exit code 0.
 
 Test methods:
 
-- `Program_Run_WithHelpFlag_DisplaysUsageInformation` — asserts `--help` prints usage text
+- `Program_Run_WithHelpFlag_DisplaysUsageInformation` — asserts `--help` prints usage text,
+  including the `nuget-installer help [topic]` usage line, and ends with the pointer to the
+  help command
 - `Program_Run_WithShortHelpFlag_QuestionMark_DisplaysUsageInformation` — asserts `-?` prints
   usage text
 - `Program_Run_WithShortHelpFlag_H_DisplaysUsageInformation` — asserts `-h` prints usage text
+
+#### Help Command Scenario
+
+Tests verify that `Program.Main` answers the `help` command before the options are parsed:
+invoked with `["help"]`, which is not an option, it prints the help topic index without the
+banner and returns exit code 0.
+
+Test method:
+
+- `Program_Main_WithHelpVerb_PrintsHelpIndex` — asserts the topic index is printed, the banner
+  is not, and the exit code is 0
 
 #### Validate Scenario
 
@@ -95,6 +109,10 @@ Test methods:
   - `Program_Run_WithHelpFlag_DisplaysUsageInformation`
   - `Program_Run_WithShortHelpFlag_QuestionMark_DisplaysUsageInformation`
   - `Program_Run_WithShortHelpFlag_H_DisplaysUsageInformation`
+- `NuGetInstaller-Program-HelpCommand`:
+  - `Program_Main_WithHelpVerb_PrintsHelpIndex`
+- `NuGetInstaller-Program-HelpFooter`:
+  - `Program_Run_WithHelpFlag_DisplaysUsageInformation`
 - `NuGetInstaller-Program-Validate`:
   - `Program_Run_WithValidateFlag_RunsValidation`
 - `NuGetInstaller-Program-ExitCode`:

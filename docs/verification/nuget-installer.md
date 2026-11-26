@@ -17,6 +17,16 @@ and asserts on the exit code, console output, file system state, or log files as
 
 The NuGet global cache on the CI runner supplies package archives for extraction tests.
 
+The help examples are verified with the example runner of HelpCards. It saves the source
+examples of each help card to a fresh scratch folder and calls the test for each command
+example. Before every command, the test copies the `nuget.config` of
+`TestData/HelpExamples` into that folder and zips each package folder of
+`TestData/HelpExamples/feed-content` into the local folder feed `feed`. That `nuget.config`
+clears all other package sources and moves the global packages folder into the scratch
+folder, so the examples install the fictional `Example.*` packages without a network and
+without touching the package cache of the machine. Examples that need nuget.org, such as
+`--validate`, are snippets, which the runner does not run.
+
 ## Acceptance Criteria
 
 A system test scenario passes when all of the following hold:
@@ -24,7 +34,7 @@ A system test scenario passes when all of the following hold:
 - The process exit code matches the expected value for the scenario (`0` for successful
   operations such as version display, help display, self-validation, and package installation;
   non-zero for error conditions such as unrecognized arguments, a missing `packages.config`
-  file, or malformed configuration XML).
+  file, or malformed configuration XML; `2` for an unknown help topic).
 - Captured stdout/stderr contains the expected content for the scenario (for example, a
   non-empty version string, the usage banner, an `Error:`/`Unexpected error:` prefixed
   diagnostic message, or a package-installation confirmation), and contains no unexpected
@@ -57,6 +67,28 @@ Verifies that the tool prints usage information and exits with code 0 when `--he
 The test captures stdout and asserts it contains the expected option descriptions.
 
 Test method: `NuGetInstaller_HelpFlag_FlagProvided_OutputsUsageInformation`
+
+### Help Topics Scenario
+
+Verifies that the tool lists every help topic with its command, without the banner, and exits
+with code 0 when the `help` command is passed as the only argument.
+
+Test method: `NuGetInstaller_HelpTopics_HelpVerb_ListsTopics`
+
+### Help Unknown Topic Scenario
+
+Verifies that the tool exits with code 2 and names the topic when the arguments
+`help no-such-topic` name a topic that does not exist.
+
+Test method: `NuGetInstaller_HelpTopics_UnknownTopic_ReturnsUsageError`
+
+### Help Examples Scenario
+
+Verifies that every command example in the help cards, run against the built tool in the
+offline environment described under *Test Environment*, gives the exit code and output that its
+card states.
+
+Test method: `NuGetInstaller_HelpExamples_AllCommandExamples_GiveStatedResults`
 
 ### Validate Scenario
 
@@ -196,6 +228,12 @@ Test methods: `dotnet11.x@NuGetInstaller_VersionDisplay`, `dotnet11.x@NuGetInsta
   - `NuGetInstaller_VersionFlag_FlagProvided_OutputsVersion`
 - `NuGetInstaller-System-Help`:
   - `NuGetInstaller_HelpFlag_FlagProvided_OutputsUsageInformation`
+- `NuGetInstaller-System-HelpTopics`:
+  - `NuGetInstaller_HelpTopics_HelpVerb_ListsTopics`
+- `NuGetInstaller-System-HelpUnknownTopic`:
+  - `NuGetInstaller_HelpTopics_UnknownTopic_ReturnsUsageError`
+- `NuGetInstaller-System-HelpExamples`:
+  - `NuGetInstaller_HelpExamples_AllCommandExamples_GiveStatedResults`
 - `NuGetInstaller-System-Validate`:
   - `NuGetInstaller_ValidateFlag_FlagProvided_RunsValidation`
   - `NuGetInstaller_ValidateWithResults_TrxExtension_GeneratesTrxFile`

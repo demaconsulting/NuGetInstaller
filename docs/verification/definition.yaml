@@ -17,6 +17,7 @@ input-files:
   - docs/verification/nuget-installer/program.md
   - docs/verification/nuget-installer/cli.md
   - docs/verification/nuget-installer/cli/context.md
+  - docs/verification/nuget-installer/cli/help-command.md
   - docs/verification/nuget-installer/nuget.md
   - docs/verification/nuget-installer/nuget/models.md
   - docs/verification/nuget-installer/nuget/models/package-entry.md
@@ -30,6 +31,7 @@ input-files:
   - docs/verification/ots.md
   - docs/verification/ots/buildmark.md
   - docs/verification/ots/fileassert.md
+  - docs/verification/ots/help-cards.md
   - docs/verification/ots/sysml2tools.md
   - docs/verification/ots/xunit.md
   - docs/verification/ots/pandoc.md

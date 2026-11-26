@@ -19,6 +19,7 @@ This document covers verification of the following software units:
 - **Program** — entry point and execution orchestrator (`Program.cs`)
 - **Cli** subsystem:
   - **Context** unit — command-line argument parser and I/O owner (`Cli/Context.cs`)
+  - **HelpCommand** unit — built-in help command (`Cli/HelpCommand.cs`)
 - **NuGet** subsystem:
   - **Models** sub-subsystem:
     - **PackageEntry** unit — package entry data model (`NuGet/Models/PackageEntry.cs`)
@@ -30,10 +31,11 @@ This document covers verification of the following software units:
 - **Utilities** subsystem:
   - **PathHelpers** unit — safe path combination utilities (`Utilities/PathHelpers.cs`)
 
-The following eleven OTS items are also verified:
+The following twelve OTS items are also verified:
 
 - **BuildMark** — build-notes documentation generator
 - **FileAssert** — document assertion tool
+- **HelpCards** — built-in help library
 - **xUnit** — unit testing framework
 - **Pandoc** — Markdown to HTML converter
 - **ReqStream** — requirements traceability tool

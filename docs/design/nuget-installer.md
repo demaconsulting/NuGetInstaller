@@ -16,7 +16,8 @@ to provide a robust, testable, and maintainable command-line tool:
 ### Major Components
 
 - **CLI Subsystem** — Command-line argument parsing and user interface
-  management, providing standardized input processing and output formatting
+  management, providing standardized input processing and output formatting,
+  and the built-in `help` command served from help cards embedded in the tool
 - **NuGet Subsystem** — Package management functionality including reading
   packages.config, resolving packages from the NuGet global cache, and
   extracting them into the output directory
@@ -30,13 +31,17 @@ to provide a robust, testable, and maintainable command-line tool:
 The Program unit acts as the system orchestrator, coordinating interactions
 between subsystems:
 
-1. **Initialization Phase** — Program creates Context from CLI subsystem to
+1. **Help Phase** — Program first offers the arguments to the HelpCommand unit
+   of the CLI subsystem; when the first argument is `help`, the help command
+   answers and the invocation ends with its exit code
+2. **Initialization Phase** — Program creates Context from CLI subsystem to
    parse command-line arguments and configure system behavior
-2. **Execution Phase** — Program delegates to appropriate subsystem based on
+3. **Execution Phase** — Program delegates to appropriate subsystem based on
    parsed arguments (help display, version query, self-validation, or package
    installation via NuGet subsystem)
-3. **Output Phase** — All subsystems use Context for consistent output
-   formatting and logging
+4. **Output Phase** — All subsystems use Context for consistent output
+   formatting and logging; the help command, which runs before a Context
+   exists, writes to the console itself
 
 ## External Interfaces
 
@@ -55,6 +60,22 @@ The system accepts command-line arguments following standard conventions:
 - **Output Directory**: `-o`, `-OutputDirectory <dir>` — Output directory for package installation
   (default: current working directory)
 - **Exclude Version**: `-x`, `-ExcludeVersion` — Use `{Id}/` folder naming instead of `{Id}.{Version}/`
+- **Help Command**: `help [topic]` as the first argument — Built-in help topics (see *Help Command* below)
+
+Unknown or malformed arguments cause exit code 1 and an `Error:` message on stderr. Argument errors are found
+before `--silent` and `--log` take effect, so they are always printed and never logged.
+
+### Help Command
+
+The built-in help is answered from help cards embedded in the tool assembly:
+
+- **Contract** — `nuget-installer help` prints the topic index and `nuget-installer help <topic>` prints a
+  topic card with its examples; HelpCards adds `--example`, `--search`, and `--json`.
+- **Exit codes** — 0 for success, 2 for a wrong help argument or an unknown topic, and 70 for a defective
+  card catalog.
+- **Constraints** — `help` must be the first argument (in any letter case). It is answered before the
+  options are parsed, so `--silent` and `--log` do not apply and no banner is printed. A packages.config
+  file named `help` must therefore be given with a path, such as `./help`.
 
 ### File System Interface
 
@@ -79,7 +100,7 @@ The system uses standard console I/O streams:
 
 ### Runtime OTS Packages
 
-The published tool depends on two published NuGet packages produced outside this program;
+The published tool depends on three published NuGet packages produced outside this program;
 per `software-items.md` these are treated as OTS Software Items rather than Shared Packages:
 
 - **`DemaConsulting.NuGet.Caching`** — Resolves and caches NuGet packages from the local global
@@ -89,10 +110,13 @@ per `software-items.md` these are treated as OTS Software Items rather than Shar
 - **`DemaConsulting.TestResults`** — Provides the in-memory test-result model and TRX/JUnit
   serialization used by self-validation. Consumed by the SelfTest subsystem; see the *SelfTest
   Subsystem Design* (`docs/design/nuget-installer/self-test.md`) for the specific interaction.
+- **`DemaConsulting.HelpCards`** — Loads, validates, and serves the built-in help cards for the
+  `help` command. Consumed only by the HelpCommand unit of the CLI subsystem; see the *HelpCards OTS Design*
+  (`docs/design/ots/help-cards.md`).
 
-Neither package currently has a dedicated `docs/design/ots/{ots-name}.md` integration-design
-entry of its own; the interaction detail lives in the consuming unit/subsystem design pages
-referenced above.
+`DemaConsulting.NuGet.Caching` and `DemaConsulting.TestResults` do not have a dedicated
+`docs/design/ots/{ots-name}.md` integration-design entry of their own; their interaction detail
+lives in the consuming unit/subsystem design pages referenced above.
 
 ### Build-Pipeline OTS Tools
 
@@ -106,7 +130,7 @@ they are not linked into, or shipped with, the published tool. See the *OTS Inte
 ### Shared Packages
 
 N/A - the system does not currently consume any packages produced by another repository within
-the same DEMA Consulting program; both runtime dependencies above are treated as OTS Software
+the same DEMA Consulting program; all runtime dependencies above are treated as OTS Software
 Items per the categorization criteria in `software-items.md`.
 
 ## Risk Control Measures
@@ -131,9 +155,12 @@ of a defect or malicious input without constituting a formal risk-control archit
 
 ### Input Processing Flow
 
-1. **Command-line arguments** → CLI subsystem parses into Context object
-2. **Context object** → Program uses to determine execution path
-3. **User input validation** → Context throws typed exceptions for invalid arguments
+1. **Help command** → when the first argument is `help`, the HelpCommand unit builds the card
+   catalog, writes its answer to the console, and Program returns its exit code; any other first
+   argument returns at once without building the catalog
+2. **Command-line arguments** → CLI subsystem parses into Context object
+3. **Context object** → Program uses to determine execution path
+4. **User input validation** → Context throws typed exceptions for invalid arguments
 
 ### Package Installation Flow
 

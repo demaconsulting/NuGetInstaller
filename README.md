@@ -28,6 +28,8 @@ Make, Meson, build scripts, or CI/CD pipelines on Windows, Linux, and macOS][wor
 - ⏭️ **Skip Existing** — Re-running skips packages whose output folder already exists
 - ⚙️ **Standard CLI** — Shared options for help, version, validation, and logging
 - ✅ **Self-Validation** — Built-in qualification tests with TRX and JUnit output
+- 💡 **Built-in Help** — `nuget-installer help` serves help topics ([DemaConsulting.HelpCards][link-helpcards])
+  with runnable examples, search, and JSON output for AI agents
 - 🌐 **Multi-Platform** — Runs on Windows, Linux, and macOS on .NET 10 and 11
 - 🛡️ **Continuous Compliance** — Compliance evidence generated automatically on every CI run
 
@@ -78,6 +80,10 @@ nuget-installer --version
 # Display help
 nuget-installer --help
 
+# List the built-in help topics, then read one
+nuget-installer help
+nuget-installer help getting-started
+
 # Run self-validation
 nuget-installer --validate
 
@@ -105,6 +111,9 @@ nuget-installer --silent --log output.log
 | `--results <file>`, `--result <file>` | Write validation results to file (TRX or JUnit format) |
 | `--depth <#>` | Set heading depth for markdown output (default: 1) |
 | `--log <file>` | Write output to log file |
+
+Run `nuget-installer help` for help topics with examples, such as `nuget-installer help packages-config` for the
+file format and `nuget-installer help package-sources` for package sources and private feeds.
 
 ## Self Validation
 
@@ -193,3 +202,4 @@ By contributing to this project, you agree that your contributions will be licen
 [link-security]: https://sonarcloud.io/dashboard?id=demaconsulting_NuGetInstaller
 [link-nuget]: https://www.nuget.org/packages/DemaConsulting.NuGetInstaller
 [link-guide]: https://github.com/demaconsulting/NuGetInstaller/blob/main/docs/user_guide/introduction.md
+[link-helpcards]: https://www.nuget.org/packages/DemaConsulting.HelpCards

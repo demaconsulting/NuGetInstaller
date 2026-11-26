@@ -18,6 +18,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+using System.IO.Compression;
+using DemaConsulting.HelpCards.Catalog;
+using DemaConsulting.HelpCards.Testing;
+using DemaConsulting.NuGetInstaller.Cli;
 using DemaConsulting.NuGetInstaller.Utilities;
 
 namespace DemaConsulting.NuGetInstaller.Tests;
@@ -563,5 +567,104 @@ public class IntegrationTests
                 Directory.Delete(tempDir, true);
             }
         }
+    }
+
+    /// <summary>
+    ///     Test that the help verb lists the help topics.
+    /// </summary>
+    [Fact]
+    public void NuGetInstaller_HelpTopics_HelpVerb_ListsTopics()
+    {
+        // Arrange: (none — constructor initializes _dllPath)
+
+        // Act: run the tool with the help verb
+        var exitCode = Runner.Run(
+            out var output,
+            null,
+            "dotnet",
+            _dllPath,
+            "help");
+
+        // Assert: every topic is listed with its command, without the banner
+        Assert.Equal(0, exitCode);
+        foreach (var topic in HelpCommand.RootCardIds)
+        {
+            Assert.Contains($"{HelpCommand.ToolName} help {topic}", output);
+        }
+
+        Assert.DoesNotContain("Copyright", output);
+    }
+
+    /// <summary>
+    ///     Test that an unknown help topic returns the usage-error exit code.
+    /// </summary>
+    [Fact]
+    public void NuGetInstaller_HelpTopics_UnknownTopic_ReturnsUsageError()
+    {
+        // Arrange: (none — constructor initializes _dllPath)
+
+        // Act: ask for a topic that does not exist
+        var exitCode = Runner.Run(
+            out var output,
+            null,
+            "dotnet",
+            _dllPath,
+            "help",
+            "no-such-topic");
+
+        // Assert: exit code 2 and a message that names the topic
+        Assert.Equal(2, exitCode);
+        Assert.Contains("no-such-topic", output);
+    }
+
+    /// <summary>
+    ///     Test that every command example in the help cards gives the result that its card states.
+    /// </summary>
+    [Fact]
+    public void NuGetInstaller_HelpExamples_AllCommandExamples_GiveStatedResults()
+    {
+        // Arrange: the catalog the tool ships, the nuget.config that the examples use, and the folders of the
+        // packages of their local folder feed
+        var catalog = HelpCatalog.Create(HelpCommand.CreateOptions().GetCatalogConfiguration());
+        var helpExamplesPath = PathHelpers.SafePathCombine(
+            PathHelpers.SafePathCombine(AppContext.BaseDirectory, "TestData"),
+            "HelpExamples");
+        var exampleFiles = Directory.GetFiles(helpExamplesPath);
+        var packageFolders = Directory.GetDirectories(PathHelpers.SafePathCombine(helpExamplesPath, "feed-content"));
+
+        // Act: run every command example against the built tool in the runner's scratch folder; the runner
+        // compares the exit codes and the 'expect' fragments. Before every command, the nuget.config is copied
+        // in, so that the examples install from the local folder feed 'feed' into a local global packages
+        // folder without a network, and each package folder is zipped into the feed as {Id}.{Version}.nupkg
+        // (packages are not checked in). The packages.config files come from the source examples of the cards.
+        var report = HelpExampleRunner.Run(catalog, invocation =>
+        {
+            foreach (var file in exampleFiles)
+            {
+                File.Copy(file, PathHelpers.SafePathCombine(invocation.WorkingDirectory, Path.GetFileName(file)), true);
+            }
+
+            var feedPath = PathHelpers.SafePathCombine(invocation.WorkingDirectory, "feed");
+            Directory.CreateDirectory(feedPath);
+            foreach (var folder in packageFolders)
+            {
+                var package = PathHelpers.SafePathCombine(feedPath, $"{Path.GetFileName(folder)}.nupkg");
+                if (!File.Exists(package))
+                {
+                    ZipFile.CreateFromDirectory(folder, package);
+                }
+            }
+
+            var exitCode = Runner.Run(
+                out var output,
+                invocation.WorkingDirectory,
+                "dotnet",
+                [_dllPath, .. invocation.Arguments]);
+            return new HelpExampleOutcome(exitCode, output);
+        });
+
+        // Assert: the cards hold command examples, and every one gave the result its card states
+        Assert.True(report.CommandsRun > 0, "The help cards contain no command examples.");
+        report.AssertSucceeded();
     }
 }

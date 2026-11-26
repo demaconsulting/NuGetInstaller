@@ -56,19 +56,33 @@ internal static class Program
     ///     Main entry point for the NuGet Installer.
     /// </summary>
     /// <remarks>
-    ///     Exception-handling strategy: <see cref="ArgumentException"/> and
-    ///     <see cref="InvalidOperationException"/> are expected errors (bad arguments, missing
-    ///     files, inaccessible log) — they are caught, written to stderr, and translated to
-    ///     exit code 1 so callers can detect failure without a crash. All other exceptions
-    ///     are unexpected; they are written to stderr and re-thrown so the .NET runtime can
-    ///     generate an event-log entry and a crash dump for post-mortem analysis.
+    ///     <para>
+    ///         The <c>help</c> command is answered first, by <see cref="HelpCommand"/>, before the
+    ///         command-line options are parsed: <c>help</c> is a command and not an option, so
+    ///         <see cref="Context.Create"/> would take it for the packages.config path. Its exit code
+    ///         is returned as is.
+    ///     </para>
+    ///     <para>
+    ///         Exception-handling strategy: <see cref="ArgumentException"/> and
+    ///         <see cref="InvalidOperationException"/> are expected errors (bad arguments, missing
+    ///         files, inaccessible log) — they are caught, written to stderr, and translated to
+    ///         exit code 1 so callers can detect failure without a crash. All other exceptions
+    ///         are unexpected; they are written to stderr and re-thrown so the .NET runtime can
+    ///         generate an event-log entry and a crash dump for post-mortem analysis.
+    ///     </para>
     /// </remarks>
     /// <param name="args">Command-line arguments.</param>
     /// <returns>Exit code: 0 for success, non-zero for failure.</returns>
-    private static int Main(string[] args)
+    internal static int Main(string[] args)
     {
         try
         {
+            // Answer the help command before the options are parsed
+            if (HelpCommand.Default.TryRun(args, out var helpExitCode))
+            {
+                return helpExitCode;
+            }
+
             // Create context from command-line arguments
             using var context = Context.Create(args);
 
@@ -179,12 +193,14 @@ internal static class Program
     /// <remarks>
     ///     Called by <see cref="Run"/> when the Help flag is set, immediately after
     ///     <see cref="PrintBanner"/>. Lists all supported command-line options so that
-    ///     users can self-serve without consulting external documentation.
+    ///     users can self-serve without consulting external documentation, and ends with a
+    ///     pointer to the built-in help topics, which hold the details and examples.
     /// </remarks>
     /// <param name="context">The context for output.</param>
     private static void PrintHelp(Context context)
     {
-        context.WriteLine("Usage: nuget-installer [packages.config] [options]");
+        context.WriteLine($"Usage: {HelpCommand.ToolName} [packages.config] [options]");
+        context.WriteLine($"       {HelpCommand.ToolName} help [topic]");
         context.WriteLine("");
         context.WriteLine("Options:");
         context.WriteLine("  [packages.config]            Path to packages.config (default: packages.config)");
@@ -197,6 +213,8 @@ internal static class Program
         context.WriteLine("  --results, --result <file>   Write validation results to file (.trx or .xml)");
         context.WriteLine("  --depth <#>                  Set heading depth for markdown output (default: 1)");
         context.WriteLine("  --log <file>                 Write output to log file");
+        context.WriteLine("");
+        context.WriteLine(HelpCommand.Default.Footer);
     }
 
     /// <summary>
