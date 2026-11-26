@@ -81,3 +81,16 @@ run needs no network. The environment variable `NUGET_PACKAGES` or the
 **Self-validation.** `--validate` uses the nuget.config files of the
 current folder, not those of a packages.config file; see
 [[self-validation]].
+
+**Installing the tool.** `dotnet tool install` and `dotnet tool restore`
+read the nuget.config files of the current folder too. When these clear
+nuget.org or map `DemaConsulting.NuGetInstaller` to another source, the
+tool install fails. Then do one of these:
+
+- Add `--configfile <file>` with a nuget.config that lists nuget.org.
+- Add `--add-source https://api.nuget.org/v3/index.json`. This fails
+  when the nuget.config has a `packageSourceMapping`.
+- In the `packageSourceMapping`, map the pattern
+  `DemaConsulting.NuGetInstaller` to nuget.org.
+- For a global install (`-g`), run it outside the repository, for
+  example with `working-directory: ${{ runner.temp }}` in GitHub Actions.

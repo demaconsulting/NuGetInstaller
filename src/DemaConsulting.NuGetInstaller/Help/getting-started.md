@@ -22,14 +22,22 @@ examples:
     content: |
       dotnet new tool-manifest
       dotnet tool install --local DemaConsulting.NuGetInstaller
-  - name: run-in-ci
+  - name: ci-steps
     kind: snippet
-    language: shell
-    save-as: run-in-ci.sh
-    description: Restore the manifest tools in CI, then run the tool.
+    language: yaml
+    save-as: ci-steps.yaml
+    description: GitHub Actions steps that set up .NET and install the listed packages.
     content: |
-      dotnet tool restore
-      dotnet {{tool}} packages.config -o packages
+      - name: Check out the repository
+        uses: actions/checkout@v4
+      - name: Set up .NET 10
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.x
+      - name: Restore the local .NET tools
+        run: dotnet tool restore
+      - name: Install the NuGet packages
+        run: dotnet {{tool}} packages.config -o packages
   - name: version
     kind: command
     language: shell
@@ -69,20 +77,24 @@ examples:
 It installs the NuGet packages that a packages.config file lists into a
 folder, as `nuget.exe install` does.
 
-1. **Install it.** The tool needs the .NET 10 SDK or later. In CI, set it
-   up first when the runner has an older .NET, for example with
-   `actions/setup-dotnet` and `dotnet-version: 10.x`.
-   For a repository or CI, install it as a local tool. Run the commands
+1. **Install it.** The tool needs the .NET 10 SDK or later. For a
+   repository or CI, install it as a local tool. Run the commands
    that [[#install-local]] prints once, without
    `dotnet new tool-manifest` when `.config/dotnet-tools.json` exists, and
-   commit that file. In CI, run `dotnet tool restore` first, then run the
-   tool as `dotnet {{tool}}`, as in the commands that
-   [[#run-in-ci]] prints. For one machine, install it globally and
-   run it as `{{tool}}`:
+   commit that file. In GitHub Actions, copy the steps that
+   [[#ci-steps]] prints. They set up .NET 10 with
+   `actions/setup-dotnet`, run `dotnet tool restore`, and then run
+   `dotnet {{tool}}`. For one machine, install it globally and run it
+   as `{{tool}}`:
 
    ```bash
    dotnet tool install -g DemaConsulting.NuGetInstaller
    ```
+
+   `dotnet tool install` and `dotnet tool restore` also read the
+   nuget.config files of the current folder. If they clear nuget.org or
+   map this package away from it, the install fails; see
+   [[package-sources]].
 
 2. **Check it.** The command that [[#version]] prints shows the version.
    The command from [[#validate]] runs the built-in
