@@ -14,6 +14,7 @@ needs-review:
   - "docs/verification/**/*.md"   # Verification documentation files
   - "docs/user_guide/**/*.md"     # User guide documentation
   - "docs/sysml2/**/*.sysml"      # SysML2 architecture model
+  - "src/**/Help/**"              # Built-in help cards
   - "!**/obj/**"                  # Exclude build output
   - "!**/bin/**"                  # Exclude build output
   - "!node_modules/**"            # Exclude npm dependencies
@@ -143,6 +144,22 @@ reviews:
       - "docs/verification/nuget-installer/cli/context.md"        # verification
       - "src/**/Cli/Context.cs"                                   # implementation
       - "test/**/Cli/ContextTests.cs"                             # unit tests
+
+  # NuGetInstaller-Cli-HelpCommand Review (one per unit)
+  - id: NuGetInstaller-Cli-HelpCommand
+    title: Review that NuGetInstaller Cli HelpCommand Implementation is Correct
+    context:
+      - "docs/design/nuget-installer.md"
+      - "docs/reqstream/nuget-installer.yaml"
+      - "docs/design/nuget-installer/cli.md"
+      - "docs/reqstream/nuget-installer/cli.yaml"
+    paths:
+      - "docs/reqstream/nuget-installer/cli/help-command.yaml"    # requirements
+      - "docs/design/nuget-installer/cli/help-command.md"         # design
+      - "docs/verification/nuget-installer/cli/help-command.md"   # verification
+      - "src/**/Cli/HelpCommand.cs"                               # implementation
+      - "src/**/Help/**"                                          # help cards
+      - "test/**/Cli/HelpCommandTests.cs"                         # unit tests
 
   # NuGetInstaller-NuGet Review (one per subsystem)
   - id: NuGetInstaller-NuGet
@@ -300,6 +317,14 @@ reviews:
       - "docs/reqstream/ots/fileassert.yaml"                               # OTS requirements
       - "docs/design/ots/fileassert.md"                                    # OTS design
       - "docs/verification/ots/fileassert.md"                              # OTS verification
+
+  # OTS-HelpCards Review (one per OTS item)
+  - id: OTS-HelpCards
+    title: Review that HelpCards Provides Required Functionality
+    paths:
+      - "docs/reqstream/ots/help-cards.yaml"                               # OTS requirements
+      - "docs/design/ots/help-cards.md"                                    # OTS design
+      - "docs/verification/ots/help-cards.md"                              # OTS verification
 
   # OTS-xUnit Review (one per OTS item)
   - id: OTS-xUnit
